@@ -1,0 +1,25 @@
+# Composer vendor directory
+/vendor/
+/plugins/
+/icons/
+/images/
+/fonts/
+/uploads/
+/libraries/
+/exports/
+
+# Error logs
+error_log.txt
+*.log
+
+# Exported files
+/exports/*
+!/exports/.gitkeep
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+#Database files
+db.php
