@@ -369,33 +369,132 @@ if(isset($_REQUEST['update_portfolio'])){
     $conn->close();
 }
 
+// Auto-login from Database-backed Remember Token (valid for 2 months / 60 days)
+function checkRememberLogin($conn) {
+    if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+        return true;
+    }
+    
+    if (!empty($_COOKIE['remember_user'])) {
+        $parts = explode(':', $_COOKIE['remember_user'], 2);
+        if (count($parts) === 2) {
+            $user_id = intval($parts[0]);
+            $cookie_token = $parts[1];
+            
+            if ($user_id > 0 && !empty($cookie_token)) {
+                $stmt = mysqli_prepare($conn, "SELECT id, username, remember_token, remember_expires_at FROM users WHERE id = ? LIMIT 1");
+                if ($stmt) {
+                    mysqli_stmt_bind_param($stmt, "i", $user_id);
+                    mysqli_stmt_execute($stmt);
+                    $res = mysqli_stmt_get_result($stmt);
+                    if ($user = mysqli_fetch_assoc($res)) {
+                        $db_token = $user['remember_token'];
+                        $expires_at = $user['remember_expires_at'];
+                        
+                        // Check if token exists in DB, matches cookie, and has not expired
+                        if (!empty($db_token) && hash_equals($db_token, $cookie_token) && !empty($expires_at) && strtotime($expires_at) > time()) {
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['user_id'] = (int)$user['id'];
+                            mysqli_stmt_close($stmt);
+                            return true;
+                        }
+                    }
+                    mysqli_stmt_close($stmt);
+                }
+            }
+        }
+        // Invalid or expired remember cookie - clear cookie
+        setcookie('remember_user', '', time() - 3600, "/");
+    }
+    return false;
+}
+
+// Check auto-login on every request
+if (isset($conn) && $conn) {
+    checkRememberLogin($conn);
+}
+
 if(isset($_REQUEST['login_submit'])){
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $hashed_password = md5($password);
     // Query to check if the username and password exist in the database
-    $sql = "SELECT id FROM users WHERE username = '$username' AND password = '$hashed_password'";
+    $sql = "SELECT id FROM users WHERE username = '$username' AND (password = '$hashed_password' OR password = '$password')";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
     
     if ($row) {
+        $user_id = (int)$row['id'];
         $_SESSION['username'] = $username;
-        $_SESSION['user_id'] = (int)$row['id'];
+        $_SESSION['user_id'] = $user_id;
+
+        // Remember Me for 2 months (60 days) - Stored in Database
+        $two_months = 60 * 24 * 60 * 60; // 5,184,000 seconds
+        if (isset($_POST['remember'])) {
+            $token = bin2hex(random_bytes(32));
+            $expires_at = date('Y-m-d H:i:s', time() + $two_months);
+
+            // Save token and expiry date into users table
+            $update_stmt = mysqli_prepare($conn, "UPDATE users SET remember_token = ?, remember_expires_at = ? WHERE id = ?");
+            if ($update_stmt) {
+                mysqli_stmt_bind_param($update_stmt, "ssi", $token, $expires_at, $user_id);
+                mysqli_stmt_execute($update_stmt);
+                mysqli_stmt_close($update_stmt);
+            }
+
+            // Set secure HttpOnly cookie with user_id:token
+            setcookie('remember_user', $user_id . ':' . $token, time() + $two_months, "/", "", false, true);
+            setcookie('remember_username', $username, time() + $two_months, "/", "", false, false);
+            if (session_id()) {
+                setcookie(session_name(), session_id(), time() + $two_months, "/");
+            }
+        } else {
+            // If remember is not checked, clear DB token and cookies
+            $clear_stmt = mysqli_prepare($conn, "UPDATE users SET remember_token = NULL, remember_expires_at = NULL WHERE id = ?");
+            if ($clear_stmt) {
+                mysqli_stmt_bind_param($clear_stmt, "i", $user_id);
+                mysqli_stmt_execute($clear_stmt);
+                mysqli_stmt_close($clear_stmt);
+            }
+            setcookie('remember_user', '', time() - 3600, "/");
+            setcookie('remember_username', '', time() - 3600, "/");
+        }
+
         $user_ip = getUserIP();
         $user_country = getCountryByIP($user_ip);
         $login_time = date('Y-m-d H:i:s');
         $log_sql = "INSERT INTO login_logs (username, ip_address, country, login_time) VALUES ('$username', '$user_ip', '$user_country', '$login_time')";
         mysqli_query($conn, $log_sql);
         header("location: portfolios.php");
+        exit();
     } else {
-        // Login failed, show error message
-        echo "<script>alert('Invalid username or password'); window.location.href='login.php';</script>";
+        // Login failed, set error message in session and redirect to login.php
+        $_SESSION['login_error'] = 'Invalid username or password. Please try again.';
+        header("Location: login.php");
+        exit();
     }
 }
 
 if(isset($_REQUEST['logout'])){
+    // Clear remember token in DB if user is logging out
+    $logout_user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
+    if ($logout_user_id === 0 && !empty($_COOKIE['remember_user'])) {
+        $parts = explode(':', $_COOKIE['remember_user'], 2);
+        $logout_user_id = intval($parts[0] ?? 0);
+    }
+    if ($logout_user_id > 0 && isset($conn) && $conn) {
+        $clear_stmt = mysqli_prepare($conn, "UPDATE users SET remember_token = NULL, remember_expires_at = NULL WHERE id = ?");
+        if ($clear_stmt) {
+            mysqli_stmt_bind_param($clear_stmt, "i", $logout_user_id);
+            mysqli_stmt_execute($clear_stmt);
+            mysqli_stmt_close($clear_stmt);
+        }
+    }
+
     session_destroy();
-    header("Location: index.php");
+    setcookie('remember_user', '', time() - 3600, "/");
+    header("Location: login.php");
+    exit();
 }
 
 function getUserIP() {

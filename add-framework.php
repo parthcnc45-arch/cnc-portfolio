@@ -28,6 +28,7 @@ function call_all_rows_and_append_in_select_option($conn,$table_name,$col_name,$
 $message = "";
 $is_edit_mode = false;
 $framework_name_value = "";
+$framework_type_value = "";
 
 // -----------------------
 // Handle Delete Request
@@ -253,11 +254,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label class="col-form-label" for="framework_type">Framework Type<span class="text-danger">*</span></label>
                                         <div class="form-control-group">
                                             <select class="form-control" name="framework_type" id="framework_type" required>
-                                                <option value="cms" <?php if( $framework_type_value  == "cms" ){ echo "selected"; } ?>>CMS / Website Builder</option>
-                                                <option value="backend" <?php if( $framework_type_value  == "backend" ){ echo "selected"; } ?>>Backend Technologies</option>
-                                                <option value="frontend" <?php if( $framework_type_value  == "frontend" ){ echo "selected"; } ?>>Frontend Technologies</option>
-                                                <option value="hosting" <?php if( $framework_type_value  == "hosting" ){ echo "selected"; } ?>>Hosting / Cloud Services</option>
-                                                <option value="other" <?php if( $framework_type_value  == "other" ){ echo "selected"; } ?>>Other Technologies</option>
+                                                <option value="cms" <?php if(isset($framework_type_value) && $framework_type_value == "cms"){ echo "selected"; } ?>>CMS / Website Builder</option>
+                                                <option value="backend" <?php if(isset($framework_type_value) && $framework_type_value == "backend"){ echo "selected"; } ?>>Backend Technologies</option>
+                                                <option value="frontend" <?php if(isset($framework_type_value) && $framework_type_value == "frontend"){ echo "selected"; } ?>>Frontend Technologies</option>
+                                                <option value="hosting" <?php if(isset($framework_type_value) && $framework_type_value == "hosting"){ echo "selected"; } ?>>Hosting / Cloud Services</option>
+                                                <option value="other" <?php if(isset($framework_type_value) && $framework_type_value == "other"){ echo "selected"; } ?>>Other Technologies</option>
                                             </select>                                         
                                         </div>
                                     </div>
