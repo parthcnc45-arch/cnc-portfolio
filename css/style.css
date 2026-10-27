@@ -7290,7 +7290,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 * {
   outline: none;
-  box-sizing: inherit;
+  /* box-sizing: inherit; */
   margin: 0;
   padding: 0; }
   *::after {

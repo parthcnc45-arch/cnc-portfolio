@@ -176,6 +176,35 @@ function selected_option_caller($conn,$selectedIndustries,$table_name,$col_name)
         .form-validation .form-valide h3 {font-size: 22px;}
         .form-validation .form-valide .form-group .field-wrapper .field-wrap .deliverable-item , .form-validation .form-valide .form-group .field-wrapper .field-wrap #uniqueelementContainer .uniqueelement-item , .form-validation .form-valide .form-group .field-wrapper .field-wrap #successContainer .success-item{flex-direction:column;align-items: flex-end;}
     }
+    .btn-back-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #5b52f9 !important;
+        background-color: #ede9fe;
+        border: 1px solid #ddd6fe;
+        border-radius: 6px;
+        text-decoration: none !important;
+        transition: all 0.2s ease;
+        line-height: normal;
+        cursor: pointer;
+    }
+    .btn-back-custom:hover {
+        background-color: #5b52f9;
+        border-color: #5b52f9;
+        color: #ffffff !important;
+        transform: translateX(-2px);
+        box-shadow: 0 3px 8px rgba(91, 82, 249, 0.25);
+    }
+    .btn-back-custom svg {
+        transition: transform 0.2s ease;
+    }
+    .btn-back-custom:hover svg {
+        transform: translateX(-2px);
+    }
 </style>
 <div class="content-body">
     <div class="row page-titles mx-0">
@@ -188,6 +217,15 @@ function selected_option_caller($conn,$selectedIndustries,$table_name,$col_name)
     </div>
     <!-- row -->
     <div class="container-fluid">
+        <div class="mb-3">
+            <a href="portfolios.php" class="btn-back-custom" id="btnBackToPortfolios">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <span>Back</span>
+            </a>
+        </div>
         <nav>
 			<div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
 				<button class="nav-link active" id="nav-baisc-tab" data-bs-toggle="tab" data-bs-target="#nav-basic" type="button" role="tab" aria-controls="nav-basic" aria-selected="true">Basic Details</button>

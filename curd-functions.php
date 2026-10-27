@@ -380,6 +380,7 @@ if(isset($_REQUEST['login_submit'])){
     
     if ($row) {
         $_SESSION['username'] = $username;
+        $_SESSION['user_id'] = (int)$row['id'];
         $user_ip = getUserIP();
         $user_country = getCountryByIP($user_ip);
         $login_time = date('Y-m-d H:i:s');
@@ -418,4 +419,65 @@ function getCountryByIP($ip) {
     
     $data = json_decode($response, true);
     return $data['country'] ?? 'Unknown';
+}
+
+function getCurrentAuthUserId($conn) {
+    if (isset($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
+        return (int)$_SESSION['user_id'];
+    }
+    if (isset($_SESSION['username']) && !empty($_SESSION['username'])) {
+        $stmt = mysqli_prepare($conn, "SELECT id FROM users WHERE username = ? LIMIT 1");
+        if ($stmt) {
+            $u = $_SESSION['username'];
+            mysqli_stmt_bind_param($stmt, "s", $u);
+            mysqli_stmt_execute($stmt);
+            $res = mysqli_stmt_get_result($stmt);
+            if ($row = mysqli_fetch_assoc($res)) {
+                $_SESSION['user_id'] = (int)$row['id'];
+                mysqli_stmt_close($stmt);
+                return (int)$_SESSION['user_id'];
+            }
+            mysqli_stmt_close($stmt);
+        }
+    }
+    return null;
+}
+
+function fetchUserRecentCopiedLinks($conn, $userId) {
+    if (!$conn || !$userId) {
+        return [];
+    }
+    $stmt = mysqli_prepare(
+        $conn,
+        "SELECT 
+            h.id AS history_id,
+            h.portfolio_id,
+            h.copied_at,
+            p.company_name,
+            p.website_url
+        FROM portfolio_copy_history h
+        INNER JOIN portfolio p ON h.portfolio_id = p.id
+        WHERE h.user_id = ? 
+          AND p.deleted = '0' 
+          AND p.website_url IS NOT NULL 
+          AND TRIM(p.website_url) != ''
+        ORDER BY h.copied_at DESC 
+        LIMIT 5"
+    );
+    $links = [];
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $userId);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $links[] = [
+                'portfolio_id' => (int)$row['portfolio_id'],
+                'company_name' => $row['company_name'] ?: 'Untitled Project',
+                'website_url'  => $row['website_url'],
+                'copied_at'    => $row['copied_at']
+            ];
+        }
+        mysqli_stmt_close($stmt);
+    }
+    return $links;
 }
