@@ -954,6 +954,16 @@ include_once('sidebar.php');
         box-shadow: 0 2px 5px rgba(89, 80, 246, 0.35);
         transform: translateY(-1px);
     }
+    .btn-table-copy.copied {
+        background-color: #10b981 !important;
+        box-shadow: 0 1px 2px rgba(16, 185, 129, 0.25);
+        pointer-events: none;
+    }
+    .btn-table-copy.copied:hover {
+        background-color: #059669 !important;
+        box-shadow: 0 2px 5px rgba(16, 185, 129, 0.35);
+        transform: none;
+    }
     .btn-table-copy.disabled {
         background-color: #cbd5e1 !important;
         box-shadow: none !important;
@@ -1217,6 +1227,11 @@ include_once('sidebar.php');
     .recent-copy-btn:hover {
         background-color: #f1f5f9;
         color: #5b52f9;
+    }
+    .recent-copy-btn.copied {
+        background-color: #dcfce7;
+        color: #059669;
+        pointer-events: none;
     }
     .empty-recent-state {
         text-align: center;
@@ -1933,12 +1948,23 @@ include_once('footer.php');
         $(document).on('click', '.btn-table-copy', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            var url = $(this).attr('data-url');
-            var portId = $(this).attr('data-id');
-            if (!portId) {
-                portId = $(this).closest('tr').find('.rowCheckbox').val();
+            var $btn = $(this);
+            if ($btn.hasClass('copied') || $btn.hasClass('disabled')) {
+                return;
             }
+            var url = $btn.attr('data-url');
+            var portId = $btn.attr('data-id');
+            if (!portId) {
+                portId = $btn.closest('tr').find('.rowCheckbox').val();
+            }
+            var originalHtml = $btn.html();
             copyTextToClipboard(url, function() {
+                $btn.addClass('copied');
+                $btn.html('<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg><span>Copied</span>');
+                setTimeout(function() {
+                    $btn.removeClass('copied');
+                    $btn.html(originalHtml);
+                }, 3000);
                 if (portId) {
                     recordPortfolioCopy(portId);
                 }
@@ -1949,9 +1975,20 @@ include_once('footer.php');
         $(document).on('click', '.recent-copy-btn', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            var url = $(this).attr('data-url');
-            var portId = $(this).attr('data-id');
+            var $btn = $(this);
+            if ($btn.hasClass('copied')) {
+                return;
+            }
+            var url = $btn.attr('data-url');
+            var portId = $btn.attr('data-id');
+            var originalHtml = $btn.html();
             copyTextToClipboard(url, function() {
+                $btn.addClass('copied');
+                $btn.html('<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>');
+                setTimeout(function() {
+                    $btn.removeClass('copied');
+                    $btn.html(originalHtml);
+                }, 3000);
                 if (portId) {
                     recordPortfolioCopy(portId);
                 }
