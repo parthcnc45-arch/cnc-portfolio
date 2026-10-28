@@ -461,10 +461,19 @@ if(isset($_REQUEST['login_submit'])){
         }
 
         $user_ip = getUserIP();
-        $user_country = getCountryByIP($user_ip);
+        $user_location = getLocationByIP($user_ip);
+        $user_country = $user_location['country'];
+        $user_city = $user_location['city'];
         $login_time = date('Y-m-d H:i:s');
-        $log_sql = "INSERT INTO login_logs (username, ip_address, country, login_time) VALUES ('$username', '$user_ip', '$user_country', '$login_time')";
-        mysqli_query($conn, $log_sql);
+        $log_stmt = mysqli_prepare(
+            $conn,
+            "INSERT INTO login_logs (username, ip_address, country, city, login_time) VALUES (?, ?, ?, ?, ?)"
+        );
+        if ($log_stmt) {
+            mysqli_stmt_bind_param($log_stmt, "sssss", $username, $user_ip, $user_country, $user_city, $login_time);
+            mysqli_stmt_execute($log_stmt);
+            mysqli_stmt_close($log_stmt);
+        }
         header("location: portfolios.php");
         exit();
     } else {
@@ -507,17 +516,60 @@ function getUserIP() {
     }
     return $ip;
 }
-function getCountryByIP($ip) {
-    $token = 'd4666657ea0b8c'; // Replace with your actual token
-    $url = "http://ipinfo.io/{$ip}?token={$token}";
+/**
+ * Resolve an IP address to an approximate city and country.
+ * Private/loopback IPs cannot be geolocated and are not sent to a third party.
+ */
+function getLocationByIP($ip) {
+    $unknown = ['city' => 'Unknown', 'country' => 'Unknown'];
+    $ip = trim((string)$ip);
+
+    if ($ip === '' || !filter_var($ip, FILTER_VALIDATE_IP)) {
+        return $unknown;
+    }
+
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        return ['city' => 'Local network', 'country' => 'Unknown'];
+    }
+
+    if (!function_exists('curl_init')) {
+        return $unknown;
+    }
+
+    $url = 'https://ipwho.is/' . rawurlencode($ip) . '?fields=success,city,country_code';
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_TIMEOUT => 5,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_HTTPHEADER => ['Accept: application/json'],
+    ]);
     $response = curl_exec($ch);
+    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
+    if (!is_string($response) || $response === '' || $httpCode < 200 || $httpCode >= 300) {
+        return $unknown;
+    }
+
     $data = json_decode($response, true);
-    return $data['country'] ?? 'Unknown';
+    if (!is_array($data) || empty($data['success'])) {
+        return $unknown;
+    }
+
+    return [
+        'city' => !empty($data['city']) ? (string)$data['city'] : 'Unknown',
+        'country' => !empty($data['country_code']) ? (string)$data['country_code'] : 'Unknown',
+    ];
+}
+
+/** Backwards-compatible country-only helper. */
+function getCountryByIP($ip) {
+    $location = getLocationByIP($ip);
+    return $location['country'];
 }
 
 function getCurrentAuthUserId($conn) {
