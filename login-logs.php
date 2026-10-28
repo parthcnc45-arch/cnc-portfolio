@@ -76,8 +76,8 @@ require_once('country_flags_helper.php');
         display: block !important;
         width: 100% !important;
         max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
@@ -235,8 +235,9 @@ require_once('country_flags_helper.php');
         border: none !important;
         background-color: #ffffff !important;
         width: 100% !important;
-        min-width: 1250px !important;
-        table-layout: auto !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        table-layout: fixed !important;
     }
 
     /* DataTables wrapper must stay inside the card */
@@ -253,6 +254,18 @@ require_once('country_flags_helper.php');
         overflow: visible !important;
     }
 
+    /* Fixed column widths keep the table inside the viewport. */
+    #portfolio-table th:nth-child(1),
+    #portfolio-table td:nth-child(1) { width: 18% !important; }
+    #portfolio-table th:nth-child(2),
+    #portfolio-table td:nth-child(2) { width: 32% !important; }
+    #portfolio-table th:nth-child(3),
+    #portfolio-table td:nth-child(3) { width: 12% !important; }
+    #portfolio-table th:nth-child(4),
+    #portfolio-table td:nth-child(4) { width: 20% !important; }
+    #portfolio-table th:nth-child(5),
+    #portfolio-table td:nth-child(5) { width: 18% !important; }
+
     /* Header Styling */
     #portfolio-table thead th {
         background-color: #f9f9fd !important;
@@ -268,6 +281,8 @@ require_once('country_flags_helper.php');
         border-right: none !important;
         border-bottom: 1.5px solid #edf0f7 !important;
         white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     /* Row & Body Cells */
@@ -283,6 +298,9 @@ require_once('country_flags_helper.php');
         background-color: #ffffff !important;
         line-height: 1.4 !important;
         transition: background-color 0.15s ease !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
     #portfolio-table tbody tr:hover td {
         background-color: #fbfbfe !important;
@@ -293,6 +311,13 @@ require_once('country_flags_helper.php');
 
     /* IP Address Badge */
     .ip-badge {
+        display: inline-block !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+        box-sizing: border-box !important;
         font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
         font-size: 12px;
         color: #475569;
@@ -352,8 +377,8 @@ require_once('country_flags_helper.php');
     }
 
     .portfolio-table-responsive {
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
         overscroll-behavior-x: contain;
         -webkit-overflow-scrolling: touch;
     }
@@ -1013,6 +1038,15 @@ include_once('footer.php');
                 lengthMenu: "Show _MENU_ entries"
             }
         });
+        // Add native hover tooltips to truncated cells so full values remain accessible.
+        $('#portfolio-table').on('mouseenter', 'th, td, .ip-badge', function() {
+            var $cell = $(this);
+            var fullText = $cell.text().trim();
+            if (fullText && (this.scrollWidth > this.clientWidth || $cell.find('.ip-badge').length)) {
+                $cell.attr('title', fullText);
+            }
+        });
+
         $('#portfolio-table_filter input[type="search"]').on('input', function() {
             var keyword = $(this).val();
             $('#portfolio-table').unmark();
