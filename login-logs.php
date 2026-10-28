@@ -1204,3 +1204,28 @@ include_once('footer.php');
         });
     });
 </script>
+
+
+<style id="mobile-responsive-login-logs">
+/* Mobile layout for login audit logs */
+@media (max-width: 767.98px) {
+  .content-body { padding: 14px 9px 24px !important; overflow-x: clip; }
+  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .portfolio-page-header { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 8px !important; }
+  .portfolio-header-left, .portfolio-header-right { width: 100% !important; max-width: 100% !important; }
+  .portfolio-table-card, .ajax_table_print, .portfolio-table-responsive, #portfolio-table_wrapper { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+  .ajax_table_print, .portfolio-table-responsive, .dataTables_wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  #portfolio-table, .portfolio-table { min-width: 680px; }
+  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { float: none !important; text-align: left !important; width: 100% !important; margin: 8px 0 !important; }
+  .dataTables_wrapper .dataTables_filter label { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 6px; }
+  .dataTables_wrapper .dataTables_filter input { width: min(100%, 230px) !important; margin-left: 0 !important; }
+  .dataTables_wrapper .dataTables_info { white-space: normal !important; padding-top: 10px !important; }
+  .dataTables_wrapper .dataTables_paginate { float: none !important; text-align: left !important; white-space: normal !important; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .portfolio-page-title { font-size: 22px !important; line-height: 1.3; }
+  .portfolio-page-desc { font-size: 13px !important; line-height: 1.5; }
+  .loginLogDetailsModal .modal-dialog { margin: 8px !important; max-width: calc(100% - 16px) !important; }
+  .loginLogDetailsModal .modal-body, #loginLogDetailsModal .modal-body { padding: 12px !important; }
+  #loginLogDetailsModal .row > [class*="col-"] { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; }
+  .content-body .btn, .content-body button, .content-body select { min-height: 40px; }
+}
+</style>
