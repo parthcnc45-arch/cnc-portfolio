@@ -771,6 +771,7 @@ require_once('country_flags_helper.php');
                                     <th>Username</th>
                                     <th>IP Address</th>
                                     <th>Country</th>
+                                    <th>City</th>
                                     <th>Device Type</th>
                                     <th>Browser</th>
                                     <th>Operating System</th>
@@ -802,6 +803,7 @@ require_once('country_flags_helper.php');
                                             <td style="font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($row['username'] ?? ''); ?></td>
                                             <td><span class="ip-badge"><?php echo htmlspecialchars($row['ip_address'] ?? ''); ?></span></td>
                                             <td class="col-country"><?php echo render_country_flags($row['country'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($row['city'] ?? 'Unknown', ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?php echo renderDeviceBadge($row['device_type'] ?? ''); ?></td>
                                             <td><?php echo renderBrowserBadge($row['browser'] ?? ''); ?></td>
                                             <td><?php echo renderOsBadge($row['os'] ?? ''); ?></td>
@@ -822,7 +824,7 @@ require_once('country_flags_helper.php');
                                 } else {
                                     ?>
                                     <tr>
-                                        <td colspan="12" class="empty-table-cell">
+                                        <td colspan="13" class="empty-table-cell">
                                             <div class="empty-state-wrap">
                                                 <i class="fas fa-history empty-icon"></i>
                                                 <div class="empty-text">No Login Logs Found</div>
@@ -883,6 +885,10 @@ require_once('country_flags_helper.php');
                         <div class="log-detail-card">
                             <span class="log-detail-label"><i class="fas fa-globe-americas"></i> Country</span>
                             <span class="log-detail-value" id="detailCountry"></span>
+                        </div>
+                        <div class="log-detail-card">
+                            <span class="log-detail-label"><i class="fas fa-city"></i> City</span>
+                            <span class="log-detail-value" id="detailCity"></span>
                         </div>
                         <div class="log-detail-card">
                             <span class="log-detail-label"><i class="fas fa-laptop"></i> Device Type</span>
@@ -1055,6 +1061,7 @@ include_once('footer.php');
                         $('#detailUsername').text(d.username);
                         $('#detailIpAddress').text(d.ip_address);
                         $('#detailCountry').text(d.country);
+                        $('#detailCity').text(d.city || 'Unknown');
                         $('#detailDeviceType').text(d.device_type);
                         $('#detailBrowser').text(d.browser);
                         $('#detailOs').text(d.os);
