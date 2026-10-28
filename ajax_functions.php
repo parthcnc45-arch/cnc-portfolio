@@ -541,6 +541,7 @@ header('Content-Type: application/json');
                 "username" => !empty($row['username']) ? $row['username'] : 'Not Available',
                 "ip_address" => !empty($row['ip_address']) ? $row['ip_address'] : 'Not Available',
                 "country" => !empty($row['country']) ? $row['country'] : 'Unknown',
+                "city" => !empty($row['city']) ? $row['city'] : 'Unknown',
                 "device_type" => !empty($row['device_type']) ? $row['device_type'] : 'Not Available',
                 "browser" => !empty($row['browser']) ? $row['browser'] : 'Not Available',
                 "os" => !empty($row['os']) ? $row['os'] : 'Not Available',
