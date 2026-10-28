@@ -10,13 +10,28 @@ require_once('country_flags_helper.php');
 
 <style>
     /* =========================================================
-       MODERN PAGE HEADER & LAYOUT (Matching portfolios.php)
+       GLOBAL LAYOUT & RESETS (Matching portfolios.php & clients.php)
        ========================================================= */
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
     .content-body {
         background-color: #f7f8fb !important;
         min-height: 100vh;
         padding-bottom: 40px;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        max-width: 100% !important;
     }
+    .page-titles,
+    .breadcrumb {
+        display: none !important;
+    }
+
+    /* =========================================================
+       MODERN PAGE HEADER
+       ========================================================= */
     .portfolio-page-header {
         display: flex;
         align-items: center;
@@ -24,6 +39,9 @@ require_once('country_flags_helper.php');
         margin-bottom: 18px;
         padding-top: 4px;
         gap: 15px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
     .portfolio-header-left {
         flex: 1 1 auto;
@@ -59,70 +77,89 @@ require_once('country_flags_helper.php');
     }
 
     /* =========================================================
-       MODERN TABLE CARD & STYLES (Matching portfolios.php)
+       SWIPE HINT BANNER (Mobile / Tablet)
+       ========================================================= */
+    .table-scroll-hint {
+        display: none !important;
+        background: linear-gradient(90deg, #f8fafc 0%, #eef2ff 50%, #f8fafc 100%);
+        color: #5b52f9;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 7px 12px;
+        border-bottom: 1px solid #e0e7ff;
+        text-align: center;
+        user-select: none;
+        letter-spacing: 0.1px;
+    }
+    .table-scroll-hint i {
+        font-size: 12px;
+        color: #5b52f9;
+    }
+    @media (max-width: 991.98px) {
+        .table-scroll-hint {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+    }
+
+    /* =========================================================
+       MODERN TABLE CARD & DATATABLES CONTROLS
        ========================================================= */
     .portfolio-table-card {
-        background: #ffffff;
-        border: 1.5px solid #e8ecf4;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-        overflow: hidden;
-        padding: 0;
-        width: 100%;
-        box-sizing: border-box;
+        background: #ffffff !important;
+        border: 1.5px solid #e8ecf4 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .portfolio-table-responsive {
-        display: block !important;
         width: 100% !important;
         max-width: 100% !important;
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
+        overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
-        -webkit-overflow-scrolling: touch;
     }
 
-    #portfolio-table_wrapper,
-    .portfolio-table-card .dataTables_wrapper {
+    #portfolio-table_wrapper {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
         max-width: 100% !important;
+        overflow: hidden !important;
         box-sizing: border-box !important;
     }
-    .dataTables_scrollBody::-webkit-scrollbar,
-    .portfolio-table-responsive::-webkit-scrollbar {
-        height: 7px !important;
-        width: 7px !important;
-    }
-    .dataTables_scrollBody::-webkit-scrollbar-track,
-    .portfolio-table-responsive::-webkit-scrollbar-track {
-        background: #f8fafc !important;
-    }
-    .dataTables_scrollBody::-webkit-scrollbar-thumb,
-    .portfolio-table-responsive::-webkit-scrollbar-thumb {
-        background: #cbd5e1 !important;
-        border-radius: 4px !important;
-    }
-    .dataTables_scrollBody::-webkit-scrollbar-thumb:hover,
-    .portfolio-table-responsive::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8 !important;
-    }
-    #portfolio-table_wrapper::after {
-        content: "";
-        display: table;
-        clear: both;
-    }
 
-    /* Top Table Controls Toolbar */
+    /* Row 1: Top Toolbar (Length + Search) */
+    #portfolio-table_wrapper > .row:nth-child(1) {
+        margin: 0 !important;
+        padding: 12px 18px 10px 18px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+    }
+    #portfolio-table_wrapper > .row:nth-child(1) > [class*="col-"] {
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+        max-width: 100% !important;
+    }
     #portfolio-table_wrapper .dataTables_length {
-        float: left;
-        margin: 12px 16px 10px 16px !important;
+        margin: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        height: 32px !important;
     }
     #portfolio-table_wrapper .dataTables_length label {
         display: inline-flex !important;
@@ -131,10 +168,10 @@ require_once('country_flags_helper.php');
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #64748b !important;
-        gap: 5px !important;
+        gap: 6px !important;
     }
     #portfolio-table_wrapper .dataTables_length select {
-        height: 32px !important;
+        height: 34px !important;
         min-width: 65px !important;
         padding: 2px 24px 2px 10px !important;
         font-size: 12.5px !important;
@@ -145,11 +182,9 @@ require_once('country_flags_helper.php');
         border-radius: 6px !important;
         outline: none !important;
         cursor: pointer !important;
-        margin: 0 4px !important;
         transition: all 0.2s ease !important;
         appearance: none !important;
         -webkit-appearance: none !important;
-        -moz-appearance: none !important;
         background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1YjUyZjkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==") !important;
         background-repeat: no-repeat !important;
         background-position: right 8px center !important;
@@ -160,74 +195,86 @@ require_once('country_flags_helper.php');
         box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
     }
 
-    /* Right controls in header toolbar: Search & Status */
     #portfolio-table_wrapper .dataTables_filter {
-        float: right;
-        margin: 12px 16px 10px 16px !important;
+        margin: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: flex-end !important;
-        gap: 10px !important;
-        height: 32px !important;
     }
     #portfolio-table_wrapper .dataTables_filter label {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: center !important;
         margin-bottom: 0 !important;
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #64748b !important;
-        gap: 6px !important;
+        position: relative !important;
+        width: 100% !important;
     }
     #portfolio-table_wrapper .dataTables_filter input[type="search"] {
-        height: 32px !important;
-        min-width: 180px !important;
-        padding: 4px 12px !important;
+        height: 36px !important;
+        min-width: 220px !important;
+        padding: 0 12px 0 34px !important;
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #1e293b !important;
         background-color: #ffffff !important;
         border: 1.5px solid #e2e8f0 !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         outline: none !important;
         transition: all 0.2s ease !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        width: 100% !important;
     }
     #portfolio-table_wrapper .dataTables_filter input[type="search"]:focus {
         border-color: #5b52f9 !important;
         box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
     }
-
-    /* Status Dropdown */
-    .custom-status-select,
-    #portfolio_status {
-        height: 32px !important;
-        min-width: 105px !important;
-        padding: 2px 24px 2px 10px !important;
-        font-size: 12.5px !important;
-        font-weight: 500 !important;
-        color: #334155 !important;
-        background-color: #ffffff !important;
-        border: 1.5px solid #e2e8f0 !important;
-        border-radius: 6px !important;
-        cursor: pointer !important;
-        outline: none !important;
-        transition: all 0.2s ease !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1YjUyZjkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==") !important;
-        background-repeat: no-repeat !important;
-        background-position: right 8px center !important;
-        background-size: 10px 10px !important;
-    }
-    .custom-status-select:focus,
-    #portfolio_status:focus {
-        border-color: #5b52f9 !important;
-        box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
+    #portfolio-table_wrapper .dataTables_filter label::before {
+        content: "\f002";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 12px;
+        color: #94a3b8;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 2;
     }
 
-    /* Main table: keep header and body in the same native scroll container */
+    /* Row 2: Table Scroll Area */
+    #portfolio-table_wrapper > .row:nth-child(2) {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"] {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain;
+    }
+
+    /* Custom Sleek Scrollbar */
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-track {
+        background: #f8fafc;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+    }
+
+    /* Main Table Element */
     #portfolio-table {
         border-collapse: collapse !important;
         border-spacing: 0 !important;
@@ -235,46 +282,21 @@ require_once('country_flags_helper.php');
         border: none !important;
         background-color: #ffffff !important;
         width: 100% !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
         table-layout: fixed !important;
     }
 
-    /* DataTables wrapper must stay inside the card */
-    #portfolio-table_wrapper,
-    #portfolio-table_wrapper .dataTables_scroll,
-    #portfolio-table_wrapper .dataTables_scrollBody {
-        width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-    }
-
-    /* Avoid a second scrollbar when DataTables creates its own scroll elements */
-    #portfolio-table_wrapper .dataTables_scrollHead {
-        overflow: visible !important;
-    }
-
-    /* Fixed column widths keep the table inside the viewport. */
-    #portfolio-table th:nth-child(1),
-    #portfolio-table td:nth-child(1) { width: 18% !important; }
-    #portfolio-table th:nth-child(2),
-    #portfolio-table td:nth-child(2) { width: 32% !important; }
-    #portfolio-table th:nth-child(3),
-    #portfolio-table td:nth-child(3) { width: 12% !important; }
-    #portfolio-table th:nth-child(4),
-    #portfolio-table td:nth-child(4) { width: 20% !important; }
-    #portfolio-table th:nth-child(5),
-    #portfolio-table td:nth-child(5) { width: 18% !important; }
-
-    /* Header Styling */
+    /* Sticky Header */
     #portfolio-table thead th {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 5 !important;
         background-color: #f9f9fd !important;
         color: #475569 !important;
         font-size: 12px !important;
         font-weight: 600 !important;
         text-transform: capitalize !important;
         letter-spacing: 0.2px !important;
-        padding: 10px 16px !important;
+        padding: 10px 8px !important;
         vertical-align: middle !important;
         border-top: none !important;
         border-left: none !important;
@@ -283,11 +305,12 @@ require_once('country_flags_helper.php');
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        box-sizing: border-box !important;
     }
 
     /* Row & Body Cells */
     #portfolio-table tbody td {
-        padding: 10px 16px !important;
+        padding: 9px 8px !important;
         vertical-align: middle !important;
         font-size: 12.5px !important;
         color: #334155 !important;
@@ -301,6 +324,7 @@ require_once('country_flags_helper.php');
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        box-sizing: border-box !important;
     }
     #portfolio-table tbody tr:hover td {
         background-color: #fbfbfe !important;
@@ -309,42 +333,39 @@ require_once('country_flags_helper.php');
         border-bottom: none !important;
     }
 
-    /* IP Address Badge */
-    .ip-badge {
-        display: inline-block !important;
-        max-width: 100% !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+    /* Column Widths */
+    #portfolio-table th.col-username, #portfolio-table td.col-username { width: 140px !important; }
+    #portfolio-table th.col-ip, #portfolio-table td.col-ip { width: 130px !important; }
+    #portfolio-table th.col-country, #portfolio-table td.col-country { width: 130px !important; }
+    #portfolio-table th.col-city, #portfolio-table td.col-city { width: 130px !important; }
+    #portfolio-table th.col-action, #portfolio-table td.col-action {
+        width: 90px !important;
+        min-width: 90px !important;
+        text-align: center !important;
         white-space: nowrap !important;
-        vertical-align: middle !important;
-        box-sizing: border-box !important;
-        font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 12px;
-        color: #475569;
-        background-color: #f8fafc;
-        border: 1px solid #e2e8f0;
-        padding: 2px 7px;
-        border-radius: 4px;
-        display: inline-block;
-        white-space: nowrap;
+        padding: 8px 4px !important;
     }
 
-    /* Country Flag & Label Styles (Matching portfolios.php) */
+    /* IP Badge */
+    .ip-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 11.5px;
+        font-weight: 500;
+        color: #475569;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        letter-spacing: 0.2px;
+    }
+
+    /* Country Flag */
     .country-cell-wrapper {
         display: inline-flex;
-        flex-wrap: wrap;
         align-items: center;
-        gap: 3px 5px;
+        gap: 6px;
         max-width: 100%;
-        line-height: normal;
-    }
-    .country-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        max-width: 100%;
-        vertical-align: middle;
-        line-height: normal;
     }
     .country-flag-img {
         width: 20px;
@@ -354,352 +375,121 @@ require_once('country_flags_helper.php');
         border: 1px solid rgba(0, 0, 0, 0.08);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
         flex-shrink: 0;
-        vertical-align: middle;
-        display: inline-block;
-        background-color: #f8fafc;
     }
     .country-name-text {
-        font-size: 12px;
+        font-size: 12.5px;
         color: #334155;
-        font-weight: 500;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        vertical-align: middle;
     }
 
-    /* Responsive table controls and contained horizontal scrolling */
-    .portfolio-table-card,
-    .portfolio-table-responsive,
-    #portfolio-table_wrapper {
-        min-width: 0 !important;
-        max-width: 100% !important;
+    /* View Button */
+    .btn-view-log-details {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 4px 12px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: #5b52f9;
+        background-color: #f5f4fe;
+        border: 1px solid #e0ddfc;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none !important;
+    }
+    .btn-view-log-details:hover {
+        background-color: #5b52f9;
+        color: #ffffff !important;
+        border-color: #5b52f9;
+        box-shadow: 0 2px 6px rgba(91, 82, 249, 0.25);
+    }
+    .btn-view-log-details i {
+        font-size: 11px;
     }
 
-    .portfolio-table-responsive {
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
-        overscroll-behavior-x: contain;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    #portfolio-table_wrapper .dataTables_length,
-    #portfolio-table_wrapper .dataTables_filter {
-        max-width: calc(100% - 32px);
-        box-sizing: border-box !important;
-    }
-
-    #portfolio-table_wrapper .dataTables_info {
-        max-width: 55%;
-        box-sizing: border-box !important;
-    }
-
-    #portfolio-table_wrapper .dataTables_paginate {
+    /* Cell Truncate */
+    .cell-truncate {
+        display: block;
         max-width: 100%;
-        box-sizing: border-box !important;
-        overflow-x: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
     }
 
-    @media (max-width: 992px) {
-        .container-fluid {
-            padding-left: 12px !important;
-            padding-right: 12px !important;
-        }
-
-        .portfolio-table-card {
-            border-radius: 10px;
-        }
-
-        #portfolio-table_wrapper .dataTables_length {
-            float: left !important;
-            margin: 12px !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_filter {
-            float: right !important;
-            margin: 12px !important;
-            gap: 8px !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_filter input[type="search"] {
-            min-width: 140px !important;
-            max-width: 48vw !important;
-        }
+    /* Row 3: Bottom info & pagination */
+    #portfolio-table_wrapper > .row:nth-child(3) {
+        margin: 0 !important;
+        padding: 12px 18px !important;
+        background: #ffffff !important;
+        border-top: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
     }
-
-    @media (max-width: 576px) {
-        .portfolio-page-header {
-            margin-bottom: 14px;
-            align-items: flex-start;
-        }
-
-        .portfolio-page-title {
-            flex-wrap: wrap;
-            font-size: 19px;
-        }
-
-        .portfolio-count-badge {
-            font-size: 16px;
-        }
-
-        .portfolio-page-desc {
-            font-size: 12px;
-        }
-
-        #portfolio-table_wrapper .dataTables_length,
-        #portfolio-table_wrapper .dataTables_filter {
-            float: none !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            width: calc(100% - 24px) !important;
-            max-width: none !important;
-            margin: 10px 12px !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_filter label {
-            width: 100%;
-            min-width: 0;
-        }
-
-        #portfolio-table_wrapper .dataTables_filter input[type="search"] {
-            width: 100% !important;
-            min-width: 0 !important;
-            max-width: none !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_filter #portfolio_status,
-        #portfolio-table_wrapper .dataTables_filter .custom-status-select {
-            min-width: 92px !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_info {
-            float: none !important;
-            max-width: 100%;
-            padding: 10px 12px !important;
-        }
-
-        #portfolio-table_wrapper .dataTables_paginate {
-            float: none !important;
-            display: flex !important;
-            justify-content: flex-start !important;
-            padding: 8px 12px 12px !important;
-        }
-
-        #portfolio-table_paginate .paginate_button {
-            flex: 0 0 auto;
-        }
-
-        #portfolio-table thead th,
-        #portfolio-table tbody td {
-            padding: 9px 12px !important;
-        }
+    #portfolio-table_wrapper > .row:nth-child(3) > [class*="col-"] {
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+        max-width: 100% !important;
     }
-
-    /* Empty state styling */
-    .empty-table-cell {
-        text-align: center !important;
-        padding: 50px 20px !important;
-        background-color: #ffffff !important;
-        border: none !important;
-    }
-    .empty-state-wrap {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
-    .empty-icon {
-        font-size: 36px;
-        color: #cbd5e1;
-    }
-    .empty-text {
-        font-size: 14.5px;
-        font-weight: 600;
-        color: #475569;
-    }
-    .empty-subtext {
-        font-size: 12.5px;
-        color: #94a3b8;
-    }
-
-    /* Table Footer & Pagination */
     #portfolio-table_wrapper .dataTables_info {
-        float: left;
-        padding: 12px 16px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         font-size: 12.5px !important;
-        color: #64748b !important;
         font-weight: 500 !important;
+        color: #64748b !important;
     }
     #portfolio-table_wrapper .dataTables_paginate {
-        float: right;
-        padding: 10px 16px !important;
+        margin: 0 !important;
+        padding: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
+        gap: 4px !important;
     }
-    #portfolio-table_paginate .paginate_button {
+    #portfolio-table_wrapper .dataTables_paginate .pagination {
+        margin: 0 !important;
+        gap: 4px !important;
+    }
+    #portfolio-table_wrapper .dataTables_paginate .page-item .page-link {
+        height: 30px !important;
+        min-width: 30px !important;
+        padding: 0 9px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        min-width: 28px !important;
-        height: 28px !important;
-        padding: 0 8px !important;
         font-size: 12px !important;
         font-weight: 500 !important;
         color: #64748b !important;
         background-color: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 6px !important;
-        margin: 0 2px !important;
-        text-decoration: none !important;
-        cursor: pointer !important;
         transition: all 0.15s ease !important;
-        outline: none !important;
         box-shadow: none !important;
+        text-decoration: none !important;
     }
-    #portfolio-table_paginate .paginate_button:hover {
-        background-color: #f5f3ff !important;
-        border-color: #c7d2fe !important;
-        color: #5b52f9 !important;
-    }
-    #portfolio-table_paginate .paginate_button.current,
-    #portfolio-table_paginate .paginate_button.current:hover,
-    #portfolio-table_paginate .page-item.active .page-link {
-        background: #5b52f9 !important;
+    #portfolio-table_wrapper .dataTables_paginate .page-item.active .page-link {
         background-color: #5b52f9 !important;
         border-color: #5b52f9 !important;
         color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(91, 82, 249, 0.3) !important;
+        font-weight: 600 !important;
+        box-shadow: 0 2px 6px rgba(91, 82, 249, 0.3) !important;
     }
-    #portfolio-table_paginate .paginate_button.disabled,
-    #portfolio-table_paginate .paginate_button.disabled:hover {
+    #portfolio-table_wrapper .dataTables_paginate .page-item:not(.active):not(.disabled) .page-link:hover {
+        background-color: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+        color: #1e293b !important;
+    }
+    #portfolio-table_wrapper .dataTables_paginate .page-item.disabled .page-link {
         color: #cbd5e1 !important;
         border-color: #f1f5f9 !important;
         background-color: #f8fafc !important;
         cursor: not-allowed !important;
-    }
-
-    /* Enhanced Login Logs Badges & Action Styles */
-    .device-badge, .env-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        font-weight: 500;
-        color: #334155;
-        white-space: nowrap;
-    }
-    .device-badge i, .env-badge i {
-        font-size: 12.5px;
-        flex-shrink: 0;
-    }
-    .icon-windows { color: #0078d7; }
-    .icon-apple { color: #1e293b; }
-    .icon-android { color: #10b981; }
-    .icon-linux { color: #f59e0b; }
-    .icon-cros { color: #ea4335; }
-    .icon-chrome { color: #ea4335; }
-    .icon-edge { color: #0078d7; }
-    .icon-firefox { color: #f97316; }
-    .icon-safari { color: #0284c7; }
-    .icon-opera { color: #dc2626; }
-    .icon-ie { color: #0284c7; }
-
-    .badge-method {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 2.5px 8px;
-        border-radius: 4px;
-        font-size: 11.5px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-    .badge-method-password {
-        background-color: #f1f5f9;
-        color: #475569;
-        border: 1px solid #e2e8f0;
-    }
-    .badge-method-remember {
-        background-color: #fef3c7;
-        color: #b45309;
-        border: 1px solid #fde68a;
-    }
-    .badge-method-autologin {
-        background-color: #ede9fe;
-        color: #6d28d9;
-        border: 1px solid #ddd6fe;
-    }
-
-    .badge-status {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 3px 8px;
-        border-radius: 12px;
-        font-size: 11.5px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-    .badge-status-active {
-        background-color: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
-    }
-    .badge-status-loggedout {
-        background-color: #f8fafc;
-        color: #64748b;
-        border: 1px solid #e2e8f0;
-    }
-    .badge-status-expired {
-        background-color: #fff7ed;
-        color: #c2410c;
-        border: 1px solid #fed7aa;
-    }
-
-    .status-dot {
-        width: 6px;
-        height: 6px;
-        background-color: #10b981;
-        border-radius: 50%;
-        display: inline-block;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
-        animation: pulseDot 2s infinite;
-    }
-    @keyframes pulseDot {
-        0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-        70% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    .log-na {
-        color: #94a3b8;
-        font-size: 11.5px;
-        font-weight: 500;
-    }
-
-    .btn-view-log-details {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 10px;
-        font-size: 11.5px;
-        font-weight: 600;
-        color: #5b52f9;
-        background-color: #f5f4fe;
-        border: 1px solid #e0ddfc;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        line-height: 1.3;
-        text-decoration: none !important;
-    }
-    .btn-view-log-details:hover {
-        background-color: #5b52f9;
-        color: #ffffff;
-        border-color: #5b52f9;
-        box-shadow: 0 2px 6px rgba(91, 82, 249, 0.25);
     }
 
     /* Modal Layout & Styles */
@@ -707,14 +497,6 @@ require_once('country_flags_helper.php');
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
-    }
-    @media (max-width: 576px) {
-        .log-details-grid {
-            grid-template-columns: 1fr;
-        }
-        .log-detail-card[style*="span 2"] {
-            grid-column: span 1 !important;
-        }
     }
     .log-detail-card {
         background: #ffffff;
@@ -758,96 +540,229 @@ require_once('country_flags_helper.php');
         max-height: 80px;
         overflow-y: auto;
     }
+    .badge-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 5px;
+    }
+    .badge-status-active {
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #a7f3d0;
+    }
+    .badge-status-loggedout {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+    }
+    .badge-status-expired {
+        background: #fffbeb;
+        color: #d97706;
+        border: 1px solid #fde68a;
+    }
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #10b981;
+        display: inline-block;
+    }
+    .log-na {
+        color: #94a3b8;
+        font-style: italic;
+    }
 
+    /* Screen Width Responsive Adaptation for Table */
+    @media (max-width: 991.98px) {
+        #portfolio-table {
+            min-width: 620px !important;
+            width: 620px !important;
+        }
+    }
+    @media (min-width: 992px) {
+        #portfolio-table {
+            min-width: 100% !important;
+            width: 100% !important;
+        }
+    }
+
+    /* Mobile Screens (<= 767.98px) */
+    @media (max-width: 767.98px) {
+        .content-body {
+            padding: 4px 10px 24px !important;
+            margin-left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        .content-body .container-fluid {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-top: 4px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .portfolio-page-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 6px !important;
+            margin-bottom: 12px !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(1) {
+            flex-direction: column-reverse !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            padding: 10px 12px !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(1) > [class*="col-"] {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter label {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter input[type="search"] {
+            width: 100% !important;
+            min-width: 100% !important;
+            height: 38px !important;
+        }
+        #portfolio-table_wrapper .dataTables_length {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        #portfolio-table_wrapper .dataTables_length label {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(3) {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 10px 12px !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(3) > [class*="col-"] {
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+        }
+        #portfolio-table_wrapper .dataTables_info {
+            text-align: center !important;
+        }
+        #portfolio-table_wrapper .dataTables_paginate {
+            justify-content: center !important;
+            flex-wrap: wrap !important;
+        }
+        .modal-dialog {
+            margin: 12px auto !important;
+            max-width: calc(100% - 24px) !important;
+        }
+        .log-details-grid {
+            grid-template-columns: 1fr !important;
+            gap: 8px !important;
+        }
+        .log-detail-card[style*="span 2"],
+        #detailUserAgentRow {
+            grid-column: span 1 !important;
+        }
+    }
 </style>
 
-<div class="content-body">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-            </ol>
+<div class="content-body portfolio-page-body">
+    <div class="container-fluid px-4 py-3">
+        <?php
+        $result = mysqli_query($conn, "SELECT * FROM login_logs ORDER BY id DESC");
+        $total_logs = mysqli_num_rows($result);
+        ?>
+        <!-- Modern Page Header matching portfolios.php -->
+        <div class="portfolio-page-header">
+            <div class="portfolio-header-left">
+                <div class="portfolio-header-title-wrap">
+                    <h1 class="portfolio-page-title">Login Logs <span class="portfolio-count-badge">(<?php echo $total_logs; ?> found)</span></h1>
+                </div>
+                <p class="portfolio-page-desc">View and monitor user login timestamps, IP addresses, and authentication history.</p>
+            </div>
         </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <?php
-                $result = mysqli_query($conn, "SELECT * FROM login_logs ORDER BY id DESC");
-                $total_logs = mysqli_num_rows($result);
-                ?>
-                <!-- Modern Page Header matching portfolios.php -->
-                <div class="portfolio-page-header">
-                    <div class="portfolio-header-left">
-                        <div class="portfolio-header-title-wrap">
-                            <h1 class="portfolio-page-title">Login Logs <span class="portfolio-count-badge">(<?php echo $total_logs; ?> found)</span></h1>
-                        </div>
-                        <p class="portfolio-page-desc">View and monitor user login timestamps, IP addresses, and authentication history.</p>
-                    </div>
-                </div>
 
-                <!-- Modern Table Card matching portfolios.php -->
-                <div class="portfolio-table-card" id="ajax_table_print">
-                    <div class="portfolio-table-responsive">
-                        <table class="table" id="portfolio-table">
-                            <thead>
+        <!-- Modern Table Card matching portfolios.php -->
+        <div class="portfolio-table-card" id="ajax_table_print">
+            <div class="table-scroll-hint">
+                <i class="fas fa-arrows-alt-h"></i>
+                <span>Swipe horizontally to view all columns</span>
+            </div>
+            <div class="portfolio-table-responsive">
+                <table class="table" id="portfolio-table">
+                    <colgroup>
+                        <col class="col-username" style="width: 140px;">
+                        <col class="col-ip" style="width: 130px;">
+                        <col class="col-country" style="width: 130px;">
+                        <col class="col-city" style="width: 130px;">
+                        <col class="col-action" style="width: 90px;">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="col-username" title="Username">Username</th>
+                            <th class="col-ip" title="IP Address">IP Address</th>
+                            <th class="col-country" title="Country">Country</th>
+                            <th class="col-city" title="City">City</th>
+                            <th class="col-action" style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $i = 0;
+                        if ($total_logs > 0) {
+                            while ($row = mysqli_fetch_array($result)) {
+                                $username = $row['username'] ?? '';
+                                $ip_address = $row['ip_address'] ?? '';
+                                $country = $row['country'] ?? '';
+                                $city = $row['city'] ?? 'Unknown';
+                        ?>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>IP Address</th>
-                                    <th>Country</th>
-                                    <th>City</th>
-                                    <th style="text-align: center;">Action</th>
+                                    <td class="col-username" style="font-weight: 600; color: #1e293b;" title="<?php echo htmlspecialchars($username); ?>">
+                                        <span class="cell-truncate"><?php echo htmlspecialchars($username); ?></span>
+                                    </td>
+                                    <td class="col-ip" title="<?php echo htmlspecialchars($ip_address); ?>">
+                                        <span class="ip-badge"><?php echo htmlspecialchars($ip_address); ?></span>
+                                    </td>
+                                    <td class="col-country" title="<?php echo htmlspecialchars($country); ?>">
+                                        <span class="country-cell-wrapper"><?php echo render_country_flags($country); ?></span>
+                                    </td>
+                                    <td class="col-city" title="<?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>">
+                                        <span class="cell-truncate"><?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?></span>
+                                    </td>
+                                    <td class="col-action" style="text-align: center; white-space: nowrap;">
+                                        <button type="button" class="btn-view-log-details" data-id="<?php echo (int)$row['id']; ?>" title="View Details">
+                                            <i class="fas fa-eye"></i> View
+                                        </button>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $i = 0;
-                                if ($total_logs > 0) {
-                                    while ($row = mysqli_fetch_array($result)) {
-                                        $login_time_formatted = !empty($row['login_time']) ? date("d/m/Y h:i A", strtotime($row['login_time'])) : '<span class="log-na">N/A</span>';
-                                        
-                                        $status = resolveLogSessionStatus($row);
-                                        
-                                        $logout_time_formatted = !empty($row['logout_time']) 
-                                            ? date("d/m/Y h:i A", strtotime($row['logout_time'])) 
-                                            : ($status === 'Active' ? '<span class="badge-status badge-status-active"><span class="status-dot"></span> Active</span>' : '<span class="log-na">N/A</span>');
-                                        
-                                        $duration = getLogSessionDuration($row['login_time'] ?? null, $row['logout_time'] ?? null, $status);
-                                        $duration_html = ($duration !== 'N/A') ? htmlspecialchars($duration) : '<span class="log-na">N/A</span>';
-                                ?>
-                                        <tr>
-                                            <td style="font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($row['username'] ?? ''); ?></td>
-                                            <td><span class="ip-badge"><?php echo htmlspecialchars($row['ip_address'] ?? ''); ?></span></td>
-                                            <td class="col-country"><?php echo render_country_flags($row['country'] ?? ''); ?></td>
-                                            <td><?php echo htmlspecialchars($row['city'] ?? 'Unknown', ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td style="text-align: center; white-space: nowrap;">
-                                                <button type="button" class="btn-view-log-details" data-id="<?php echo (int)$row['id']; ?>" title="View Details">
-                                                    <i class="fas fa-eye"></i> View
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                        $i++;
-                                    }
-                                } else {
-                                    ?>
-                                    <tr>
-                                        <td colspan="5" class="empty-table-cell">
-                                            <div class="empty-state-wrap">
-                                                <i class="fas fa-history empty-icon"></i>
-                                                <div class="empty-text">No Login Logs Found</div>
-                                                <div class="empty-subtext">No user activity recorded yet.</div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <?php
+                                $i++;
+                            }
+                        } else {
+                            ?>
+                            <tr>
+                                <td colspan="5" class="empty-table-cell">
+                                    <div class="empty-state-wrap">
+                                        <i class="fas fa-history empty-icon"></i>
+                                        <div class="empty-text">No Login Logs Found</div>
+                                        <div class="empty-subtext">No user activity recorded yet.</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -1022,13 +937,18 @@ include_once('footer.php');
             });
             $('#deleteConfirmationModal').modal('hide');
         });
+        $.fn.DataTable.ext.pager.numbers_length = 4;
         var table = $('#portfolio-table').DataTable({
             "autoWidth": false,
             "scrollX": false,
             "aaSorting": [],
             "columnDefs": [
-                // The compact table has five columns; Action is column index 4.
-                { "orderable": false, "targets": 4 }
+                { "orderable": false, "targets": [4] },
+                { "width": "140px", "targets": 0 },
+                { "width": "130px", "targets": 1 },
+                { "width": "130px", "targets": 2 },
+                { "width": "130px", "targets": 3 },
+                { "width": "90px", "targets": 4 }
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "pageLength": 10,
@@ -1038,6 +958,7 @@ include_once('footer.php');
                 lengthMenu: "Show _MENU_ entries"
             }
         });
+        table.columns.adjust();
         // Add native hover tooltips to truncated cells so full values remain accessible.
         $('#portfolio-table').on('mouseenter', 'th, td, .ip-badge', function() {
             var $cell = $(this);
@@ -1124,57 +1045,7 @@ include_once('footer.php');
             });
         });
 
-        var customDropdown =
-            '<label><select id="portfolio_status" class="custom-status-select">' +
-            '<option value="0">Published</option>' +
-            '<option value="1">Deleted</option>' +
-            '</select></label>';
-        $('#portfolio-table_wrapper .dataTables_filter').append(customDropdown);
-        $(document).on('change', '#portfolio_status', function() {
-            var selectedValue = $(this).val();
-            $.ajax({
-                url: 'ajax_functions.php',
-                method: 'GET',
-                data: {
-                    action: 'get_portfolios',
-                    value: selectedValue
-                },
-                success: function(response) {
-                    $('#ajax_table_print').html(response);
-                    var newTable = $('#portfolio-table').DataTable({
-                        "autoWidth": false,
-                        "scrollX": false,
-                        "aaSorting": [],
-                        "columnDefs": [
-                            { "orderable": false, "targets": 11 }
-                        ],
-                        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                        "pageLength": 10,
-                        language: {
-                            search: "_INPUT_",
-                            searchPlaceholder: "Search logs...",
-                            lengthMenu: "Show _MENU_ entries"
-                        }
-                    });
-                    var customDropdown =
-                        '<label><select id="portfolio_status" class="custom-status-select">' +
-                        '<option value="0">Published</option>' +
-                        '<option value="1">Deleted</option>' +
-                        '</select></label>';
-                    var $dropdown = $(customDropdown);
-                    $dropdown.find('option').each(function() {
-                        if ($(this).val() === selectedValue) {
-                            $(this).prop('selected', true);
-                        }
-                    });
-                    $('#portfolio-table_wrapper .dataTables_filter').append($dropdown);
-                    table = newTable;
-                },
-                error: function(error) {
-                    console.error('Error:', error);
-                }
-            });
-        });
+        
         var name;
         $('.copy-link').on('contextmenu', function(event) {
             event.preventDefault();
@@ -1206,26 +1077,4 @@ include_once('footer.php');
 </script>
 
 
-<style id="mobile-responsive-login-logs">
-/* Mobile layout for login audit logs */
-@media (max-width: 767.98px) {
-  .content-body { padding: 14px 9px 24px !important; overflow-x: clip; }
-  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 6px !important; padding-right: 6px !important; }
-  .portfolio-page-header { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 8px !important; }
-  .portfolio-header-left, .portfolio-header-right { width: 100% !important; max-width: 100% !important; }
-  .portfolio-table-card, .ajax_table_print, .portfolio-table-responsive, #portfolio-table_wrapper { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-  .ajax_table_print, .portfolio-table-responsive, .dataTables_wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
-  #portfolio-table, .portfolio-table { min-width: 680px; }
-  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { float: none !important; text-align: left !important; width: 100% !important; margin: 8px 0 !important; }
-  .dataTables_wrapper .dataTables_filter label { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 6px; }
-  .dataTables_wrapper .dataTables_filter input { width: min(100%, 230px) !important; margin-left: 0 !important; }
-  .dataTables_wrapper .dataTables_info { white-space: normal !important; padding-top: 10px !important; }
-  .dataTables_wrapper .dataTables_paginate { float: none !important; text-align: left !important; white-space: normal !important; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-  .portfolio-page-title { font-size: 22px !important; line-height: 1.3; }
-  .portfolio-page-desc { font-size: 13px !important; line-height: 1.5; }
-  .loginLogDetailsModal .modal-dialog { margin: 8px !important; max-width: calc(100% - 16px) !important; }
-  .loginLogDetailsModal .modal-body, #loginLogDetailsModal .modal-body { padding: 12px !important; }
-  #loginLogDetailsModal .row > [class*="col-"] { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; }
-  .content-body .btn, .content-body button, .content-body select { min-height: 40px; }
-}
-</style>
+

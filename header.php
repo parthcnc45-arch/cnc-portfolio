@@ -51,8 +51,8 @@ if (!isset($_SESSION['username'])) {
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="index.php">
-                    <b class="logo-abbr"><img src="images/cnc-logo new.png" alt=""> </b>
-                    <span class="logo-compact"><img src="./images/cnc-logo new.png" alt=""></span>
+                    <b class="logo-abbr" style="display: none !important;"><img src="images/cnc-logo new.png" alt=""> </b>
+                    <span class="logo-compact" style="display: none !important;"><img src="./images/cnc-logo new.png" alt=""></span>
                     <span class="brand-title">
                         <img src="images/cnc-logo new.png" alt="">
                     </span>

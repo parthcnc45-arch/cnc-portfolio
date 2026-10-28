@@ -34,26 +34,32 @@ include_once('sidebar.php');?>
     .form-validation .form-valide .form-group .field-wrapper .col-form-label {max-width:100%;width: 100%;font-size: 16px;font-weight:bold;}
     .form-validation .form-valide .form-group .field-wrapper.field-radio  .form-check.form-check-inline:first-child{margin-right:20px;}
     .form-validation .form-valide .form-group .field-wrapper.field-radio  .form-check  .form-check-label{font-size: 16px;font-weight:bold;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection { box-shadow: none;display: block; width: 100%; min-height: 45px; padding: 0; font-size: 0rem; line-height: 1.5; color: #495057; background-clip: padding-box; border: 1px solid #ced4da; border-radius: 0.25rem;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered{line-height:38px;padding-left: 12px;padding-right: 30px;padding-top: 5px;padding-bottom: 5px;font-size: 14px;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered .select2-selection__placeholder{font-size: 0.875rem; line-height: 1.5;     color: #7b7777;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection  .select2-selection__arrow{top: 11px;right: 12px;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .bootstrap-tagsinput {display: block; width: 100%; min-height: 43px; padding: 0.375rem 0.75rem; font-size: 0.875rem; line-height: 1.5; color: #495057; background-color: #fff; background-clip: padding-box; border: 1px solid #ced4da; border-radius: 0.25rem;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection ul.select2-selection__rendered{padding: 0 5px;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection ul.select2-selection__rendered .select2-search.select2-search--inline{width: 100%;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered li input{margin: 0;padding: 0 12px;width: 100% !important;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap textarea {min-height: 90px;height: 100%;padding: 10px 12px;}
-    .form-validation .form-valide .form-group button , #deliverablesContainer .deliverable-item .btn{padding: 10px 15px; min-width: 60px; font-size: 18px; font-weight: 500;}
-    #current_status{-webkit-appearance: none; appearance: none;}
-    #select2-selection__arrow{height: 26px; position: absolute; top: 9px; right: 9px; width: 20px;}
-    #select2-selection__arrow b{    border-color: #888 transparent transparent transparent; border-style: solid; border-width: 5px 4px 0 4px; height: 0; left: 50%; margin-left: -4px; margin-top: -2px; position: absolute; top: 50%; width: 0;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap{position: relative;}
-    #role{padding: 0.375rem 0.75rem;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .bootstrap-tagsinput .twitter-typeahead{line-height:2;}
-    .form-control{border-radius: 0.25rem;}
-    .select2-container--default .select2-results__option--highlighted[aria-selected] { background-color: #7571f9;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2-container--default .select2-selection--multiple .select2-selection__rendered li.select2-selection__choice {min-width: 60px;font-size: 14px;margin: 8px 5px; background: #7571f9; color: #fff;position: relative;padding: 0px 30px 0px 5px;}
-    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {position: absolute;right: 10px;color: #fff;}
+    .form-validation .select2,
+    .form-validation .select2.select2-container,
+    .form-validation .select2-container,
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container { width: 100% !important; max-width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; display: block !important; }
+    .form-validation .select2-container .selection { display: block; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection { box-shadow: none; display: block; width: 100% !important; max-width: 100% !important; min-height: 45px; padding: 0; font-size: 0rem; line-height: 1.5; color: #495057; background-clip: padding-box; border: 1px solid #ced4da; border-radius: 0.25rem; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered { line-height:38px; padding-left: 12px; padding-right: 30px; padding-top: 5px; padding-bottom: 5px; font-size: 14px; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered .select2-selection__placeholder { font-size: 0.875rem; line-height: 1.5; color: #7b7777; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__arrow { top: 11px; right: 12px; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .bootstrap-tagsinput { display: block; width: 100% !important; max-width: 100% !important; min-height: 43px; padding: 0.375rem 0.75rem; font-size: 0.875rem; line-height: 1.5; color: #495057; background-color: #fff; background-clip: padding-box; border: 1px solid #ced4da; border-radius: 0.25rem; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection ul.select2-selection__rendered { padding: 0 5px; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection ul.select2-selection__rendered .select2-search.select2-search--inline { width: auto !important; max-width: 100% !important; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2.select2-container .selection .select2-selection .select2-selection__rendered li input { margin: 0; padding: 0 12px; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap textarea { min-height: 90px; height: 100%; padding: 10px 12px; max-width: 100%; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group button , #deliverablesContainer .deliverable-item .btn { padding: 10px 15px; min-width: 60px; font-size: 18px; font-weight: 500; }
+    #current_status { -webkit-appearance: none; appearance: none; }
+    #select2-selection__arrow { height: 26px; position: absolute; top: 9px; right: 9px; width: 20px; }
+    #select2-selection__arrow b { border-color: #888 transparent transparent transparent; border-style: solid; border-width: 5px 4px 0 4px; height: 0; left: 50%; margin-left: -4px; margin-top: -2px; position: absolute; top: 50%; width: 0; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap { position: relative; width: 100%; max-width: 100%; box-sizing: border-box !important; }
+    .form-validation .form-valide .form-group .field-wrapper { width: 100%; max-width: 100%; box-sizing: border-box !important; }
+    #role { padding: 0.375rem 0.75rem; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .bootstrap-tagsinput .twitter-typeahead { line-height:2; width: 100%; }
+    .form-control { border-radius: 0.25rem; max-width: 100%; box-sizing: border-box !important; }
+    .select2-container--default .select2-results__option--highlighted[aria-selected] { background-color: #7571f9; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2-container--default .select2-selection--multiple .select2-selection__rendered li.select2-selection__choice { min-width: 0; max-width: 100%; font-size: 14px; margin: 6px 4px; background: #7571f9; color: #fff; position: relative; padding: 2px 30px 2px 8px; border-radius: 4px; box-sizing: border-box; }
+    .form-validation .form-valide .form-group .field-wrapper .field-wrap .select2-container--default .select2-selection--multiple .select2-selection__choice__remove { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: #fff; }
     .tex-container .htmlContent { min-height: 300px !important; }
 
     .content-body nav .nav-tabs { border-bottom: 1px solid #7571f9; padding-bottom: 10px;gap: 10px;}
@@ -848,6 +854,7 @@ include_once('footer.php');
         initializeTypeahead("#team_associates", "team_associates"); 
 
         $("#industries").select2({
+            width: '100%',
             placeholder: "Select Industries",
             multiple: true,             
             ajax: {
@@ -875,6 +882,7 @@ include_once('footer.php');
         });       
 
         $("#cms_plateform").select2({
+            width: '100%',
             placeholder: "Select CMS / Website Builder",
             multiple: true,             
             ajax: {
@@ -903,6 +911,7 @@ include_once('footer.php');
         }); 
         
         $("#backend_tech").select2({
+            width: '100%',
             placeholder: "Select Backend Technologies",
             multiple: true,             
             ajax: {
@@ -931,6 +940,7 @@ include_once('footer.php');
         }); 
         
         $("#frontend_tech").select2({
+            width: '100%',
             placeholder: "Select Frontend Technologies",
             multiple: true,             
             ajax: {
@@ -959,6 +969,7 @@ include_once('footer.php');
         }); 
         
         $("#hosting_tech").select2({
+            width: '100%',
             placeholder: "Select Hosting / Cloud Services",
             multiple: true,             
             ajax: {
@@ -987,6 +998,7 @@ include_once('footer.php');
         });
         
         $("#other_tech").select2({
+            width: '100%',
             placeholder: "Select Other-Technologies",
             multiple: true,             
             ajax: {
@@ -1015,6 +1027,7 @@ include_once('footer.php');
         });  
         
         $("#programming_language").select2({
+            width: '100%',
             placeholder: "Select Programming Language",
             multiple: true,             
             ajax: {
@@ -1042,6 +1055,7 @@ include_once('footer.php');
         });
         
         $("#technology").select2({
+            width: '100%',
             placeholder: "Select Technology",
             multiple: true,             
             ajax: {
@@ -1069,6 +1083,7 @@ include_once('footer.php');
         });  
 
         $("#portfolio_type").select2({
+            width: '100%',
             placeholder: "Select Portfolio Type",
             multiple: true,             
             ajax: {
@@ -1096,6 +1111,7 @@ include_once('footer.php');
         });  
                 
         $("#countrySelect").select2({          
+            width: '100%',
             multiple: true,   
             data: countries.map(function(country) {
                 return {
@@ -1156,16 +1172,129 @@ include_once('footer.php');
 <style id="mobile-responsive-index">
 /* Mobile-first layout improvements for the portfolio entry/dashboard page */
 @media (max-width: 767.98px) {
-  .content-body { padding: 12px 10px 24px !important; overflow-x: clip; }
-  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 8px !important; padding-right: 8px !important; }
-  .content-body .row { margin-left: -6px !important; margin-right: -6px !important; }
-  .content-body .row > [class*="col-"] { padding-left: 6px !important; padding-right: 6px !important; }
-  .content-body .card, .content-body .form-section, .content-body .tab-content, .content-body .tab-pane { max-width: 100%; }
+  .content-body { padding: 12px 8px 24px !important; overflow-x: clip; }
+  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 6px !important; padding-right: 6px !important; }
+  .content-body .row { margin-left: -4px !important; margin-right: -4px !important; }
+  .content-body .row > [class*="col-"] { padding-left: 4px !important; padding-right: 4px !important; }
+  .content-body .card { margin-bottom: 14px !important; border-radius: 8px !important; box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important; max-width: 100% !important; }
+  .content-body .card-body { padding: 14px 10px !important; }
+  .content-body .form-section, .content-body .tab-content, .content-body .tab-pane { max-width: 100% !important; }
   .content-body h1, .content-body h2, .content-body h3, .content-body h4 { overflow-wrap: anywhere; }
-  .content-body input:not([type=checkbox]):not([type=radio]):not([type=file]), .content-body select, .content-body textarea { max-width: 100%; min-width: 0; }
-  .content-body .form-control, .content-body .form-select { min-height: 42px; font-size: 16px; }
+  .form-validation .form-valide h3 { font-size: 16px !important; padding: 9px 12px !important; margin-bottom: 14px !important; border-radius: 6px !important; }
+  .form-validation .form-valide .form-group { margin-bottom: 0 !important; }
+  .form-validation .form-valide .form-group .field-wrapper { margin-bottom: 14px !important; width: 100% !important; max-width: 100% !important; }
+  .form-validation .form-valide .form-group .field-wrapper .col-form-label { font-size: 13.5px !important; font-weight: 600 !important; margin-bottom: 4px !important; }
+  
+  /* Select2 Mobile Strict Fit */
+  .select2,
+  .select2-container,
+  .select2.select2-container,
+  .form-validation .select2-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .select2-container .selection,
+  .select2-container .select2-selection,
+  .select2-container .select2-selection--multiple,
+  .select2-container .select2-selection--single {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .select2-container .select2-selection--multiple .select2-selection__rendered {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 3px 6px !important;
+  }
+  .select2-container .select2-search--inline {
+    width: auto !important;
+    max-width: 100% !important;
+    flex: 1 1 60px !important;
+    box-sizing: border-box !important;
+  }
+  .select2-container .select2-search--inline .select2-search__field {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 60px !important;
+    box-sizing: border-box !important;
+    font-size: 13.5px !important;
+  }
+  .select2-dropdown {
+    max-width: 95vw !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Website URL Image Brand layout on mobile */
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap.image-brand {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap.image-brand .form-control,
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap.image-brand .image_preview {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap.image-brand .image_preview img {
+    max-height: 80px;
+    object-fit: contain;
+    border-radius: 6px;
+  }
+
+  /* Form controls general */
+  .content-body input:not([type=checkbox]):not([type=radio]):not([type=file]), .content-body select, .content-body textarea {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .content-body .form-control, .content-body .form-select {
+    min-height: 42px;
+    font-size: 14px;
+    box-sizing: border-box !important;
+  }
   .content-body button, .content-body .btn { min-height: 40px; max-width: 100%; white-space: normal; }
   .content-body img { max-width: 100%; height: auto; }
-  .content-body .table-responsive { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  
+  /* Nav Tabs */
+  .content-body nav .nav-tabs {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    border-bottom: 2px solid #e2e8f0 !important;
+    padding-bottom: 8px !important;
+  }
+  .content-body nav .nav-tabs .nav-link {
+    flex: 1 1 auto !important;
+    text-align: center !important;
+    padding: 8px 12px !important;
+    font-size: 13.5px !important;
+  }
+  
+  /* Repeatable items */
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap .deliverable-item,
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap #uniqueelementContainer .uniqueelement-item,
+  .form-validation .form-valide .form-group .field-wrapper .field-wrap #successContainer .success-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+    padding: 10px !important;
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+  }
+  
+  /* Tooltip */
+  .tooltip .tooltiptext {
+    width: 85vw !important;
+    max-width: 290px !important;
+    right: 0 !important;
+    left: auto !important;
+  }
 }
 </style>

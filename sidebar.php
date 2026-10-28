@@ -37,32 +37,83 @@
                 justify-content: center !important;
                 height: 100% !important;
             }
+            /* Prevent duplicate logo: hide logo-abbr and logo-compact completely */
+            .nav-header .brand-logo .logo-abbr,
+            .nav-header .brand-logo .logo-compact,
+            body .nav-header .brand-logo .logo-abbr,
+            body .nav-header .brand-logo .logo-compact,
+            [data-sidebar-style] .nav-header .brand-logo .logo-abbr,
+            [data-sidebar-style] .nav-header .brand-logo .logo-compact {
+                display: none !important;
+                visibility: hidden !important;
+                width: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
             .nav-header .brand-logo a .brand-title {
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
             }
             .nav-header .brand-logo a .brand-title img {
-                max-height: 52px !important;
-                max-width: 140px !important;
+                max-height: 48px !important;
+                max-width: 130px !important;
                 width: auto !important;
                 display: block !important;
                 object-fit: contain !important;
             }
 
-            /* Compact Fixed Sidebar */
-            .nk-sidebar {
-                position: fixed !important;
-                top: 85px !important;
-                bottom: 0;
-                left: 0;
-                width: 185px !important;
-                height: calc(100vh - 85px) !important;
-                z-index: 999;
-                display: flex;
-                flex-direction: column;
-                background: #ffffff;
-                border-right: 1px solid #edf2f7;
+            /* Compact Fixed Sidebar for Desktop (>= 768px) */
+            @media (min-width: 768px) {
+                .nav-header,
+                body[data-sidebar-style] .nav-header,
+                #main-wrapper.menu-toggle .nav-header {
+                    position: fixed !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    width: 185px !important;
+                    height: 85px !important;
+                    background: #ffffff !important;
+                    border-bottom: 1px solid #edf2f7 !important;
+                    border-right: 1px solid #edf2f7 !important;
+                    z-index: 1000 !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    padding: 0 12px !important;
+                    box-shadow: none !important;
+                }
+                .nk-sidebar,
+                body[data-sidebar-style] .nk-sidebar,
+                [data-sidebar-style="overlay"] .nk-sidebar,
+                [data-sidebar-style="mini"] .nk-sidebar,
+                #main-wrapper.menu-toggle .nk-sidebar {
+                    position: fixed !important;
+                    top: 85px !important;
+                    bottom: 0 !important;
+                    left: 0 !important;
+                    width: 185px !important;
+                    height: calc(100vh - 85px) !important;
+                    z-index: 999 !important;
+                    display: flex !important;
+                    flex-direction: column !important;
+                    background: #ffffff !important;
+                    border-right: 1px solid #edf2f7 !important;
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                    transform: none !important;
+                }
+                .content-body,
+                body[data-sidebar-style] .content-body,
+                [data-sidebar-style="overlay"] .content-body,
+                [data-sidebar-style="mini"] .content-body,
+                #main-wrapper.menu-toggle .content-body {
+                    margin-left: 185px !important;
+                    width: calc(100% - 185px) !important;
+                    max-width: calc(100% - 185px) !important;
+                    box-sizing: border-box !important;
+                    overflow-x: hidden !important;
+                }
             }
             .nk-sidebar .nk-nav-scroll {
                 flex: 1;
@@ -223,16 +274,21 @@
                     border-right: 0 !important;
                     border-bottom: 1px solid #edf2f7 !important;
                     overflow: visible !important;
+                    padding: 0 !important;
+                    padding-bottom: 0 !important;
+                    margin: 0 !important;
                 }
                 .nk-sidebar .nk-nav-scroll {
                     overflow: visible !important;
                     width: 100% !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
                 }
                 .nk-sidebar .metismenu {
                     display: grid !important;
                     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
                     gap: 4px !important;
-                    padding: 8px !important;
+                    padding: 8px 8px 4px 8px !important;
                     margin: 0 !important;
                 }
                 .nk-sidebar .metismenu > li {
@@ -269,8 +325,9 @@
                 .sidebar-account-footer {
                     position: static !important;
                     width: 100% !important;
-                    padding: 6px 8px 10px !important;
+                    padding: 4px 8px 8px !important;
                     border-top: 0 !important;
+                    margin: 0 !important;
                 }
                 .sidebar-logout-btn {
                     height: 36px !important;
@@ -279,7 +336,7 @@
                     width: 100% !important;
                     max-width: 100% !important;
                     margin-left: 0 !important;
-                    padding: 12px 8px 24px !important;
+                    padding: 6px 8px 24px !important;
                     box-sizing: border-box !important;
                     overflow-x: clip !important;
                 }
@@ -368,6 +425,25 @@
                 </a>
             </div>
         </div>
+        <script>
+            (function() {
+                function resetDesktopSidebar() {
+                    if (window.innerWidth >= 768) {
+                        if (document.body.getAttribute('data-sidebar-style') !== 'full') {
+                            document.body.setAttribute('data-sidebar-style', 'full');
+                        }
+                        var wrapper = document.getElementById('main-wrapper');
+                        if (wrapper && wrapper.classList.contains('menu-toggle')) {
+                            wrapper.classList.remove('menu-toggle');
+                        }
+                    }
+                }
+                window.addEventListener('resize', resetDesktopSidebar);
+                window.addEventListener('orientationchange', resetDesktopSidebar);
+                document.addEventListener('DOMContentLoaded', resetDesktopSidebar);
+                resetDesktopSidebar();
+            })();
+        </script>
         <!--**********************************
             Sidebar end
         ***********************************-->

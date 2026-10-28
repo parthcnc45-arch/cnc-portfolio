@@ -19,10 +19,17 @@ include_once('sidebar.php');
     /* =========================================================
        PAGE LAYOUT & HEADING (Reference Screenshot 2 Match)
        ========================================================= */
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
     .portfolio-page-body {
         background-color: #f7f8fb !important;
         min-height: 100vh;
         padding-bottom: 40px;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        max-width: 100% !important;
     }
     .portfolio-page-header {
         display: flex;
@@ -31,6 +38,9 @@ include_once('sidebar.php');
         margin-bottom: 18px;
         padding-top: 4px;
         gap: 15px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
     .portfolio-header-left {
         flex: 1 1 auto;
@@ -66,18 +76,36 @@ include_once('sidebar.php');
     .btn-add-portfolio i {
         font-size: 12px;
     }
-    @media (max-width: 768px) {
+    @media (max-width: 767.98px) {
         .portfolio-page-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
         }
         .portfolio-header-right {
-            width: 100%;
+            width: 100% !important;
         }
         .btn-add-portfolio {
-            width: 100%;
-            justify-content: center;
+            width: 100% !important;
+            justify-content: center !important;
+        }
+    }
+    @media (min-width: 768px) {
+        .portfolio-page-header {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .portfolio-header-right {
+            width: auto !important;
+            flex: 0 0 auto !important;
+        }
+        .btn-add-portfolio {
+            width: auto !important;
+            display: inline-flex !important;
         }
     }
     .portfolio-header-title-wrap {
@@ -109,30 +137,52 @@ include_once('sidebar.php');
         line-height: 1.4;
     }
 
-    /* Two Column Layout (Left 74%, Right 26%) */
+    /* Two Column Layout (Left: remaining width, Right: fixed 240px) */
     .portfolio-two-col-layout {
         display: flex;
-        gap: 20px;
+        gap: 16px;
         align-items: flex-start;
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
     .portfolio-main-column {
-        flex: 1 1 calc(75% - 10px);
+        flex: 1 1 0%;
+        width: calc(100% - 256px);
+        max-width: calc(100% - 256px);
         min-width: 0;
+        box-sizing: border-box;
+        overflow: hidden;
     }
     .portfolio-side-column {
-        flex: 0 0 calc(25% - 10px);
-        max-width: calc(25% - 10px);
+        flex: 0 0 240px;
+        width: 240px;
+        max-width: 240px;
         min-width: 240px;
+        box-sizing: border-box;
     }
     @media (max-width: 1180px) {
         .portfolio-two-col-layout {
-            flex-direction: column;
+            flex-direction: column !important;
+            gap: 18px !important;
+            width: 100% !important;
+        }
+        .portfolio-main-column {
+            flex: 1 1 100% !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            min-width: 0 !important;
         }
         .portfolio-side-column {
-            flex: 1 1 100%;
-            max-width: 100%;
-            width: 100%;
+            flex: 1 1 100% !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+        .recently-copied-panel {
+            position: static !important;
+            width: 100% !important;
+            top: auto !important;
         }
     }
 
@@ -376,12 +426,6 @@ include_once('sidebar.php');
             flex-direction: column;
             align-items: stretch;
         }
-        .filter-actions-group {
-            flex-wrap: wrap;
-        }
-        .filter-actions-group .btn-filter-action {
-            flex: 1;
-        }
     }
     .adv-filter-col label {
         font-size: 12.5px;
@@ -573,8 +617,10 @@ include_once('sidebar.php');
         align-items: center !important;
         justify-content: flex-end !important;
         gap: 8px !important;
-        height: 32px !important;
+        min-height: 32px !important;
+        height: auto !important;
         width: auto !important;
+        flex-wrap: wrap !important;
     }
     #portfolio-table_wrapper .dataTables_filter label {
         display: none !important;
@@ -1391,7 +1437,7 @@ include_once('sidebar.php');
     <!-- Favourite Websites & Designs Section (Preserved) -->
     <div class="container-fluid px-4 mt-4">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 mb-4">
                 <div class="card" style="border-radius: 12px; border: 1.5px solid #e8ecf4; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
                     <div class="card-body">
                         <h4 style="font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">Favourite Websites</h4>
@@ -1400,13 +1446,13 @@ include_once('sidebar.php');
                             $result = mysqli_query($conn,"SELECT * FROM favourite WHERE `name`='websites' ORDER BY timestamp DESC");
                             $row = mysqli_fetch_assoc($result);
                             ?>
-                            <textarea class="form-control fav_change_inp" id="fav_websites" rows="6" placeholder="Enter Websites Link Here."><?php echo $row['value'] ?? '';?></textarea>
-                            <a href="javascript:void(0);" onclick="copyToClipboard(this)" class="copy_links_i" title="Click to copy."><i class="icon-notebook icons"></i></a>
+                            <textarea class="form-control fav_change_inp" id="fav_websites" rows="6" placeholder="Enter Websites Link Here." style="padding-right: 44px;"></textarea>
+                            <a href="javascript:void(0);" onclick="copyToClipboard(this)" class="copy_links_i" title="Click to copy." style="position: absolute; top: 16px; right: 16px; z-index: 5;"><i class="icon-notebook icons"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 mb-4">
                 <div class="card" style="border-radius: 12px; border: 1.5px solid #e8ecf4; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
                     <div class="card-body">
                         <h4 style="font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 12px;">Favourite Designs</h4>
@@ -1415,8 +1461,8 @@ include_once('sidebar.php');
                             $result = mysqli_query($conn,"SELECT * FROM favourite WHERE `name`='designs' ORDER BY timestamp DESC");
                             $row = mysqli_fetch_assoc($result);
                             ?>
-                            <textarea class="form-control fav_change_inp" id="fav_designs" rows="6" placeholder="Enter Designs Link Here."><?php echo $row['value'] ?? '';?></textarea>
-                            <a href="javascript:void(0);" onclick="copyToClipboard(this)" class="copy_links_i" title="Click to copy."><i class="icon-notebook icons"></i></a>
+                            <textarea class="form-control fav_change_inp" id="fav_designs" rows="6" placeholder="Enter Designs Link Here." style="padding-right: 44px;"></textarea>
+                            <a href="javascript:void(0);" onclick="copyToClipboard(this)" class="copy_links_i" title="Click to copy." style="position: absolute; top: 16px; right: 16px; z-index: 5;"><i class="icon-notebook icons"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1748,6 +1794,13 @@ include_once('footer.php');
             if (rect.bottom + menuHeight > window.innerHeight) {
                 top = rect.top - menuHeight - 4;
             }
+
+            var winWidth = $(window).width();
+            var winHeight = $(window).height();
+            if (left < 8) left = 8;
+            if (left + menuWidth > winWidth - 8) left = winWidth - menuWidth - 8;
+            if (top < 8) top = 8;
+            if (top + menuHeight > winHeight - 8) top = winHeight - menuHeight - 8;
 
             $menu.css({
                 top: top + 'px',
@@ -2513,58 +2566,413 @@ include_once('footer.php');
 
 
 <style id="mobile-responsive-portfolios">
-/* Mobile layout: stack page header, filters and side panels; keep wide data tables usable */
-@media (max-width: 767.98px) {
-  .content-body { padding: 14px 9px 24px !important; overflow-x: clip; }
-  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 6px !important; padding-right: 6px !important; }
-  .portfolio-page-header { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
-  .portfolio-header-left, .portfolio-header-right { width: 100% !important; max-width: 100% !important; }
-  .portfolio-header-right { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
-  .portfolio-header-right .btn, .portfolio-header-right button, .btn-add-portfolio { min-height: 42px; }
-  .portfolio-two-col-layout { display: flex !important; flex-direction: column !important; gap: 14px !important; }
-  .portfolio-main-column, .portfolio-side-column { width: 100% !important; max-width: 100% !important; flex: 0 0 100% !important; }
-  .portfolio-table-card, .ajax_table_print, #portfolio-table_wrapper { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-  .ajax_table_print, .portfolio-table-responsive, .dataTables_wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
-  #portfolio-table { min-width: 760px; }
-  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { float: none !important; text-align: left !important; width: 100% !important; margin: 8px 0 !important; }
-  .dataTables_wrapper .dataTables_filter label { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 6px; }
-  .dataTables_wrapper .dataTables_filter input { width: min(100%, 230px) !important; margin-left: 0 !important; }
-  .dataTables_wrapper .dataTables_info { white-space: normal !important; padding-top: 10px !important; }
-  .dataTables_wrapper .dataTables_paginate { float: none !important; text-align: left !important; white-space: normal !important; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-  .portfolio-page-title { font-size: 22px !important; line-height: 1.3; }
-  .portfolio-page-desc { font-size: 13px !important; line-height: 1.5; }
-  .content-body .btn, .content-body button, .content-body select { min-height: 40px; }
-  .modal-dialog { margin: 10px !important; max-width: calc(100% - 20px) !important; }
-}
+/* =========================================================
+   COMPREHENSIVE RESPONSIVE DESIGN FOR PORTFOLIOS PAGE
+   Seamless across Desktop, Tablet (Portrait/Landscape), and Mobile
+   ========================================================= */
 
-/* Final mobile width fixes: prevent desktop sizing from clipping the page */
-@media (max-width: 767.98px) {
-  html, body { width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; }
-  .portfolio-page-body, .portfolio-page-header, .portfolio-two-col-layout,
-  .portfolio-main-column, .portfolio-side-column, .modern-filter-wrapper,
-  .modern-filter-bar, .advanced-filters-panel, .portfolio-table-card,
-  .portfolio-table-responsive, .portfolio-table-scroll {
+/* Global container and layout resets */
+html, body {
     width: 100% !important;
     max-width: 100% !important;
-    min-width: 0 !important;
+    overflow-x: hidden !important;
+}
+.portfolio-page-body {
+    width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
-  }
-  .portfolio-page-body { padding-left: 0 !important; padding-right: 0 !important; }
-  .portfolio-page-header { align-items: stretch !important; }
-  .portfolio-header-title-wrap { flex-wrap: wrap !important; }
-  .portfolio-page-title { max-width: 100% !important; overflow-wrap: anywhere !important; }
-  .portfolio-page-desc { overflow-wrap: anywhere !important; }
-  .modern-filter-bar { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 9px !important; }
-  .search-input-box { flex: 0 0 auto !important; min-height: 42px !important; }
-  .filter-actions-group { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; width: 100% !important; }
-  .filter-actions-group .btn-filter-action { width: 100% !important; min-width: 0 !important; padding-left: 8px !important; padding-right: 8px !important; white-space: normal !important; }
-  .advanced-filters-grid { grid-template-columns: minmax(0, 1fr) !important; }
-  .portfolio-table-card { height: 62vh !important; min-height: 360px !important; }
-  .portfolio-table-toolbar { flex-wrap: wrap !important; justify-content: flex-start !important; gap: 6px !important; padding: 8px !important; }
-  #portfolio-table_wrapper .dataTables_filter { max-width: 100% !important; flex-wrap: wrap !important; }
-  #portfolio-table_wrapper .dataTables_filter input,
-  #portfolio-table_wrapper .custom-status-select { max-width: 100% !important; }
-  .modal-content { max-width: 100% !important; }
 }
 
+/* Horizontal scroll indicator banner (visible only on mobile/tablet) */
+.table-scroll-hint {
+    display: none !important;
+    background: linear-gradient(90deg, #f8fafc 0%, #eef2ff 50%, #f8fafc 100%);
+    color: #5b52f9;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-bottom: 1px solid #e0e7ff;
+    text-align: center;
+    user-select: none;
+    letter-spacing: 0.1px;
+}
+.table-scroll-hint i {
+    font-size: 12px;
+    color: #5b52f9;
+}
+
+/* =========================================================
+   LARGE SCREENS / DESKTOP OPTIMIZATIONS (1181px+)
+   ========================================================= */
+@media (min-width: 1181px) {
+    .portfolio-two-col-layout {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        align-items: flex-start !important;
+        min-width: 0 !important;
+    }
+    .portfolio-main-column {
+        flex: 1 1 0% !important;
+        width: calc(100% - 256px) !important;
+        max-width: calc(100% - 256px) !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .portfolio-side-column {
+        flex: 0 0 240px !important;
+        width: 240px !important;
+        max-width: 240px !important;
+        min-width: 240px !important;
+        box-sizing: border-box !important;
+    }
+    .recently-copied-panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        position: sticky !important;
+        top: 20px !important;
+    }
+}
+
+/* =========================================================
+   TABLET & SMALL DESKTOP (768px - 1180px)
+   ========================================================= */
+@media (max-width: 1180px) {
+    .portfolio-two-col-layout {
+        flex-direction: column !important;
+        gap: 18px !important;
+        width: 100% !important;
+    }
+    .portfolio-main-column,
+    .portfolio-side-column {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 1 1 100% !important;
+        min-width: 0 !important;
+    }
+    .recently-copied-panel {
+        position: static !important;
+        top: auto !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+    }
+    .recent-copied-list {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+        gap: 10px !important;
+    }
+    .recent-item {
+        padding: 8px 10px !important;
+        background: #f8fafc;
+        border-radius: 8px;
+        border: 1px solid #f1f5f9 !important;
+    }
+}
+
+/* =========================================================
+   TABLETS & MEDIUM SCREENS (<= 991.98px)
+   Keep columns comfortably readable via horizontal swipe
+   ========================================================= */
+@media (max-width: 991.98px) {
+    .table-scroll-hint {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .portfolio-table-card {
+        height: 560px !important;
+        max-height: 70vh !important;
+        min-height: 420px !important;
+    }
+    .portfolio-table-scroll {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain;
+    }
+    /* Fixed readable column widths so table never squashes or truncates data */
+    #portfolio-table {
+        width: 920px !important;
+        min-width: 920px !important;
+        table-layout: fixed !important;
+    }
+    #portfolio-table colgroup col:nth-child(1) { width: 38px !important; }
+    #portfolio-table colgroup col:nth-child(2) { width: 155px !important; }
+    #portfolio-table colgroup col:nth-child(3) { width: 155px !important; }
+    #portfolio-table colgroup col:nth-child(4) { width: 110px !important; }
+    #portfolio-table colgroup col:nth-child(5) { width: 120px !important; }
+    #portfolio-table colgroup col:nth-child(6) { width: 145px !important; }
+    #portfolio-table colgroup col:nth-child(7) { width: 110px !important; }
+    #portfolio-table colgroup col:nth-child(8) { width: 140px !important; }
+
+    #portfolio-table th.col-checkbox,
+    #portfolio-table td.col-checkbox {
+        width: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
+        text-align: center !important;
+    }
+    #portfolio-table th.col-company,
+    #portfolio-table td.company_name {
+        width: 155px !important;
+        min-width: 155px !important;
+        max-width: 155px !important;
+    }
+    #portfolio-table th.col-website,
+    #portfolio-table td.col-website {
+        width: 155px !important;
+        min-width: 155px !important;
+        max-width: 155px !important;
+    }
+    #portfolio-table th.col-country,
+    #portfolio-table td.col-country {
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+    #portfolio-table th.col-industries,
+    #portfolio-table td.col-industries {
+        width: 120px !important;
+        min-width: 120px !important;
+        max-width: 120px !important;
+    }
+    #portfolio-table th.col-technologies,
+    #portfolio-table td.col-technologies {
+        width: 145px !important;
+        min-width: 145px !important;
+        max-width: 145px !important;
+    }
+    #portfolio-table th.col-cms,
+    #portfolio-table td.col-cms {
+        width: 110px !important;
+        min-width: 110px !important;
+        max-width: 110px !important;
+    }
+    #portfolio-table th.col-actions,
+    #portfolio-table td.col-actions {
+        width: 140px !important;
+        min-width: 140px !important;
+        max-width: 140px !important;
+        padding: 8px 6px !important;
+    }
+    .advanced-filters-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+        gap: 12px !important;
+    }
+}
+
+/* =========================================================
+   MOBILE SCREENS (<= 767.98px)
+   ========================================================= */
+@media (max-width: 767.98px) {
+    .content-body {
+        padding: 4px 10px 24px !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    .content-body > .container,
+    .content-body .container,
+    .content-body .container-fluid {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-top: 4px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .portfolio-page-header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+    }
+    .portfolio-header-left {
+        width: 100% !important;
+    }
+    .portfolio-header-title-wrap {
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    .portfolio-page-title {
+        font-size: 20px !important;
+        line-height: 1.3 !important;
+        flex-wrap: wrap !important;
+    }
+    .portfolio-count-badge {
+        font-size: 16px !important;
+    }
+    .portfolio-page-desc {
+        font-size: 12.5px !important;
+        line-height: 1.45 !important;
+        margin-top: 4px !important;
+    }
+    .portfolio-header-right {
+        width: 100% !important;
+    }
+    .btn-add-portfolio {
+        width: 100% !important;
+        height: 42px !important;
+        font-size: 14px !important;
+        justify-content: center !important;
+    }
+    .modern-filter-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+    .search-input-box {
+        width: 100% !important;
+        height: 42px !important;
+        padding: 0 12px !important;
+    }
+    .search-input-box .search-input {
+        font-size: 13px !important;
+    }
+
+    /* Balanced 3-Button Filter Layout: Search (50%) + Clear (50%), Advanced Filters (100%) */
+    .filter-actions-group {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    .filter-actions-group #btn-global-search {
+        order: 1 !important;
+        flex: 1 1 calc(50% - 4px) !important;
+        height: 40px !important;
+        font-size: 13px !important;
+    }
+    .filter-actions-group #btn-clear-filters {
+        order: 2 !important;
+        flex: 1 1 calc(50% - 4px) !important;
+        height: 40px !important;
+        font-size: 13px !important;
+    }
+    .filter-actions-group #btn-toggle-advanced-filters {
+        order: 3 !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        height: 40px !important;
+        font-size: 13px !important;
+        justify-content: center !important;
+    }
+
+    /* Advanced filters panel */
+    .advanced-filters-panel {
+        padding: 14px 12px !important;
+        margin-top: 8px !important;
+    }
+    .advanced-filters-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    .select2-container {
+        width: 100% !important;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__rendered {
+        white-space: normal !important;
+    }
+
+    /* Table Toolbar: Expands naturally, never clips or overlaps table */
+    .portfolio-table-toolbar {
+        padding: 8px 10px !important;
+        height: auto !important;
+        min-height: 46px !important;
+        justify-content: flex-start !important;
+        background: #ffffff !important;
+        position: relative !important;
+        z-index: 25 !important;
+    }
+    #portfolio-table_wrapper .dataTables_filter {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 6px !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 34px !important;
+        margin: 0 !important;
+    }
+    #portfolio-table_wrapper .btn-export,
+    #portfolio-table_wrapper .btn-import,
+    #portfolio-table_wrapper .multi-delete-btn,
+    #portfolio-table_wrapper .custom-status-select {
+        height: 34px !important;
+        font-size: 12px !important;
+        flex: 1 1 auto !important;
+        min-width: max-content !important;
+        justify-content: center !important;
+        line-height: normal !important;
+    }
+    #portfolio-table_wrapper .custom-status-select {
+        min-width: 110px !important;
+    }
+
+    /* Touch-friendly table elements */
+    #portfolio-table input[type="checkbox"] {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    .btn-table-action {
+        height: 26px !important;
+        padding: 0 6px !important;
+        font-size: 11px !important;
+    }
+    .action-dots-btn {
+        width: 24px !important;
+        height: 26px !important;
+    }
+
+    /* Recently copied links on mobile */
+    .recent-copied-list {
+        grid-template-columns: 1fr !important;
+        gap: 6px !important;
+    }
+    .recent-item {
+        padding: 8px 10px !important;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+    .recent-copy-btn {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    /* Delete modal */
+    .modal-dialog {
+        margin: 16px auto !important;
+        max-width: calc(100% - 24px) !important;
+    }
+}
+
+/* =========================================================
+   EXTRA SMALL MOBILE SCREENS (<= 480px)
+   ========================================================= */
+@media (max-width: 480px) {
+    #portfolio-table_wrapper .btn-export,
+    #portfolio-table_wrapper .btn-import {
+        flex: 1 1 calc(50% - 4px) !important;
+    }
+    #portfolio-table_wrapper .multi-delete-btn,
+    #portfolio-table_wrapper .custom-status-select {
+        flex: 1 1 calc(50% - 4px) !important;
+    }
+    .recent-item-left {
+        gap: 7px !important;
+    }
+    .recent-num-badge {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 10px !important;
+    }
+}
 </style>

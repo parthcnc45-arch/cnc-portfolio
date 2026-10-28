@@ -1,8 +1,24 @@
 <?php
 require_once 'country_flags_helper.php';
 ?>
+<div class="table-scroll-hint">
+    <i class="fas fa-arrows-alt-h"></i>
+    <span>Swipe horizontally to view all columns</span>
+</div>
 <div class="portfolio-table-responsive">
     <table class="table" id="portfolio-table">
+        <colgroup>
+            <col class="col-client-name" style="width: 130px;">
+            <col class="col-email" style="width: 150px;">
+            <col class="col-phone" style="width: 105px;">
+            <col class="col-city" style="width: 85px;">
+            <col class="col-country" style="width: 110px;">
+            <col class="col-company" style="width: 120px;">
+            <col class="col-website" style="width: 120px;">
+            <col class="col-lead-type" style="width: 85px;">
+            <col class="col-status" style="width: 80px;">
+            <col class="col-action" style="width: 120px;">
+        </colgroup>
         <thead>
             <tr>
                 <th class="col-client-name" title="Client Name">Client Name</th>

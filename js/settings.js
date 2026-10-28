@@ -251,11 +251,14 @@ quixSettings.prototype.manageResponsiveSidebar = function() {
         body.attr("data-container", "wide");
     }
 
-    if(innerWidth > 767 && innerWidth < 1200) {
-        body.attr("data-sidebar-style", "mini");
-    }
-
-    if(innerWidth < 768) {
+    if(innerWidth >= 768) {
+        body.attr("data-sidebar-style", "full");
+        $('#main-wrapper').removeClass('menu-toggle');
+    } else {
         body.attr("data-sidebar-style", "overlay");
     }
 }
+
+$(window).on("resize orientationchange", function() {
+    quixSettings.prototype.manageResponsiveSidebar();
+});

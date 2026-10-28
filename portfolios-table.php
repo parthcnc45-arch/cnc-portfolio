@@ -176,6 +176,10 @@ if (!function_exists('render_industry_badges')) {
 <input type="file" id="importFile" accept=".xlsx" style="display: none;" />
 
 <div class="portfolio-table-card">
+    <div class="table-scroll-hint">
+        <i class="fas fa-arrows-alt-h"></i>
+        <span>Swipe horizontally to view all columns</span>
+    </div>
     <div class="portfolio-table-responsive">
         <table class="table" id="portfolio-table">
             <colgroup>

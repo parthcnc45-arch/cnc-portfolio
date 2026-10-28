@@ -11,13 +11,28 @@ require_once('country_flags_helper.php');
 
 <style>
     /* =========================================================
-       MODERN PAGE HEADER & LAYOUT (Matching portfolios.php)
+       GLOBAL LAYOUT & RESETS (Matching portfolios.php)
        ========================================================= */
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+    }
     .content-body {
         background-color: #f7f8fb !important;
         min-height: 100vh;
         padding-bottom: 40px;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+        max-width: 100% !important;
     }
+    .page-titles,
+    .breadcrumb {
+        display: none !important;
+    }
+
+    /* =========================================================
+       MODERN PAGE HEADER
+       ========================================================= */
     .portfolio-page-header {
         display: flex;
         align-items: center;
@@ -25,6 +40,9 @@ require_once('country_flags_helper.php');
         margin-bottom: 18px;
         padding-top: 4px;
         gap: 15px;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
     .portfolio-header-left {
         flex: 1 1 auto;
@@ -89,99 +107,111 @@ require_once('country_flags_helper.php');
     .btn-add-portfolio i {
         font-size: 12px;
     }
-    @media (max-width: 768px) {
+
+    /* Desktop Header Alignment */
+    @media (min-width: 768px) {
         .portfolio-page-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            width: 100% !important;
+            max-width: 100% !important;
         }
         .portfolio-header-right {
-            width: 100%;
+            width: auto !important;
+            flex: 0 0 auto !important;
         }
         .btn-add-portfolio {
-            width: 100%;
-            justify-content: center;
+            width: auto !important;
+            display: inline-flex !important;
         }
     }
 
     /* =========================================================
-       MODERN TABLE CARD & STYLES (Matching portfolios.php)
+       SWIPE HINT BANNER (Mobile / Tablet)
+       ========================================================= */
+    .table-scroll-hint {
+        display: none !important;
+        background: linear-gradient(90deg, #f8fafc 0%, #eef2ff 50%, #f8fafc 100%);
+        color: #5b52f9;
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 7px 12px;
+        border-bottom: 1px solid #e0e7ff;
+        text-align: center;
+        user-select: none;
+        letter-spacing: 0.1px;
+    }
+    .table-scroll-hint i {
+        font-size: 12px;
+        color: #5b52f9;
+    }
+    @media (max-width: 991.98px) {
+        .table-scroll-hint {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+    }
+
+    /* =========================================================
+       MODERN TABLE CARD & DATATABLES CONTROLS
        ========================================================= */
     .portfolio-table-card {
-        background: #ffffff;
-        border: 1.5px solid #e8ecf4;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
-        padding: 0;
-        width: 100%;
-        box-sizing: border-box;
+        background: #ffffff !important;
+        border: 1.5px solid #e8ecf4 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
     .portfolio-table-responsive {
         width: 100% !important;
-        overflow-x: hidden !important;
-        overflow-y: visible !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
     }
 
-    #portfolio-table_wrapper,
-    .portfolio-table-card .dataTables_wrapper {
+    #portfolio-table_wrapper {
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
         max-width: 100% !important;
+        overflow: hidden !important;
         box-sizing: border-box !important;
-        overflow: visible !important;
-    }
-    #portfolio-table_wrapper::after {
-        content: "";
-        display: table;
-        clear: both;
     }
 
-    /* Responsive horizontal scrolling for table area only */
-    #portfolio-table_wrapper > .row:nth-child(2) > .col-sm-12,
-    .portfolio-table-card .dataTables_wrapper > .row:nth-child(2) > [class*="col-"] {
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-        margin-bottom: 0 !important;
-        -webkit-overflow-scrolling: touch;
-        border-top: 1px solid #edf0f7;
-        border-bottom: 1px solid #edf0f7;
+    /* Row 1: Top Toolbar (Length + Search) */
+    #portfolio-table_wrapper > .row:nth-child(1) {
+        margin: 0 !important;
+        padding: 12px 18px 10px 18px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
     }
-
-    /* Custom horizontal scrollbar */
-    #portfolio-table_wrapper > .row:nth-child(2) > .col-sm-12::-webkit-scrollbar,
-    .portfolio-table-card .dataTables_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar {
-        height: 7px;
+    #portfolio-table_wrapper > .row:nth-child(1) > [class*="col-"] {
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+        max-width: 100% !important;
     }
-    #portfolio-table_wrapper > .row:nth-child(2) > .col-sm-12::-webkit-scrollbar-track,
-    .portfolio-table-card .dataTables_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-track {
-        background: #f8fafc;
-    }
-    #portfolio-table_wrapper > .row:nth-child(2) > .col-sm-12::-webkit-scrollbar-thumb,
-    .portfolio-table-card .dataTables_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-    }
-    #portfolio-table_wrapper > .row:nth-child(2) > .col-sm-12::-webkit-scrollbar-thumb:hover,
-    .portfolio-table-card .dataTables_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb:hover {
-        background: #94a3b8;
-    }
-
-    /* Top Table Controls Toolbar */
     #portfolio-table_wrapper .dataTables_length {
-        float: left;
-        margin: 12px 16px 10px 16px !important;
+        margin: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        height: 32px !important;
     }
     #portfolio-table_wrapper .dataTables_length label {
         display: inline-flex !important;
@@ -190,10 +220,10 @@ require_once('country_flags_helper.php');
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #64748b !important;
-        gap: 5px !important;
+        gap: 6px !important;
     }
     #portfolio-table_wrapper .dataTables_length select {
-        height: 32px !important;
+        height: 34px !important;
         min-width: 65px !important;
         padding: 2px 24px 2px 10px !important;
         font-size: 12.5px !important;
@@ -204,11 +234,9 @@ require_once('country_flags_helper.php');
         border-radius: 6px !important;
         outline: none !important;
         cursor: pointer !important;
-        margin: 0 4px !important;
         transition: all 0.2s ease !important;
         appearance: none !important;
         -webkit-appearance: none !important;
-        -moz-appearance: none !important;
         background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1YjUyZjkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==") !important;
         background-repeat: no-repeat !important;
         background-position: right 8px center !important;
@@ -219,71 +247,83 @@ require_once('country_flags_helper.php');
         box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
     }
 
-    /* Right controls in header toolbar: Search & Status */
     #portfolio-table_wrapper .dataTables_filter {
-        float: right;
-        margin: 12px 16px 10px 16px !important;
+        margin: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
-        justify-content: flex-end !important;
-        gap: 10px !important;
-        height: 32px !important;
     }
     #portfolio-table_wrapper .dataTables_filter label {
-        display: inline-flex !important;
+        display: flex !important;
         align-items: center !important;
         margin-bottom: 0 !important;
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #64748b !important;
-        gap: 6px !important;
+        position: relative !important;
+        width: 100% !important;
     }
     #portfolio-table_wrapper .dataTables_filter input[type="search"] {
-        height: 32px !important;
-        min-width: 180px !important;
-        padding: 4px 12px !important;
+        height: 36px !important;
+        min-width: 220px !important;
+        padding: 0 12px 0 34px !important;
         font-size: 12.5px !important;
         font-weight: 500 !important;
         color: #1e293b !important;
         background-color: #ffffff !important;
         border: 1.5px solid #e2e8f0 !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         outline: none !important;
         transition: all 0.2s ease !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+        width: 100% !important;
     }
     #portfolio-table_wrapper .dataTables_filter input[type="search"]:focus {
         border-color: #5b52f9 !important;
         box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
     }
-
-    /* Status Dropdown */
-    .custom-status-select,
-    #portfolio_status {
-        height: 32px !important;
-        min-width: 105px !important;
-        padding: 2px 24px 2px 10px !important;
-        font-size: 12.5px !important;
-        font-weight: 500 !important;
-        color: #334155 !important;
-        background-color: #ffffff !important;
-        border: 1.5px solid #e2e8f0 !important;
-        border-radius: 6px !important;
-        cursor: pointer !important;
-        outline: none !important;
-        transition: all 0.2s ease !important;
-        appearance: none !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM1YjUyZjkiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwb2x5bGluZSBwb2ludHM9IjYgOSAxMiAxNSAxOCA5Ij48L3BvbHlsaW5lPjwvc3ZnPg==") !important;
-        background-repeat: no-repeat !important;
-        background-position: right 8px center !important;
-        background-size: 10px 10px !important;
+    #portfolio-table_wrapper .dataTables_filter label::before {
+        content: "\f002";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 12px;
+        color: #94a3b8;
+        font-size: 12px;
+        pointer-events: none;
+        z-index: 2;
     }
-    .custom-status-select:focus,
-    #portfolio_status:focus {
-        border-color: #5b52f9 !important;
-        box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12) !important;
+
+    /* Row 2: Table Scroll Area */
+    #portfolio-table_wrapper > .row:nth-child(2) {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"] {
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain;
+    }
+
+    /* Custom Sleek Scrollbar */
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-track {
+        background: #f8fafc;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 3px;
+    }
+    #portfolio-table_wrapper > .row:nth-child(2) > [class*="col-"]::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
     }
 
     /* Main Table Element */
@@ -294,20 +334,21 @@ require_once('country_flags_helper.php');
         border: none !important;
         background-color: #ffffff !important;
         width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
         table-layout: fixed !important;
     }
 
-    /* Header Styling */
+    /* Sticky Header */
     #portfolio-table thead th {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 5 !important;
         background-color: #f9f9fd !important;
         color: #475569 !important;
         font-size: 12px !important;
         font-weight: 600 !important;
         text-transform: capitalize !important;
         letter-spacing: 0.2px !important;
-        padding: 10px 16px 10px 8px !important;
+        padding: 10px 8px !important;
         vertical-align: middle !important;
         border-top: none !important;
         border-left: none !important;
@@ -321,7 +362,7 @@ require_once('country_flags_helper.php');
 
     /* Row & Body Cells */
     #portfolio-table tbody td {
-        padding: 10px 8px !important;
+        padding: 9px 8px !important;
         vertical-align: middle !important;
         font-size: 12.5px !important;
         color: #334155 !important;
@@ -344,82 +385,22 @@ require_once('country_flags_helper.php');
         border-bottom: none !important;
     }
 
-    /* Explicit Column Width Proportions (Fit 100% without scrollbar) */
-    /* Column Widths (readable minimums; scrollX handles overflow) */
-    #portfolio-table th.col-client-name,
-    #portfolio-table td.col-client-name,
-    #portfolio-table th:nth-child(1),
-    #portfolio-table td:nth-child(1) {
-        min-width: 150px;
-    }
-    #portfolio-table th.col-email,
-    #portfolio-table td.col-email,
-    #portfolio-table th:nth-child(2),
-    #portfolio-table td:nth-child(2) {
-        min-width: 150px;
-    }
-    #portfolio-table th.col-phone,
-    #portfolio-table td.col-phone,
-    #portfolio-table th:nth-child(3),
-    #portfolio-table td:nth-child(3) {
-        min-width: 110px;
-    }
-    #portfolio-table th.col-city,
-    #portfolio-table td.col-city,
-    #portfolio-table th:nth-child(4),
-    #portfolio-table td:nth-child(4) {
-        min-width: 90px;
-    }
-    #portfolio-table th.col-country,
-    #portfolio-table td.col-country,
-    #portfolio-table th:nth-child(5),
-    #portfolio-table td:nth-child(5) {
-        min-width: 100px;
-    }
-    #portfolio-table th.col-company,
-    #portfolio-table td.col-company,
-    #portfolio-table th:nth-child(6),
-    #portfolio-table td:nth-child(6) {
-        min-width: 120px;
-    }
-    #portfolio-table th.col-website,
-    #portfolio-table td.col-website,
-    #portfolio-table th:nth-child(7),
-    #portfolio-table td:nth-child(7) {
-        min-width: 130px;
-    }
-    #portfolio-table th.col-lead-type,
-    #portfolio-table td.col-lead-type,
-    #portfolio-table th:nth-child(8),
-    #portfolio-table td:nth-child(8) {
-        min-width: 80px;
-    }
-    #portfolio-table th.col-status,
-    #portfolio-table td.col-status,
-    #portfolio-table th:nth-child(9),
-    #portfolio-table td:nth-child(9) {
-        min-width: 80px;
-    }
-    #portfolio-table th.col-action,
-    #portfolio-table td.col-action,
-    #portfolio-table th:nth-child(10),
-    #portfolio-table td:nth-child(10) {
-        min-width: 150px;
+    /* Column Widths (Fixed proportions on table) */
+    #portfolio-table th.col-client-name, #portfolio-table td.col-client-name { width: 130px !important; }
+    #portfolio-table th.col-email, #portfolio-table td.col-email { width: 150px !important; }
+    #portfolio-table th.col-phone, #portfolio-table td.col-phone { width: 105px !important; }
+    #portfolio-table th.col-city, #portfolio-table td.col-city { width: 85px !important; }
+    #portfolio-table th.col-country, #portfolio-table td.col-country { width: 110px !important; }
+    #portfolio-table th.col-company, #portfolio-table td.col-company { width: 120px !important; }
+    #portfolio-table th.col-website, #portfolio-table td.col-website { width: 120px !important; }
+    #portfolio-table th.col-lead-type, #portfolio-table td.col-lead-type { width: 85px !important; }
+    #portfolio-table th.col-status, #portfolio-table td.col-status { width: 80px !important; }
+    #portfolio-table th.col-action, #portfolio-table td.col-action {
+        width: 120px !important;
+        min-width: 120px !important;
         text-align: center !important;
-        padding-left: 4px !important;
-        padding-right: 4px !important;
-        overflow: visible !important;
-    }
-    #portfolio-table thead th.col-action::before,
-    #portfolio-table thead th.col-action::after {
-        display: none !important;
-    }
-
-    /* Fallback min-width on narrow mobile screens only */
-    @media (max-width: 768px) {
-        #portfolio-table {
-            min-width: 850px !important;
-        }
+        white-space: nowrap !important;
+        padding: 8px 4px !important;
     }
 
     /* General Cell Text Truncation Helper */
@@ -500,24 +481,24 @@ require_once('country_flags_helper.php');
         border: 1px solid #e2e8f0;
     }
     .badge-cms {
-        background-color: #f8fafc;
-        color: #334155;
-        border: 1px solid #e2e8f0;
+        background-color: #eef2ff;
+        color: #5b52f9;
+        border: 1px solid #e0e7ff;
     }
 
-    /* Action Buttons (Matching portfolios.php) */
+    /* Action Buttons */
     .table-actions-inline {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 4px;
+        gap: 5px;
         white-space: nowrap;
         max-width: 100%;
     }
     .btn-table-action {
-        height: 25px;
-        border-radius: 4px;
-        padding: 0 7px;
+        height: 26px;
+        border-radius: 5px;
+        padding: 0 8px;
         font-size: 11px;
         font-weight: 500;
         display: inline-flex;
@@ -533,14 +514,14 @@ require_once('country_flags_helper.php');
         flex-shrink: 0;
     }
     .btn-table-view {
-        background-color: #f2f2fd;
-        color: #5950f6 !important;
-        border: 1px solid #e0e0fb;
+        background-color: #eef2ff;
+        color: #5b52f9 !important;
+        border: 1px solid #e0e7ff;
     }
     .btn-table-view:hover {
-        background-color: #e4e4fc;
-        border-color: #cfcffa;
-        color: #3f35dc !important;
+        background-color: #5b52f9;
+        border-color: #5b52f9;
+        color: #ffffff !important;
         transform: translateY(-1px);
     }
     .btn-table-delete {
@@ -549,13 +530,13 @@ require_once('country_flags_helper.php');
         border: 1px solid #fee2e2;
     }
     .btn-table-delete:hover {
-        background-color: #fee2e2;
-        border-color: #fca5a5;
-        color: #dc2626 !important;
+        background-color: #ef4444;
+        border-color: #ef4444;
+        color: #ffffff !important;
         transform: translateY(-1px);
     }
 
-    /* Country Flag & Label Styles (Matching portfolios.php) */
+    /* Country Flag & Label Styles */
     .country-cell-wrapper {
         display: inline-flex;
         flex-wrap: nowrap;
@@ -629,20 +610,37 @@ require_once('country_flags_helper.php');
         color: #94a3b8;
     }
 
-    /* Table Footer & Pagination */
+    /* Row 3: Bottom Footer (Info + Pagination) */
+    #portfolio-table_wrapper > .row:nth-child(3) {
+        margin: 0 !important;
+        padding: 10px 18px !important;
+        background: #ffffff !important;
+        border-top: 1px solid #f1f5f9 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    #portfolio-table_wrapper > .row:nth-child(3) > [class*="col-"] {
+        padding: 0 !important;
+        flex: 0 0 auto !important;
+        width: auto !important;
+        max-width: 100% !important;
+    }
     #portfolio-table_wrapper .dataTables_info {
-        float: left;
-        padding: 12px 16px !important;
-        font-size: 12.5px !important;
+        padding: 0 !important;
+        font-size: 12px !important;
         color: #64748b !important;
         font-weight: 500 !important;
     }
     #portfolio-table_wrapper .dataTables_paginate {
-        float: right;
-        padding: 10px 16px !important;
+        padding: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
     }
+
+    /* Pagination Buttons */
     #portfolio-table_paginate .paginate_button {
         display: inline-flex !important;
         align-items: center !important;
@@ -685,156 +683,130 @@ require_once('country_flags_helper.php');
         cursor: not-allowed !important;
     }
 
-
-
-    /* Final table layout fix: avoid DataTables scrollX cloned tables and
-       let the single real table use the available card width. */
-    .portfolio-table-card {
-        overflow: visible !important;
-        max-width: 100% !important;
-    }
-    .portfolio-table-responsive {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        overflow-y: visible !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        -webkit-overflow-scrolling: touch;
-    }
-    #portfolio-table_wrapper,
-    .portfolio-table-card .dataTables_wrapper {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow: visible !important;
-    }
-    #portfolio-table {
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-        table-layout: fixed !important;
-        border-collapse: collapse !important;
-    }
-    #portfolio-table thead th,
-    #portfolio-table tbody td {
-        min-width: 0 !important;
-        max-width: 0;
-        box-sizing: border-box !important;
-    }
-    /* Fix only the first column: keep the header text clear of the sorting indicator. */
-    #portfolio-table th:nth-child(1),
-    #portfolio-table td:nth-child(1) {
-        width: 10% !important;
-        min-width: 110px !important;
-        padding-left: 14px !important;
-        padding-right: 10px !important;
-        box-sizing: border-box !important;
-    }
-    #portfolio-table th:nth-child(2), #portfolio-table td:nth-child(2) { width: 14% !important; }
-    #portfolio-table th:nth-child(3), #portfolio-table td:nth-child(3) { width: 9% !important; }
-    #portfolio-table th:nth-child(4), #portfolio-table td:nth-child(4) { width: 7% !important; }
-    #portfolio-table th:nth-child(5), #portfolio-table td:nth-child(5) { width: 10% !important; }
-    #portfolio-table th:nth-child(6), #portfolio-table td:nth-child(6) { width: 11% !important; }
-    #portfolio-table th:nth-child(7), #portfolio-table td:nth-child(7) { width: 13% !important; }
-    #portfolio-table th:nth-child(8), #portfolio-table td:nth-child(8) { width: 8% !important; }
-    #portfolio-table th:nth-child(9), #portfolio-table td:nth-child(9) { width: 7% !important; }
-    #portfolio-table th:nth-child(10), #portfolio-table td:nth-child(10) {
-        width: 15% !important;
-        min-width: 145px !important;
-        max-width: none !important;
-        text-align: center !important;
-        white-space: nowrap !important;
-        overflow: visible !important;
-    }
-    #portfolio-table tbody td:not(.col-action) {
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
-    }
-    #portfolio-table .table-actions-inline {
-        display: inline-flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 6px !important;
-        width: 100%;
-        max-width: 100%;
-        white-space: nowrap !important;
-    }
-    #portfolio-table .btn-table-action {
-        flex: 0 0 auto !important;
-        padding: 0 7px !important;
-    }
-    /* Controls and pagination stay outside the scrolling table viewport. */
-    #portfolio-table_wrapper .dataTables_length,
-    #portfolio-table_wrapper .dataTables_filter {
-        max-width: calc(100% - 24px);
-        box-sizing: border-box;
-    }
-    #portfolio-table_wrapper .dataTables_info,
-    #portfolio-table_wrapper .dataTables_paginate {
-        box-sizing: border-box;
-    }
-    @media (max-width: 1100px) {
-        #portfolio-table thead th,
-        #portfolio-table tbody td {
-            padding-left: 6px !important;
-            padding-right: 6px !important;
-            font-size: 11.5px !important;
-        }
-        #portfolio-table th:nth-child(11),
-        #portfolio-table td:nth-child(11) {
-            min-width: 145px !important;
-        }
-    }
-    @media (max-width: 768px) {
-        .portfolio-table-responsive {
-            overflow-x: auto !important;
-        }
+    /* Screen Width Responsive Adaptation for Table */
+    @media (max-width: 1199.98px) {
         #portfolio-table {
             min-width: 1050px !important;
             width: 1050px !important;
-            max-width: none !important;
+        }
+    }
+    @media (min-width: 1200px) {
+        #portfolio-table {
+            min-width: 100% !important;
+            width: 100% !important;
         }
     }
 
+    /* Mobile Screens (<= 767.98px) */
+    @media (max-width: 767.98px) {
+        .content-body {
+            padding: 4px 10px 24px !important;
+            margin-left: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+        .content-body .container-fluid {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-top: 4px !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        .portfolio-page-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            margin-bottom: 12px !important;
+        }
+        .portfolio-header-right {
+            width: 100% !important;
+        }
+        .btn-add-portfolio {
+            width: 100% !important;
+            height: 42px !important;
+            font-size: 14px !important;
+            justify-content: center !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(1) {
+            flex-direction: column-reverse !important;
+            align-items: stretch !important;
+            gap: 8px !important;
+            padding: 10px 12px !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(1) > [class*="col-"] {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter label {
+            width: 100% !important;
+        }
+        #portfolio-table_wrapper .dataTables_filter input[type="search"] {
+            width: 100% !important;
+            min-width: 100% !important;
+            height: 38px !important;
+        }
+        #portfolio-table_wrapper .dataTables_length {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        #portfolio-table_wrapper .dataTables_length label {
+            width: 100% !important;
+            justify-content: space-between !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(3) {
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 8px !important;
+            padding: 10px 12px !important;
+        }
+        #portfolio-table_wrapper > .row:nth-child(3) > [class*="col-"] {
+            width: 100% !important;
+            display: flex !important;
+            justify-content: center !important;
+        }
+        #portfolio-table_wrapper .dataTables_info {
+            text-align: center !important;
+        }
+        #portfolio-table_wrapper .dataTables_paginate {
+            justify-content: center !important;
+            flex-wrap: wrap !important;
+        }
+        .modal-dialog {
+            margin: 16px auto !important;
+            max-width: calc(100% - 24px) !important;
+        }
+    }
 </style>
 
-<div class="content-body">
-    <div class="row page-titles mx-0">
-        <div class="col p-md-0">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Clients</a></li>
-            </ol>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <?php
-                $result = mysqli_query($conn, "SELECT * FROM clients WHERE `deleted`='0' ORDER BY created_at DESC");
-                $total_clients = mysqli_num_rows($result);
-                ?>
-                <!-- Modern Page Header matching portfolios.php -->
-                <div class="portfolio-page-header">
-                    <div class="portfolio-header-left">
-                        <div class="portfolio-header-title-wrap">
-                            <h1 class="portfolio-page-title">Clients <span class="portfolio-count-badge">(<?php echo $total_clients; ?> found)</span></h1>
-                        </div>
-                        <p class="portfolio-page-desc">Manage and track your clients, contacts, and lead statuses.</p>
-                    </div>
-                    <div class="portfolio-header-right">
-                        <a href="add-client.php" class="btn-add-portfolio">
-                            <i class="fas fa-plus"></i> Add Client
-                        </a>
-                    </div>
+<div class="content-body portfolio-page-body">
+    <div class="container-fluid px-4 py-3">
+        <?php
+        $result = mysqli_query($conn, "SELECT * FROM clients WHERE `deleted`='0' ORDER BY created_at DESC");
+        $total_clients = mysqli_num_rows($result);
+        ?>
+        <!-- Modern Page Header matching portfolios.php -->
+        <div class="portfolio-page-header">
+            <div class="portfolio-header-left">
+                <div class="portfolio-header-title-wrap">
+                    <h1 class="portfolio-page-title">Clients <span class="portfolio-count-badge">(<?php echo $total_clients; ?> found)</span></h1>
                 </div>
-
-                <!-- Modern Table Card matching portfolios.php -->
-                <div class="portfolio-table-card" id="ajax_table_print">
-                    <?php include 'clients-table.php'; ?>
-                </div>
+                <p class="portfolio-page-desc">Manage and track your clients, contacts, and lead statuses.</p>
             </div>
+            <div class="portfolio-header-right">
+                <a href="add-client.php" class="btn-add-portfolio">
+                    <i class="fas fa-plus"></i> Add Client
+                </a>
+            </div>
+        </div>
+
+        <!-- Modern Table Card matching portfolios.php -->
+        <div class="portfolio-table-card" id="ajax_table_print">
+            <?php include 'clients-table.php'; ?>
         </div>
     </div>
 </div>
@@ -921,6 +893,7 @@ include_once('footer.php');
             });
             $('#deleteConfirmationModal').modal('hide');
         });
+        $.fn.DataTable.ext.pager.numbers_length = 4;
         var table = $('#portfolio-table').DataTable({
             "autoWidth": false,
             "aaSorting": [],
@@ -928,16 +901,16 @@ include_once('footer.php');
             "scrollCollapse": false,
             "columnDefs": [
                 { "orderable": false, "targets": [9] },
-                { "width": "10%", "targets": 0 },
-                { "width": "14%", "targets": 1 },
-                { "width": "9%", "targets": 2 },
-                { "width": "7%", "targets": 3 },
-                { "width": "10%", "targets": 4 },
-                { "width": "11%", "targets": 5 },
-                { "width": "13%", "targets": 6 },
-                { "width": "8%", "targets": 7 },
-                { "width": "7%", "targets": 8 },
-                { "width": "15%", "targets": 9 }
+                { "width": "130px", "targets": 0 },
+                { "width": "150px", "targets": 1 },
+                { "width": "105px", "targets": 2 },
+                { "width": "85px", "targets": 3 },
+                { "width": "110px", "targets": 4 },
+                { "width": "120px", "targets": 5 },
+                { "width": "120px", "targets": 6 },
+                { "width": "85px", "targets": 7 },
+                { "width": "80px", "targets": 8 },
+                { "width": "120px", "targets": 9 }
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "pageLength": 10,
@@ -984,27 +957,3 @@ include_once('footer.php');
     });
 </script>
 
-
-<style id="mobile-responsive-clients">
-/* Mobile layout for client list, filters, and actions */
-@media (max-width: 767.98px) {
-  .content-body { padding: 14px 9px 24px !important; overflow-x: clip; }
-  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 6px !important; padding-right: 6px !important; }
-  .portfolio-page-header { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 12px !important; }
-  .portfolio-header-left, .portfolio-header-right { width: 100% !important; max-width: 100% !important; }
-  .portfolio-header-right { display: flex !important; flex-wrap: wrap !important; gap: 8px !important; }
-  .portfolio-header-right .btn, .portfolio-header-right button { min-height: 42px; }
-  .portfolio-table-card, .ajax_table_print, #portfolio-table_wrapper { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-  .ajax_table_print, .portfolio-table-responsive, .dataTables_wrapper { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
-  #portfolio-table { min-width: 680px; }
-  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter { float: none !important; text-align: left !important; width: 100% !important; margin: 8px 0 !important; }
-  .dataTables_wrapper .dataTables_filter label { display: flex !important; flex-wrap: wrap !important; align-items: center; gap: 6px; }
-  .dataTables_wrapper .dataTables_filter input { width: min(100%, 230px) !important; margin-left: 0 !important; }
-  .dataTables_wrapper .dataTables_info { white-space: normal !important; padding-top: 10px !important; }
-  .dataTables_wrapper .dataTables_paginate { float: none !important; text-align: left !important; white-space: normal !important; display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-  .portfolio-page-title { font-size: 22px !important; line-height: 1.3; }
-  .portfolio-page-desc { font-size: 13px !important; line-height: 1.5; }
-  .content-body .btn, .content-body button, .content-body select { min-height: 40px; }
-  .modal-dialog { margin: 10px !important; max-width: calc(100% - 20px) !important; }
-}
-</style>
