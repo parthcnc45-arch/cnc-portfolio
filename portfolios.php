@@ -2536,4 +2536,35 @@ include_once('footer.php');
   .content-body .btn, .content-body button, .content-body select { min-height: 40px; }
   .modal-dialog { margin: 10px !important; max-width: calc(100% - 20px) !important; }
 }
+
+/* Final mobile width fixes: prevent desktop sizing from clipping the page */
+@media (max-width: 767.98px) {
+  html, body { width: 100% !important; max-width: 100% !important; overflow-x: hidden !important; }
+  .portfolio-page-body, .portfolio-page-header, .portfolio-two-col-layout,
+  .portfolio-main-column, .portfolio-side-column, .modern-filter-wrapper,
+  .modern-filter-bar, .advanced-filters-panel, .portfolio-table-card,
+  .portfolio-table-responsive, .portfolio-table-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+  .portfolio-page-body { padding-left: 0 !important; padding-right: 0 !important; }
+  .portfolio-page-header { align-items: stretch !important; }
+  .portfolio-header-title-wrap { flex-wrap: wrap !important; }
+  .portfolio-page-title { max-width: 100% !important; overflow-wrap: anywhere !important; }
+  .portfolio-page-desc { overflow-wrap: anywhere !important; }
+  .modern-filter-bar { display: flex !important; flex-direction: column !important; align-items: stretch !important; gap: 9px !important; }
+  .search-input-box { flex: 0 0 auto !important; min-height: 42px !important; }
+  .filter-actions-group { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 8px !important; width: 100% !important; }
+  .filter-actions-group .btn-filter-action { width: 100% !important; min-width: 0 !important; padding-left: 8px !important; padding-right: 8px !important; white-space: normal !important; }
+  .advanced-filters-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .portfolio-table-card { height: 62vh !important; min-height: 360px !important; }
+  .portfolio-table-toolbar { flex-wrap: wrap !important; justify-content: flex-start !important; gap: 6px !important; padding: 8px !important; }
+  #portfolio-table_wrapper .dataTables_filter { max-width: 100% !important; flex-wrap: wrap !important; }
+  #portfolio-table_wrapper .dataTables_filter input,
+  #portfolio-table_wrapper .custom-status-select { max-width: 100% !important; }
+  .modal-content { max-width: 100% !important; }
+}
+
 </style>
