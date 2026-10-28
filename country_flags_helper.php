@@ -251,6 +251,11 @@ if (!function_exists('get_country_iso_code')) {
 
         $clean = mb_strtolower(trim($name), 'UTF-8');
         $clean = trim($clean, " \t\n\r\0\x0B.,");
+        // Accept both country names (e.g. "India") and ISO-2 codes (e.g. "IN")
+        // returned by IP geolocation APIs.
+        if (preg_match('/^[a-z]{2}$/', $clean)) {
+            return $clean;
+        }
         return $country_map[$clean] ?? null;
     }
 }
@@ -276,9 +281,26 @@ if (!function_exists('render_country_flags')) {
             $p = trim($p);
             if ($p === '') continue;
 
-            $full_titles[] = $p;
+            // IP geolocation may store ISO-2 codes (e.g. IN) instead of names.
+            $country_names_by_code = [
+                'in' => 'India', 'us' => 'United States', 'gb' => 'United Kingdom',
+                'ae' => 'United Arab Emirates', 'ca' => 'Canada', 'au' => 'Australia',
+                'nz' => 'New Zealand', 'sg' => 'Singapore', 'pk' => 'Pakistan',
+                'bd' => 'Bangladesh', 'lk' => 'Sri Lanka', 'np' => 'Nepal',
+                'de' => 'Germany', 'fr' => 'France', 'it' => 'Italy', 'es' => 'Spain',
+                'jp' => 'Japan', 'cn' => 'China', 'br' => 'Brazil', 'ru' => 'Russia',
+                'za' => 'South Africa', 'sa' => 'Saudi Arabia', 'id' => 'Indonesia',
+                'my' => 'Malaysia', 'th' => 'Thailand', 'ph' => 'Philippines',
+                'ng' => 'Nigeria', 'ke' => 'Kenya', 'mx' => 'Mexico',
+                'kr' => 'South Korea', 'tr' => 'Turkey', 'nl' => 'Netherlands',
+                'ch' => 'Switzerland', 'se' => 'Sweden', 'no' => 'Norway',
+                'ie' => 'Ireland', 'pk' => 'Pakistan'
+            ];
+            $raw_code = strtolower($p);
+            $display_name = $country_names_by_code[$raw_code] ?? $p;
+            $full_titles[] = $display_name;
             $code = get_country_iso_code($p);
-            $safe_name = htmlspecialchars($p, ENT_QUOTES, 'UTF-8');
+            $safe_name = htmlspecialchars($display_name, ENT_QUOTES, 'UTF-8');
 
             $html = '<span class="country-item">';
             if ($code) {
