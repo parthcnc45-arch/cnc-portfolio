@@ -429,7 +429,8 @@ require_once('country_flags_helper.php');
                                 <tr>
                                     <th style="width: 25%;">Username</th>
                                     <th style="width: 20%;">IP Address</th>
-                                    <th style="width: 25%;">Country</th>
+                                    <th style="width: 20%;">Country</th>
+                                    <th style="width: 20%;">City</th>
                                     <th style="width: 30%;">Login Time</th>
                                 </tr>
                             </thead>
@@ -445,6 +446,7 @@ require_once('country_flags_helper.php');
                                             <td style="font-weight: 600; color: #1e293b;"><?php echo htmlspecialchars($row['username'] ?? ''); ?></td>
                                             <td><span class="ip-badge"><?php echo htmlspecialchars($row['ip_address'] ?? ''); ?></span></td>
                                             <td class="col-country"><?php echo render_country_flags($row['country'] ?? ''); ?></td>
+                                            <td><?php echo htmlspecialchars($row['city'] ?? 'Unknown', ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td style="color: #64748b; font-size: 12.5px;"><?php echo $dateformat; ?></td>
                                         </tr>
                                     <?php
@@ -453,7 +455,7 @@ require_once('country_flags_helper.php');
                                 } else {
                                     ?>
                                     <tr>
-                                        <td colspan="4" class="empty-table-cell">
+                                        <td colspan="5" class="empty-table-cell">
                                             <div class="empty-state-wrap">
                                                 <i class="fas fa-history empty-icon"></i>
                                                 <div class="empty-text">No Login Logs Found</div>
