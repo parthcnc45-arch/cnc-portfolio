@@ -239,7 +239,7 @@
                             </li> 
                             <li class="mega-menu mega-menu-sm">
                                 <a href="add-programming_language.php" aria-expanded="false">
-                                    <i class="icon-code menu-icon" aria-hidden="true"></i><span class="nav-text">Programming Language</span>
+                                    <i class="icon-screen-desktop menu-icon" aria-hidden="true"></i><span class="nav-text">Programming Language</span>
                                 </a>
                             </li>
                             <!-- <li class="mega-menu mega-menu-sm">
