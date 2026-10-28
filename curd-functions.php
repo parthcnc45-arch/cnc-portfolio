@@ -507,7 +507,7 @@ if(isset($_REQUEST['login_submit'])){
             mysqli_stmt_close($insert_stmt);
         }
 
-        header("location: portfolios.php");
+        header("location: index.php");
         exit();
     } else {
         // Login failed, set error message in session and redirect to login.php
@@ -895,4 +895,4 @@ function renderSessionStatusBadge($status) {
         return '<span class="badge-status badge-status-expired"><i class="far fa-clock"></i> Expired</span>';
     }
     return '<span class="badge-status">' . htmlspecialchars($status) . '</span>';
-}
+}

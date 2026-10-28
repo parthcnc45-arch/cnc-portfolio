@@ -200,11 +200,11 @@
         <div class="nk-sidebar">           
             <div class="nk-nav-scroll">
                 <ul class="metismenu" id="menu">
-                    <!-- <li class="<?php echo ($active_script == 'index.php') ? 'active' : ''; ?>">
+                    <li class="<?php echo ($active_script == 'index.php') ? 'active' : ''; ?>">
                         <a href="index.php" aria-expanded="false">
-                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                            <i class="icon-plus menu-icon" aria-hidden="true"></i><span class="nav-text">Add Portfolio</span>
                         </a>
-                    </li> -->
+                    </li>
                     <li class="mega-menu mega-menu-sm <?php echo in_array($active_script, ['portfolios.php', 'add-portfolios.php', 'edit-portfolio.php', 'view-portfolio.php']) ? 'active' : ''; ?>">
                         <a href="portfolios.php" aria-expanded="false">
                             <i class="icon-briefcase menu-icon" aria-hidden="true"></i><span class="nav-text">Portfolio</span>
