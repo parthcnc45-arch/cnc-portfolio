@@ -399,7 +399,9 @@ function checkRememberLogin($conn) {
 
                             // Record Auto-Login / Remember Me session in login_logs
                             $user_ip = getUserIP();
-                            $user_country = getCountryByIP($user_ip);
+                            $user_location = getLocationByIP($user_ip);
+                            $user_country = $user_location['country'];
+                            $user_city = $user_location['city'];
                             $login_time = date('Y-m-d H:i:s');
                             $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
                             $ua_info = parseUserAgent($user_agent);
@@ -409,10 +411,10 @@ function checkRememberLogin($conn) {
                             $login_method = 'Remember Me';
                             $session_status = 'Active';
 
-                            $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, city, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             if ($insert_stmt) {
                                 $un = $user['username'];
-                                mysqli_stmt_bind_param($insert_stmt, "ssssssssss", $un, $user_ip, $user_country, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
+                                mysqli_stmt_bind_param($insert_stmt, "sssssssssss", $un, $user_ip, $user_country, $user_city, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
                                 mysqli_stmt_execute($insert_stmt);
                                 $_SESSION['login_log_id'] = mysqli_insert_id($conn);
                                 mysqli_stmt_close($insert_stmt);
@@ -482,7 +484,9 @@ if(isset($_REQUEST['login_submit'])){
         }
 
         $user_ip = getUserIP();
-        $user_country = getCountryByIP($user_ip);
+        $user_location = getLocationByIP($user_ip);
+        $user_country = $user_location['country'];
+        $user_city = $user_location['city'];
         $login_time = date('Y-m-d H:i:s');
         $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $ua_info = parseUserAgent($user_agent);
@@ -492,9 +496,9 @@ if(isset($_REQUEST['login_submit'])){
         $login_method = 'Password';
         $session_status = 'Active';
 
-        $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, city, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         if ($insert_stmt) {
-            mysqli_stmt_bind_param($insert_stmt, "ssssssssss", $username, $user_ip, $user_country, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
+            mysqli_stmt_bind_param($insert_stmt, "sssssssssss", $username, $user_ip, $user_country, $user_city, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
             mysqli_stmt_execute($insert_stmt);
             $_SESSION['login_log_id'] = mysqli_insert_id($conn);
             mysqli_stmt_close($insert_stmt);
@@ -564,17 +568,40 @@ function getUserIP() {
     }
     return $ip;
 }
-function getCountryByIP($ip) {
-    $token = 'd4666657ea0b8c'; // Replace with your actual token
-    $url = "http://ipinfo.io/{$ip}?token={$token}";
+/**
+ * Return approximate city and country for a public IP address.
+ * Local/private addresses cannot be reliably geolocated.
+ */
+function getLocationByIP($ip) {
+    $unknown = ['city' => 'Unknown', 'country' => 'Unknown'];
+    $ip = trim((string)$ip);
+    if ($ip === '' || !filter_var($ip, FILTER_VALIDATE_IP)) return $unknown;
+    if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+        return ['city' => 'Local network', 'country' => 'Unknown'];
+    }
+    if (!function_exists('curl_init')) return $unknown;
+    $url = 'https://ipwho.is/' . rawurlencode($ip) . '?fields=success,city,country_code';
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $url, CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CONNECTTIMEOUT => 3, CURLOPT_TIMEOUT => 5,
+        CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_HTTPHEADER => ['Accept: application/json'],
+    ]);
     $response = curl_exec($ch);
+    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+    if (!is_string($response) || $response === '' || $httpCode < 200 || $httpCode >= 300) return $unknown;
     $data = json_decode($response, true);
-    return $data['country'] ?? 'Unknown';
+    if (!is_array($data) || empty($data['success'])) return $unknown;
+    return [
+        'city' => !empty($data['city']) ? (string)$data['city'] : 'Unknown',
+        'country' => !empty($data['country_code']) ? (string)$data['country_code'] : 'Unknown',
+    ];
+}
+function getCountryByIP($ip) {
+    $location = getLocationByIP($ip);
+    return $location['country'];
 }
 
 function getCurrentAuthUserId($conn) {
