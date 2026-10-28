@@ -492,4 +492,66 @@ header('Content-Type: application/json');
         }
         exit;
     }
+
+    // Get Single Login Log Record Details for Modal
+    if (isset($_POST['action']) && $_POST['action'] === 'get_login_log_details') {
+        $userId = getCurrentAuthUserId($conn);
+        if (!$userId) {
+            http_response_code(401);
+            echo json_encode(["success" => false, "message" => "Unauthorized access. Please log in."]);
+            exit;
+        }
+
+        $logId = isset($_POST['log_id']) ? (int)$_POST['log_id'] : 0;
+        if ($logId <= 0) {
+            http_response_code(400);
+            echo json_encode(["success" => false, "message" => "Invalid login log ID."]);
+            exit;
+        }
+
+        $stmt = mysqli_prepare($conn, "SELECT * FROM login_logs WHERE id = ? LIMIT 1");
+        if (!$stmt) {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Database query failed."]);
+            exit;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $logId);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($res);
+        mysqli_stmt_close($stmt);
+
+        if (!$row) {
+            http_response_code(404);
+            echo json_encode(["success" => false, "message" => "Login log record not found."]);
+            exit;
+        }
+
+        $session_status = resolveLogSessionStatus($row);
+        $duration = getLogSessionDuration($row['login_time'] ?? null, $row['logout_time'] ?? null, $session_status);
+
+        $login_time_formatted = !empty($row['login_time']) ? date('d/m/Y h:i A', strtotime($row['login_time'])) : 'Not Available';
+        $logout_time_formatted = !empty($row['logout_time']) ? date('d/m/Y h:i A', strtotime($row['logout_time'])) : ($session_status === 'Active' ? 'Active (Still Logged In)' : 'Not Available');
+
+        echo json_encode([
+            "success" => true,
+            "data" => [
+                "id" => (int)$row['id'],
+                "username" => !empty($row['username']) ? $row['username'] : 'Not Available',
+                "ip_address" => !empty($row['ip_address']) ? $row['ip_address'] : 'Not Available',
+                "country" => !empty($row['country']) ? $row['country'] : 'Unknown',
+                "device_type" => !empty($row['device_type']) ? $row['device_type'] : 'Not Available',
+                "browser" => !empty($row['browser']) ? $row['browser'] : 'Not Available',
+                "os" => !empty($row['os']) ? $row['os'] : 'Not Available',
+                "login_time" => $login_time_formatted,
+                "logout_time" => $logout_time_formatted,
+                "session_duration" => $duration,
+                "login_method" => !empty($row['login_method']) ? $row['login_method'] : 'Not Available',
+                "session_status" => $session_status,
+                "user_agent" => !empty($row['user_agent']) ? $row['user_agent'] : 'Not Available'
+            ]
+        ]);
+        exit;
+    }
 ?>

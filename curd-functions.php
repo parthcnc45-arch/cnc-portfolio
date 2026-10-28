@@ -396,6 +396,27 @@ function checkRememberLogin($conn) {
                             $_SESSION['username'] = $user['username'];
                             $_SESSION['user_id'] = (int)$user['id'];
                             mysqli_stmt_close($stmt);
+
+                            // Record Auto-Login / Remember Me session in login_logs
+                            $user_ip = getUserIP();
+                            $user_country = getCountryByIP($user_ip);
+                            $login_time = date('Y-m-d H:i:s');
+                            $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+                            $ua_info = parseUserAgent($user_agent);
+                            $device_type = $ua_info['device_type'];
+                            $browser = $ua_info['browser'];
+                            $os = $ua_info['os'];
+                            $login_method = 'Remember Me';
+                            $session_status = 'Active';
+
+                            $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            if ($insert_stmt) {
+                                $un = $user['username'];
+                                mysqli_stmt_bind_param($insert_stmt, "ssssssssss", $un, $user_ip, $user_country, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
+                                mysqli_stmt_execute($insert_stmt);
+                                $_SESSION['login_log_id'] = mysqli_insert_id($conn);
+                                mysqli_stmt_close($insert_stmt);
+                            }
                             return true;
                         }
                     }
@@ -463,8 +484,22 @@ if(isset($_REQUEST['login_submit'])){
         $user_ip = getUserIP();
         $user_country = getCountryByIP($user_ip);
         $login_time = date('Y-m-d H:i:s');
-        $log_sql = "INSERT INTO login_logs (username, ip_address, country, login_time) VALUES ('$username', '$user_ip', '$user_country', '$login_time')";
-        mysqli_query($conn, $log_sql);
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+        $ua_info = parseUserAgent($user_agent);
+        $device_type = $ua_info['device_type'];
+        $browser = $ua_info['browser'];
+        $os = $ua_info['os'];
+        $login_method = 'Password';
+        $session_status = 'Active';
+
+        $insert_stmt = mysqli_prepare($conn, "INSERT INTO login_logs (username, ip_address, country, login_time, device_type, browser, os, login_method, session_status, user_agent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        if ($insert_stmt) {
+            mysqli_stmt_bind_param($insert_stmt, "ssssssssss", $username, $user_ip, $user_country, $login_time, $device_type, $browser, $os, $login_method, $session_status, $user_agent);
+            mysqli_stmt_execute($insert_stmt);
+            $_SESSION['login_log_id'] = mysqli_insert_id($conn);
+            mysqli_stmt_close($insert_stmt);
+        }
+
         header("location: portfolios.php");
         exit();
     } else {
@@ -488,6 +523,28 @@ if(isset($_REQUEST['logout'])){
             mysqli_stmt_bind_param($clear_stmt, "i", $logout_user_id);
             mysqli_stmt_execute($clear_stmt);
             mysqli_stmt_close($clear_stmt);
+        }
+    }
+
+    // Record logout time and mark session as Logged Out in login_logs
+    if (isset($conn) && $conn) {
+        $logout_time = date('Y-m-d H:i:s');
+        if (!empty($_SESSION['login_log_id'])) {
+            $log_id = (int)$_SESSION['login_log_id'];
+            $up_stmt = mysqli_prepare($conn, "UPDATE login_logs SET logout_time = ?, session_status = 'Logged Out' WHERE id = ?");
+            if ($up_stmt) {
+                mysqli_stmt_bind_param($up_stmt, "si", $logout_time, $log_id);
+                mysqli_stmt_execute($up_stmt);
+                mysqli_stmt_close($up_stmt);
+            }
+        } elseif (!empty($_SESSION['username'])) {
+            $un = $_SESSION['username'];
+            $up_stmt = mysqli_prepare($conn, "UPDATE login_logs SET logout_time = ?, session_status = 'Logged Out' WHERE username = ? AND logout_time IS NULL AND session_status = 'Active' ORDER BY id DESC LIMIT 1");
+            if ($up_stmt) {
+                mysqli_stmt_bind_param($up_stmt, "ss", $logout_time, $un);
+                mysqli_stmt_execute($up_stmt);
+                mysqli_stmt_close($up_stmt);
+            }
         }
     }
 
@@ -580,3 +637,236 @@ function fetchUserRecentCopiedLinks($conn, $userId) {
     }
     return $links;
 }
+
+if (!date_default_timezone_get() || date_default_timezone_get() === 'UTC') {
+    date_default_timezone_set('Asia/Kolkata');
+}
+
+/**
+ * Lightweight, reliable User-Agent parser detecting Device Type, Browser, and OS
+ */
+function parseUserAgent($userAgent) {
+    if (empty($userAgent)) {
+        return [
+            'device_type' => 'Not Available',
+            'browser' => 'Not Available',
+            'os' => 'Not Available'
+        ];
+    }
+
+    // 1. Device Type
+    $deviceType = 'Desktop';
+    if (preg_match('/(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk)/i', $userAgent)) {
+        $deviceType = 'Tablet';
+    } elseif (preg_match('/(mobi|iphone|ipod|phone|blackberry|opera mini|fennec|minimo|symbian|psp|nintendo)/i', $userAgent)) {
+        $deviceType = 'Mobile';
+    }
+
+    // 2. Operating System
+    $os = 'Unknown OS';
+    if (preg_match('/windows nt 10\.0/i', $userAgent)) {
+        $os = 'Windows 10/11';
+    } elseif (preg_match('/windows nt 6\.3/i', $userAgent)) {
+        $os = 'Windows 8.1';
+    } elseif (preg_match('/windows nt 6\.2/i', $userAgent)) {
+        $os = 'Windows 8';
+    } elseif (preg_match('/windows nt 6\.1/i', $userAgent)) {
+        $os = 'Windows 7';
+    } elseif (preg_match('/windows nt 6\.0/i', $userAgent)) {
+        $os = 'Windows Vista';
+    } elseif (preg_match('/windows nt 5\.1/i', $userAgent)) {
+        $os = 'Windows XP';
+    } elseif (preg_match('/windows/i', $userAgent)) {
+        $os = 'Windows';
+    } elseif (preg_match('/android\s*([0-9\.]+)?/i', $userAgent, $matches)) {
+        $os = 'Android' . (!empty($matches[1]) ? ' ' . $matches[1] : '');
+    } elseif (preg_match('/iphone os\s*([0-9\_]+)?/i', $userAgent, $matches)) {
+        $os = 'iOS' . (!empty($matches[1]) ? ' ' . str_replace('_', '.', $matches[1]) : '');
+    } elseif (preg_match('/ipad;\s*cpu\s*os\s*([0-9\_]+)?/i', $userAgent, $matches)) {
+        $os = 'iPadOS' . (!empty($matches[1]) ? ' ' . str_replace('_', '.', $matches[1]) : '');
+    } elseif (preg_match('/mac os x\s*([0-9\_\.]+)?/i', $userAgent, $matches)) {
+        $os = 'macOS' . (!empty($matches[1]) ? ' ' . str_replace('_', '.', $matches[1]) : '');
+    } elseif (preg_match('/cros/i', $userAgent)) {
+        $os = 'Chrome OS';
+    } elseif (preg_match('/linux/i', $userAgent)) {
+        $os = 'Linux';
+    }
+
+    // 3. Browser & Version
+    $browser = 'Unknown Browser';
+    if (preg_match('/edg[ea]?\/([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'Edge ' . $matches[1];
+    } elseif (preg_match('/opr\/([0-9\.]+)/i', $userAgent, $matches) || preg_match('/opera\/([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'Opera ' . $matches[1];
+    } elseif (preg_match('/(chrome|crios)\/([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'Chrome ' . $matches[2];
+    } elseif (preg_match('/(firefox|fxios)\/([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'Firefox ' . $matches[2];
+    } elseif (preg_match('/version\/([0-9\.]+).*safari/i', $userAgent, $matches)) {
+        $browser = 'Safari ' . $matches[1];
+    } elseif (preg_match('/msie\s*([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'IE ' . $matches[1];
+    } elseif (preg_match('/trident\/.*rv:([0-9\.]+)/i', $userAgent, $matches)) {
+        $browser = 'IE ' . $matches[1];
+    }
+
+    // Simplify version to major.minor
+    if (preg_match('/^([a-zA-Z\s]+)\s+([0-9]+(?:\.[0-9]+)?)/', $browser, $bMatches)) {
+        $browser = $bMatches[1] . ' ' . $bMatches[2];
+    }
+
+    return [
+        'device_type' => $deviceType,
+        'browser' => $browser,
+        'os' => $os
+    ];
+}
+
+function formatSessionDuration($seconds) {
+    if ($seconds === null || $seconds < 0) {
+        return 'N/A';
+    }
+    if ($seconds < 60) {
+        return $seconds . 's';
+    }
+    $days = floor($seconds / 86400);
+    $hours = floor(($seconds % 86400) / 3600);
+    $minutes = floor(($seconds % 3600) / 60);
+    $secs = $seconds % 60;
+
+    $parts = [];
+    if ($days > 0) $parts[] = $days . 'd';
+    if ($hours > 0) $parts[] = $hours . 'h';
+    if ($minutes > 0) $parts[] = $minutes . 'm';
+    if (empty($parts) || ($days == 0 && $hours == 0 && $secs > 0 && count($parts) < 2)) {
+        $parts[] = $secs . 's';
+    }
+    return implode(' ', $parts);
+}
+
+function resolveLogSessionStatus($row) {
+    if (empty($row['session_status'])) {
+        return 'Not Available';
+    }
+    if ($row['session_status'] === 'Logged Out') {
+        return 'Logged Out';
+    }
+    if ($row['session_status'] === 'Active') {
+        if (!empty($row['logout_time'])) {
+            return 'Logged Out';
+        }
+        if (isset($_SESSION['login_log_id']) && (int)$_SESSION['login_log_id'] === (int)$row['id']) {
+            return 'Active';
+        }
+        if (!empty($row['login_time']) && (time() - strtotime($row['login_time'])) > 86400) {
+            return 'Expired';
+        }
+        return 'Active';
+    }
+    return $row['session_status'];
+}
+
+function getLogSessionDuration($loginTime, $logoutTime, $sessionStatus) {
+    if (empty($loginTime)) {
+        return 'N/A';
+    }
+    $loginTs = strtotime($loginTime);
+    if ($sessionStatus === 'Active' && empty($logoutTime)) {
+        $diff = time() - $loginTs;
+        return formatSessionDuration($diff) . ' (Active)';
+    }
+    if (!empty($logoutTime)) {
+        $logoutTs = strtotime($logoutTime);
+        $diff = $logoutTs - $loginTs;
+        if ($diff >= 0) {
+            return formatSessionDuration($diff);
+        }
+    }
+    return 'N/A';
+}
+
+function renderDeviceBadge($deviceType) {
+    if (empty($deviceType) || $deviceType === 'Not Available' || $deviceType === 'N/A') {
+        return '<span class="log-na">N/A</span>';
+    }
+    $icon = 'fa-desktop';
+    $lower = strtolower($deviceType);
+    if (strpos($lower, 'mobile') !== false || strpos($lower, 'phone') !== false) {
+        $icon = 'fa-mobile-alt';
+    } elseif (strpos($lower, 'tablet') !== false || strpos($lower, 'ipad') !== false) {
+        $icon = 'fa-tablet-alt';
+    }
+    return '<span class="device-badge"><i class="fas ' . $icon . '"></i> ' . htmlspecialchars($deviceType) . '</span>';
+}
+
+function renderBrowserBadge($browser) {
+    if (empty($browser) || $browser === 'Not Available' || $browser === 'N/A' || $browser === 'Unknown Browser') {
+        return '<span class="log-na">N/A</span>';
+    }
+    $icon = 'fas fa-globe';
+    $lower = strtolower($browser);
+    if (strpos($lower, 'chrome') !== false) {
+        $icon = 'fab fa-chrome icon-chrome';
+    } elseif (strpos($lower, 'edge') !== false) {
+        $icon = 'fab fa-edge icon-edge';
+    } elseif (strpos($lower, 'firefox') !== false) {
+        $icon = 'fab fa-firefox-browser icon-firefox';
+    } elseif (strpos($lower, 'safari') !== false) {
+        $icon = 'fab fa-safari icon-safari';
+    } elseif (strpos($lower, 'opera') !== false) {
+        $icon = 'fab fa-opera icon-opera';
+    } elseif (strpos($lower, 'ie') !== false) {
+        $icon = 'fab fa-internet-explorer icon-ie';
+    }
+    return '<span class="env-badge"><i class="' . $icon . '"></i> ' . htmlspecialchars($browser) . '</span>';
+}
+
+function renderOsBadge($os) {
+    if (empty($os) || $os === 'Not Available' || $os === 'N/A' || $os === 'Unknown OS') {
+        return '<span class="log-na">N/A</span>';
+    }
+    $icon = 'fas fa-desktop';
+    $lower = strtolower($os);
+    if (strpos($lower, 'windows') !== false) {
+        $icon = 'fab fa-windows icon-windows';
+    } elseif (strpos($lower, 'mac') !== false || strpos($lower, 'ios') !== false || strpos($lower, 'ipad') !== false) {
+        $icon = 'fab fa-apple icon-apple';
+    } elseif (strpos($lower, 'android') !== false) {
+        $icon = 'fab fa-android icon-android';
+    } elseif (strpos($lower, 'linux') !== false) {
+        $icon = 'fab fa-linux icon-linux';
+    } elseif (strpos($lower, 'cros') !== false || strpos($lower, 'chrome') !== false) {
+        $icon = 'fab fa-chrome icon-cros';
+    }
+    return '<span class="env-badge"><i class="' . $icon . '"></i> ' . htmlspecialchars($os) . '</span>';
+}
+
+function renderLoginMethodBadge($method) {
+    if (empty($method) || $method === 'Not Available' || $method === 'N/A') {
+        return '<span class="log-na">N/A</span>';
+    }
+    $cls = 'badge-method-password';
+    $icon = 'fas fa-key';
+    if ($method === 'Remember Me') {
+        $cls = 'badge-method-remember';
+        $icon = 'fas fa-cookie-bite';
+    } elseif ($method === 'Auto Login') {
+        $cls = 'badge-method-autologin';
+        $icon = 'fas fa-sync-alt';
+    }
+    return '<span class="badge-method ' . $cls . '"><i class="' . $icon . '"></i> ' . htmlspecialchars($method) . '</span>';
+}
+
+function renderSessionStatusBadge($status) {
+    if (empty($status) || $status === 'Not Available' || $status === 'N/A') {
+        return '<span class="log-na">N/A</span>';
+    }
+    if ($status === 'Active') {
+        return '<span class="badge-status badge-status-active"><span class="status-dot"></span> Active</span>';
+    } elseif ($status === 'Logged Out') {
+        return '<span class="badge-status badge-status-loggedout"><i class="fas fa-sign-out-alt"></i> Logged Out</span>';
+    } elseif ($status === 'Expired') {
+        return '<span class="badge-status badge-status-expired"><i class="far fa-clock"></i> Expired</span>';
+    }
+    return '<span class="badge-status">' . htmlspecialchars($status) . '</span>';
+}
