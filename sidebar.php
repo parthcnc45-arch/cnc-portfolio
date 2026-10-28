@@ -207,39 +207,39 @@
                     </li> -->
                     <li class="mega-menu mega-menu-sm <?php echo in_array($active_script, ['portfolios.php', 'add-portfolios.php', 'edit-portfolio.php', 'view-portfolio.php']) ? 'active' : ''; ?>">
                         <a href="portfolios.php" aria-expanded="false">
-                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Portfolio</span>
+                            <i class="icon-briefcase menu-icon" aria-hidden="true"></i><span class="nav-text">Portfolio</span>
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-sm <?php echo ($active_script == 'clients.php') ? 'active' : ''; ?>">
                         <a href="clients.php" aria-expanded="false">
-                            <i class="icon-people menu-icon"></i><span class="nav-text">Clients</span>
+                            <i class="icon-user-following menu-icon" aria-hidden="true"></i><span class="nav-text">Clients</span>
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-sm <?php echo ($active_script == 'login-logs.php') ? 'active' : ''; ?>">
                         <a href="login-logs.php" aria-expanded="false">
-                            <i class="icon-doc menu-icon"></i><span class="nav-text">Login Logs</span>
+                            <i class="icon-notebook menu-icon" aria-hidden="true"></i><span class="nav-text">Login Logs</span>
                         </a>
                     </li>
                     <li class="mega-menu mega-menu-sm submenu <?php echo in_array($active_script, ['add-industries.php', 'add-framework.php', 'add-programming_language.php', 'add-portfolio_type.php']) ? 'active' : ''; ?>">
                         <a href="#" aria-expanded="false">
-                            <i class="icon-folder-alt menu-icon"></i><span class="nav-text">Master</span>
+                            <i class="icon-layers menu-icon" aria-hidden="true"></i><span class="nav-text">Master</span>
                         </a>
                         <span class="icon"><i class="icon-arrow-right menu-icon"></i>
                         </span>
                         <ul>
                             <li class="mega-menu mega-menu-sm">
                                 <a href="add-industries.php" aria-expanded="false">
-                                    <span class="nav-text">Industries</span>
+                                    <i class="icon-tag menu-icon" aria-hidden="true"></i><span class="nav-text">Industries</span>
                                 </a>
                             </li>
                             <li class="mega-menu mega-menu-sm">
                                 <a href="add-framework.php" aria-expanded="false">
-                                    <span class="nav-text">Framework</span>
+                                    <i class="icon-layers menu-icon" aria-hidden="true"></i><span class="nav-text">Framework</span>
                                 </a>
                             </li> 
                             <li class="mega-menu mega-menu-sm">
                                 <a href="add-programming_language.php" aria-expanded="false">
-                                    <span class="nav-text">Programming Language</span>
+                                    <i class="icon-code menu-icon" aria-hidden="true"></i><span class="nav-text">Programming Language</span>
                                 </a>
                             </li>
                             <!-- <li class="mega-menu mega-menu-sm">
@@ -249,7 +249,7 @@
                             </li> -->
                             <li class="mega-menu mega-menu-sm">
                                 <a href="add-portfolio_type.php" aria-expanded="false">
-                                    <span class="nav-text">Application Type</span>
+                                    <i class="icon-grid menu-icon" aria-hidden="true"></i><span class="nav-text">Application Type</span>
                                 </a>
                             </li>
                         </ul>
