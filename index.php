@@ -1150,4 +1150,22 @@ include_once('footer.php');
         //     source: availableTags
         // });
     });
-</script> 
+</script>
+
+
+<style id="mobile-responsive-index">
+/* Mobile-first layout improvements for the portfolio entry/dashboard page */
+@media (max-width: 767.98px) {
+  .content-body { padding: 12px 10px 24px !important; overflow-x: clip; }
+  .content-body > .container, .content-body .container, .content-body .container-fluid { width: 100% !important; max-width: 100% !important; padding-left: 8px !important; padding-right: 8px !important; }
+  .content-body .row { margin-left: -6px !important; margin-right: -6px !important; }
+  .content-body .row > [class*="col-"] { padding-left: 6px !important; padding-right: 6px !important; }
+  .content-body .card, .content-body .form-section, .content-body .tab-content, .content-body .tab-pane { max-width: 100%; }
+  .content-body h1, .content-body h2, .content-body h3, .content-body h4 { overflow-wrap: anywhere; }
+  .content-body input:not([type=checkbox]):not([type=radio]):not([type=file]), .content-body select, .content-body textarea { max-width: 100%; min-width: 0; }
+  .content-body .form-control, .content-body .form-select { min-height: 42px; font-size: 16px; }
+  .content-body button, .content-body .btn { min-height: 40px; max-width: 100%; white-space: normal; }
+  .content-body img { max-width: 100%; height: auto; }
+  .content-body .table-responsive { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+</style>
