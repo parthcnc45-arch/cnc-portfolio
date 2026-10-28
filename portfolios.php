@@ -2254,9 +2254,17 @@ include_once('footer.php');
             $searchDropdown.stop(true, true).fadeOut(150);
         }
 
+        var searchHistoryDebounceTimer = null;
+        var lastSearchHistoryRequestTerm = '';
+
         function saveSearchHistory(term) {
             var trimmed = (term || '').trim();
             if (trimmed === '') return;
+
+            // Avoid a second save when the debounce and Search/Enter happen together.
+            var normalizedTerm = trimmed.toLocaleLowerCase();
+            if (normalizedTerm === lastSearchHistoryRequestTerm) return;
+            lastSearchHistoryRequestTerm = normalizedTerm;
 
             $.ajax({
                 url: 'ajax_functions.php',
@@ -2270,9 +2278,31 @@ include_once('footer.php');
                     if (res && res.success && res.history) {
                         isSearchHistoryLoaded = true;
                         renderSearchHistory(res.history);
+                    } else if (lastSearchHistoryRequestTerm === normalizedTerm) {
+                        lastSearchHistoryRequestTerm = '';
+                    }
+                },
+                error: function() {
+                    if (lastSearchHistoryRequestTerm === normalizedTerm) {
+                        lastSearchHistoryRequestTerm = '';
                     }
                 }
             });
+        }
+
+        // Save the latest meaningful keyword only after the user pauses typing.
+        function debounceSaveSearchHistory(term) {
+            clearTimeout(searchHistoryDebounceTimer);
+            searchHistoryDebounceTimer = setTimeout(function() {
+                saveSearchHistory(term);
+            }, 800);
+        }
+
+        // Flush any pending history save when the user explicitly searches.
+        function flushDebouncedSearchHistory(term) {
+            clearTimeout(searchHistoryDebounceTimer);
+            searchHistoryDebounceTimer = null;
+            saveSearchHistory(term);
         }
 
         function clearSearchHistory() {
@@ -2299,7 +2329,7 @@ include_once('footer.php');
                 $('#portfolio-table').mark(keyword, {});
             }
             if (saveToHistory && keyword !== '') {
-                saveSearchHistory(keyword);
+                flushDebouncedSearchHistory(keyword);
             }
         }
 
@@ -2322,13 +2352,17 @@ include_once('footer.php');
             }
         });
 
-        // Event: Live input (does NOT save keystrokes to history)
+        // Event: Live filtering plus debounced history save (never save each keystroke).
         var searchTimer;
         $(document).on('input', '#global-portfolio-search', function() {
+            var keyword = $(this).val().trim();
+
             clearTimeout(searchTimer);
             searchTimer = setTimeout(function() {
                 performGlobalSearch(false);
             }, 300);
+
+            debounceSaveSearchHistory(keyword);
         });
 
         // Event: Focus or Click on search input shows dropdown
