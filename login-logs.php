@@ -1002,7 +1002,8 @@ include_once('footer.php');
             "scrollX": false,
             "aaSorting": [],
             "columnDefs": [
-                { "orderable": false, "targets": 11 }
+                // The compact table has five columns; Action is column index 4.
+                { "orderable": false, "targets": 4 }
             ],
             "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "pageLength": 10,
