@@ -1,4 +1,7 @@
 <?php
+// Set the application timezone before any login/logout timestamps are created.
+// Hostinger may default PHP to UTC; this project displays times in India.
+date_default_timezone_set('Asia/Kolkata');
 error_reporting(E_ALL);
 function comma_string_data_caller($conn,$id_of_framework,$table_name,$col_name){  
     $framework_str      = implode(',', $id_of_framework);
@@ -663,10 +666,6 @@ function fetchUserRecentCopiedLinks($conn, $userId) {
         mysqli_stmt_close($stmt);
     }
     return $links;
-}
-
-if (!date_default_timezone_get() || date_default_timezone_get() === 'UTC') {
-    date_default_timezone_set('Asia/Kolkata');
 }
 
 /**
