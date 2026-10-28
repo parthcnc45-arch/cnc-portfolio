@@ -772,14 +772,6 @@ require_once('country_flags_helper.php');
                                     <th>IP Address</th>
                                     <th>Country</th>
                                     <th>City</th>
-                                    <th>Device Type</th>
-                                    <th>Browser</th>
-                                    <th>Operating System</th>
-                                    <th>Login Time</th>
-                                    <th>Logout Time</th>
-                                    <th>Session Duration</th>
-                                    <th>Login Method</th>
-                                    <th>Session Status</th>
                                     <th style="text-align: center;">Action</th>
                                 </tr>
                             </thead>
@@ -804,14 +796,6 @@ require_once('country_flags_helper.php');
                                             <td><span class="ip-badge"><?php echo htmlspecialchars($row['ip_address'] ?? ''); ?></span></td>
                                             <td class="col-country"><?php echo render_country_flags($row['country'] ?? ''); ?></td>
                                             <td><?php echo htmlspecialchars($row['city'] ?? 'Unknown', ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><?php echo renderDeviceBadge($row['device_type'] ?? ''); ?></td>
-                                            <td><?php echo renderBrowserBadge($row['browser'] ?? ''); ?></td>
-                                            <td><?php echo renderOsBadge($row['os'] ?? ''); ?></td>
-                                            <td style="color: #64748b; font-size: 12px; white-space: nowrap;"><?php echo $login_time_formatted; ?></td>
-                                            <td style="color: #64748b; font-size: 12px; white-space: nowrap;"><?php echo $logout_time_formatted; ?></td>
-                                            <td style="color: #475569; font-size: 12px; font-weight: 500; white-space: nowrap;"><?php echo $duration_html; ?></td>
-                                            <td><?php echo renderLoginMethodBadge($row['login_method'] ?? ''); ?></td>
-                                            <td><?php echo renderSessionStatusBadge($status); ?></td>
                                             <td style="text-align: center; white-space: nowrap;">
                                                 <button type="button" class="btn-view-log-details" data-id="<?php echo (int)$row['id']; ?>" title="View Details">
                                                     <i class="fas fa-eye"></i> View
@@ -824,7 +808,7 @@ require_once('country_flags_helper.php');
                                 } else {
                                     ?>
                                     <tr>
-                                        <td colspan="13" class="empty-table-cell">
+                                        <td colspan="5" class="empty-table-cell">
                                             <div class="empty-state-wrap">
                                                 <i class="fas fa-history empty-icon"></i>
                                                 <div class="empty-text">No Login Logs Found</div>
