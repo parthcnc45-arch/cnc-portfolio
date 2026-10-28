@@ -193,6 +193,105 @@
                 transform: translateY(0);
                 box-shadow: 0 1px 2px rgba(239, 68, 68, 0.08);
             }
+        
+            /* Mobile layout: remove desktop sidebar offset and keep navigation usable */
+            @media (max-width: 767.98px) {
+                .nav-header {
+                    position: relative !important;
+                    width: 100% !important;
+                    height: 64px !important;
+                    min-height: 64px !important;
+                    left: 0 !important;
+                    top: 0 !important;
+                    padding: 0 12px !important;
+                    border-right: 0 !important;
+                }
+                .nav-header .brand-title img {
+                    max-width: 132px !important;
+                    max-height: 44px !important;
+                }
+                .nk-sidebar {
+                    position: relative !important;
+                    top: 0 !important;
+                    left: 0 !important;
+                    bottom: auto !important;
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    height: auto !important;
+                    min-height: 0 !important;
+                    display: block !important;
+                    border-right: 0 !important;
+                    border-bottom: 1px solid #edf2f7 !important;
+                    overflow: visible !important;
+                }
+                .nk-sidebar .nk-nav-scroll {
+                    overflow: visible !important;
+                    width: 100% !important;
+                }
+                .nk-sidebar .metismenu {
+                    display: grid !important;
+                    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                    gap: 4px !important;
+                    padding: 8px !important;
+                    margin: 0 !important;
+                }
+                .nk-sidebar .metismenu > li {
+                    min-width: 0 !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                }
+                .nk-sidebar .metismenu > li > a {
+                    min-width: 0 !important;
+                    min-height: 40px !important;
+                    padding: 8px 9px !important;
+                    font-size: 12px !important;
+                    white-space: normal !important;
+                    line-height: 1.25 !important;
+                }
+                .nk-sidebar .metismenu > li > a > i {
+                    flex: 0 0 auto !important;
+                    padding-right: 7px !important;
+                }
+                .nk-sidebar .metismenu > li > a .nav-text {
+                    min-width: 0 !important;
+                    overflow-wrap: anywhere !important;
+                }
+                .nk-sidebar .metismenu > li.submenu span.icon {
+                    top: 12px !important;
+                    right: 8px !important;
+                }
+                .nk-sidebar .metismenu > li.submenu > ul {
+                    position: static !important;
+                    width: 100% !important;
+                    min-width: 0 !important;
+                    box-shadow: none !important;
+                }
+                .sidebar-account-footer {
+                    position: static !important;
+                    width: 100% !important;
+                    padding: 6px 8px 10px !important;
+                    border-top: 0 !important;
+                }
+                .sidebar-logout-btn {
+                    height: 36px !important;
+                }
+                .content-body {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    margin-left: 0 !important;
+                    padding: 12px 8px 24px !important;
+                    box-sizing: border-box !important;
+                    overflow-x: clip !important;
+                }
+                #main-wrapper,
+                #main-wrapper .container,
+                #main-wrapper .container-fluid {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    box-sizing: border-box !important;
+                }
+            }
+
         </style>
         <?php
             $active_script = basename($_SERVER['PHP_SELF']);
