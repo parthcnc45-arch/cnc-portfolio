@@ -352,7 +352,7 @@ if ($action === 'verify_otp') {
         }
     }
 
-    otpJsonResponse(true, 'Login successful.', ['redirect' => 'portfolios.php']);
+    otpJsonResponse(true, 'Login successful.', ['redirect' => 'index.php']);
 }
 
 otpJsonResponse(false, 'Unknown OTP action.', [], 400);
