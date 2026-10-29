@@ -10,9 +10,9 @@ return [
     'host' => 'smtp.gmail.com',
     'port' => 587,
     'encryption' => 'tls', // 'tls' for port 587 or 'ssl' for port 465
-    'username' => 'YOUR_GMAIL_ADDRESS@gmail.com',
-    'password' => 'YOUR_GMAIL_APP_PASSWORD',
-    'from_email' => 'YOUR_GMAIL_ADDRESS@gmail.com',
+    'username' => 'parthcnc45@gmail.com',
+    'password' => 'qjcqawspherjfiuv',
+    'from_email' => 'parthcnc45@gmail.com',
     'from_name' => 'CodeandCore Portfolio',
     'timeout' => 15,
-];
+ ];
