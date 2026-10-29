@@ -13,10 +13,7 @@ CREATE TABLE IF NOT EXISTS login_email_otps (
     request_ip VARCHAR(45) NULL,
     PRIMARY KEY (id),
     UNIQUE KEY uq_login_email_otps_user_id (user_id),
-    KEY idx_login_email_otps_expires_at (expires_at),
-    CONSTRAINT fk_login_email_otps_user
-        FOREIGN KEY (user_id) REFERENCES users(id)
-        ON DELETE CASCADE
+    KEY idx_login_email_otps_expires_at (expires_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO users (username, password, created_at)
