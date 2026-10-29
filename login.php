@@ -1,11 +1,15 @@
-<?php 
-include_once('db.php'); 
+<?php
+include_once('db.php');
+
 if (isset($_SESSION['username'])) {
     header("Location: portfolios.php");
     exit();
 }
-$saved_username = $_COOKIE['remember_username'] ?? '';
-$is_remembered = !empty($_COOKIE['remember_user']) || !empty($_COOKIE['remember_username']);
+
+if (empty($_SESSION['otp_csrf_token'])) {
+    $_SESSION['otp_csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrf_token = $_SESSION['otp_csrf_token'];
 $login_error = $_SESSION['login_error'] ?? '';
 unset($_SESSION['login_error']);
 ?>
@@ -19,169 +23,100 @@ unset($_SESSION['login_error']);
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        body {
-            background-color: #f7f8fb;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .login-card {
-            border: 1.5px solid #e8ecf4;
-            border-radius: 14px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            overflow: hidden;
-            background: #ffffff;
-        }
-        .login-card-header {
-            background: #ffffff;
-            border-bottom: 1px solid #f1f5f9;
-            padding: 30px 24px 18px;
-            text-align: center;
-        }
-        .login-card-header img {
-            max-height: 44px;
-            margin-bottom: 12px;
-        }
-        .login-card-header h3 {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0f172a;
-            margin: 0;
-            letter-spacing: -0.2px;
-        }
-        .login-card-body {
-            padding: 24px 28px 30px;
-        }
-        .form-group label {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 6px;
-        }
-        .form-control {
-            height: 42px;
-            border-radius: 8px;
-            border: 1.5px solid #e2e8f0;
-            font-size: 14px;
-            color: #1e293b;
-            transition: all 0.2s ease;
-        }
-        .form-control:focus {
-            border-color: #5b52f9;
-            box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.12);
-        }
-        .remember-checkbox-wrap {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            user-select: none;
-        }
-        .remember-checkbox-wrap input[type="checkbox"] {
-            width: 17px;
-            height: 17px;
-            cursor: pointer;
-            accent-color: #5b52f9;
-            margin: 0 8px 0 0;
-        }
-        .remember-checkbox-wrap label {
-            font-size: 13.5px;
-            color: #475569;
-            font-weight: 500;
-            margin: 0;
-            cursor: pointer;
-        }
-        .btn-login {
-            background-color: #5b52f9;
-            border-color: #5b52f9;
-            color: #ffffff !important;
-            font-size: 14.5px;
-            font-weight: 600;
-            height: 42px;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(91, 82, 249, 0.25);
-        }
-        .btn-login:hover {
-            background-color: #483fe6;
-            border-color: #483fe6;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(91, 82, 249, 0.35);
-        }
-        .login-error-alert {
-            background-color: #fef2f2;
-            border: 1px solid #fee2e2;
-            color: #b91c1c;
-            border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            line-height: 1.4;
-            animation: fadeInAlert 0.2s ease-in-out;
-        }
-        .login-error-alert i {
-            font-size: 15px;
-            color: #ef4444;
-            flex-shrink: 0;
-        }
-        @keyframes fadeInAlert {
-            from {
-                opacity: 0;
-                transform: translateY(-4px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        body{background:#f7f8fb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
+        .login-card{border:1.5px solid #e8ecf4;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,.04);overflow:hidden;background:#fff}
+        .login-card-header{background:#fff;border-bottom:1px solid #f1f5f9;padding:30px 24px 18px;text-align:center}
+        .login-card-header img{max-height:44px;margin-bottom:12px}.login-card-header h3{font-size:20px;font-weight:700;color:#0f172a;margin:0}
+        .login-card-body{padding:24px 28px 30px}.form-group label{font-size:13.5px;font-weight:600;color:#334155;margin-bottom:6px}
+        .form-control{height:44px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:14px}
+        .form-control:focus{border-color:#5b52f9;box-shadow:0 0 0 3px rgba(91,82,249,.12)}
+        .btn-login{background:#5b52f9;border-color:#5b52f9;color:#fff!important;font-size:14.5px;font-weight:600;height:44px;border-radius:8px;box-shadow:0 2px 8px rgba(91,82,249,.25)}
+        .btn-login:hover{background:#483fe6;border-color:#483fe6}.login-message{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:18px;display:none}
+        .login-message.error{display:block;background:#fef2f2;border:1px solid #fee2e2;color:#b91c1c}.login-message.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+        .small-note{font-size:12.5px;color:#64748b;line-height:1.5}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-5 col-lg-4">
-                <div class="card login-card">
-                    <div class="login-card-header">
-                        <img src="images/cnc-logo-new.svg" alt="CodeandCore">
-                        <h3>Login</h3>
-                    </div>
-                    <div class="login-card-body">
-                        <?php if (!empty($login_error)): ?>
-                            <div class="login-error-alert" role="alert">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <span><?php echo htmlspecialchars($login_error); ?></span>
-                            </div>
-                        <?php endif; ?>
-
-                        <form action="" method="post">
-                            <input type="hidden" name="login_submit" value="1">
-                            <div class="form-group">
-                                <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" value="<?php echo htmlspecialchars($saved_username); ?>" placeholder="Enter your username" required autocomplete="username">
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
-                            </div>
-                            <div class="remember-checkbox-wrap">
-                                <input type="checkbox" id="remember" name="remember" <?php echo $is_remembered ? 'checked' : ''; ?>>
-                                <label for="remember">Remember me</label>
-                            </div>
-                            <button type="submit" name="login_submit" class="btn btn-login btn-block">Login</button>
-                        </form>
-                    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-6 col-lg-4">
+            <div class="card login-card">
+                <div class="login-card-header">
+                    <img src="images/cnc-logo-new.svg" alt="CodeandCore">
+                    <h3>Email OTP Login</h3>
+                </div>
+                <div class="login-card-body">
+                    <div id="login-message" class="login-message" role="alert"><?php echo htmlspecialchars($login_error, ENT_QUOTES, 'UTF-8'); ?></div>
+                    <form id="email-form" novalidate>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
+                        <div class="form-group">
+                            <label for="email">Company email</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="name@codeandcore.com" required autocomplete="email" maxlength="255">
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block" id="send-otp-btn"><i class="fas fa-paper-plane mr-1"></i> Send OTP</button>
+                    </form>
+                    <form id="otp-form" style="display:none" novalidate>
+                        <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrf_token, ENT_QUOTES, 'UTF-8'); ?>">
+                        <div class="form-group">
+                            <label for="otp">6-digit OTP</label>
+                            <input type="text" class="form-control" id="otp" name="otp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter email OTP" autocomplete="one-time-code" required>
+                        </div>
+                        <button type="submit" class="btn btn-login btn-block" id="verify-otp-btn"><i class="fas fa-lock-open mr-1"></i> Verify and Login</button>
+                        <button type="button" class="btn btn-link btn-block" id="resend-otp-btn">Resend OTP</button>
+                        <button type="button" class="btn btn-link btn-block" id="change-email-btn">Use a different email</button>
+                        <p class="small-note text-center mb-0">The OTP expires in 10 minutes. Never share it with anyone.</p>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
+<script>
+(function(){
+    const emailForm=document.getElementById('email-form');
+    const otpForm=document.getElementById('otp-form');
+    const emailInput=document.getElementById('email');
+    const otpInput=document.getElementById('otp');
+    const message=document.getElementById('login-message');
+    const sendBtn=document.getElementById('send-otp-btn');
+    const verifyBtn=document.getElementById('verify-otp-btn');
+    const resendBtn=document.getElementById('resend-otp-btn');
+    let cooldownTimer=null, resendUntil=0;
+    function showMessage(text,type){
+        message.textContent=text;message.className='login-message '+(type||'error');
+    }
+    function clearMessage(){message.textContent='';message.className='login-message';}
+    async function request(action,button){
+        clearMessage();
+        if(button)button.disabled=true;
+        const payload=new URLSearchParams({action:action,email:emailInput.value.trim(),csrf_token:document.querySelector('#email-form [name="csrf_token"]').value});
+        if(action==='verify_otp')payload.set('otp',otpInput.value.trim());
+        try{
+            const response=await fetch('otp-auth.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:payload.toString(),credentials:'same-origin'});
+            const data=await response.json();
+            if(!response.ok||!data.success)throw new Error(data.message||'Request failed. Please try again.');
+            if(action==='send_otp'){
+                emailForm.style.display='none';otpForm.style.display='block';otpInput.focus();
+                showMessage(data.message,'success');startCooldown(data.resend_after||60);
+            }else if(action==='verify_otp'){
+                showMessage('Login successful. Redirecting…','success');window.location.href=data.redirect||'portfolios.php';
+            }
+            return data;
+        }catch(error){showMessage(error.message||'Network error. Please try again.','error');return null;}
+        finally{if(button)button.disabled=false;}
+    }
+    function startCooldown(seconds){
+        resendUntil=Date.now()+seconds*1000;resendBtn.disabled=true;
+        if(cooldownTimer)clearInterval(cooldownTimer);
+        const tick=()=>{const left=Math.max(0,Math.ceil((resendUntil-Date.now())/1000));resendBtn.textContent=left?'Resend OTP ('+left+'s)':'Resend OTP';resendBtn.disabled=left>0;if(!left)clearInterval(cooldownTimer);};
+        tick();cooldownTimer=setInterval(tick,1000);
+    }
+    emailForm.addEventListener('submit',e=>{e.preventDefault();if(emailInput.reportValidity())request('send_otp',sendBtn);});
+    otpForm.addEventListener('submit',e=>{e.preventDefault();if(otpInput.reportValidity())request('verify_otp',verifyBtn);});
+    resendBtn.addEventListener('click',()=>{if(Date.now()>=resendUntil)request('send_otp',resendBtn);});
+    document.getElementById('change-email-btn').addEventListener('click',()=>{otpForm.style.display='none';emailForm.style.display='block';otpInput.value='';clearMessage();emailInput.focus();});
+    <?php if (!empty($login_error)): ?>showMessage(<?php echo json_encode($login_error); ?>,'error');<?php endif; ?>
+})();
+</script>
 </body>
 </html>
