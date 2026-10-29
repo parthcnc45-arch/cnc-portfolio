@@ -2310,7 +2310,7 @@ include_once('footer.php');
         var searchHistoryDebounceTimer = null;
         var lastSearchHistoryRequestTerm = '';
 
-        function saveSearchHistory(term) {
+        function saveSearchHistory(term, forceSave) {
             var trimmed = (term || '').trim();
 
             // Store only search terms longer than 3 characters.
@@ -2319,7 +2319,9 @@ include_once('footer.php');
 
             // Avoid a second save when the debounce and Search/Enter happen together.
             var normalizedTerm = trimmed.toLocaleLowerCase();
-            if (normalizedTerm === lastSearchHistoryRequestTerm) return;
+            // Explicit Search button / Enter must save even if the same term was
+            // already queued or attempted by the debounce (e.g. Ctrl+V then Enter).
+            if (!forceSave && normalizedTerm === lastSearchHistoryRequestTerm) return;
             lastSearchHistoryRequestTerm = normalizedTerm;
 
             $.ajax({
@@ -2363,7 +2365,8 @@ include_once('footer.php');
         function flushDebouncedSearchHistory(term) {
             clearTimeout(searchHistoryDebounceTimer);
             searchHistoryDebounceTimer = null;
-            saveSearchHistory(term);
+            // Force the save when the user explicitly presses Enter or Search.
+            saveSearchHistory(term, true);
         }
 
         function clearSearchHistory() {
