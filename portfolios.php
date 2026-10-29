@@ -1350,6 +1350,357 @@ include_once('sidebar.php');
         background-color: #fef2f2 !important;
         color: #dc2626 !important;
     }
+    .action-dropdown-item.text-warning {
+        color: #d97706 !important;
+    }
+    .action-dropdown-item.text-warning i {
+        color: #d97706 !important;
+    }
+    .action-dropdown-item.text-warning:hover {
+        background-color: #fffbeb !important;
+        color: #b45309 !important;
+    }
+    .action-dropdown-item:focus,
+    .action-dropdown-item:focus-visible {
+        outline: none;
+        background-color: #f1f5f9;
+        color: #111827;
+    }
+
+    /* =========================================================
+       MARKED AS CHANGED STYLES
+       ========================================================= */
+    #portfolio-table tbody tr.row-changed {
+        border-left: 3.5px solid #f59e0b !important;
+        background-color: #fffdf5 !important;
+    }
+    #portfolio-table tbody tr.row-changed:hover {
+        background-color: #fef9c3 !important;
+    }
+    .company-name-wrapper {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .badge-changed {
+        background-color: #fef3c7 !important;
+        color: #b45309 !important;
+        border: 1px solid #fde68a !important;
+        font-size: 10.5px !important;
+        font-weight: 700 !important;
+        padding: 2px 7px !important;
+        border-radius: 4px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        line-height: 1.2 !important;
+        letter-spacing: 0.2px;
+    }
+    .changed-note-text {
+        font-size: 11.5px;
+        color: #92400e;
+        background: rgba(254, 243, 199, 0.45);
+        border-radius: 4px;
+        padding: 3px 7px;
+        margin-top: 4px;
+        line-height: 1.35;
+        word-break: break-word;
+        max-width: 100%;
+        border-left: 2px solid #f59e0b;
+    }
+
+    /* Info Bar Above Table */
+    .changed-portfolios-infobar {
+        background: #fffbeb;
+        border: 1px solid #fde68a;
+        border-radius: 10px;
+        padding: 10px 16px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 13px;
+        color: #92400e;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .changed-portfolios-infobar .infobar-content {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+    .changed-portfolios-infobar .infobar-icon {
+        color: #d97706;
+        font-size: 15px;
+    }
+    .btn-infobar-toggle {
+        background: #ffffff;
+        border: 1.5px solid #f59e0b;
+        color: #b45309;
+        font-size: 12px;
+        font-weight: 600;
+        border-radius: 6px;
+        padding: 4px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+    .btn-infobar-toggle:hover {
+        background: #f59e0b;
+        color: #ffffff;
+    }
+    .btn-infobar-toggle:focus-visible {
+        outline: 2px solid #5b52f9;
+        outline-offset: 2px;
+    }
+
+    /* Inline Note Panel */
+    .inline-note-child-row > td {
+        padding: 0 16px 12px 16px !important;
+        background-color: #f8fafc !important;
+        border-top: none !important;
+    }
+    .portfolio-inline-note-panel {
+        background: #ffffff;
+        border: 1.5px solid #c7d2fe;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin: 4px 0 8px 0;
+        box-shadow: 0 4px 14px rgba(91, 82, 249, 0.08);
+        text-align: left;
+    }
+    .inline-note-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+    .inline-note-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0;
+    }
+    .inline-note-close-btn {
+        background: none;
+        border: none;
+        font-size: 18px;
+        color: #64748b;
+        cursor: pointer;
+        padding: 0 4px;
+        line-height: 1;
+    }
+    .inline-note-close-btn:hover {
+        color: #0f172a;
+    }
+    .inline-note-textarea {
+        width: 100%;
+        font-size: 13px;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 8px 10px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        resize: vertical;
+        min-height: 64px;
+        font-family: inherit;
+    }
+    .inline-note-textarea:focus {
+        border-color: #5b52f9;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(91, 82, 249, 0.15);
+    }
+    .inline-note-error {
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 500;
+        color: #dc2626;
+    }
+    .inline-note-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    .btn-save-changed {
+        background: #5b52f9;
+        border: 1px solid #5b52f9;
+        color: #ffffff !important;
+        font-size: 12.5px;
+        font-weight: 600;
+        border-radius: 6px;
+        padding: 6px 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .btn-save-changed:hover {
+        background: #483fe6;
+        border-color: #483fe6;
+    }
+    .btn-save-changed:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+    .btn-cancel-changed {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        font-size: 12.5px;
+        font-weight: 500;
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+    .btn-cancel-changed:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+    }
+
+    /* Advanced Filters Toggle Switch */
+    .advanced-filters-divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 14px 0 12px 0;
+    }
+    .advanced-filters-toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 2px;
+    }
+    .toggle-switch-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .switch-toggle {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+        margin: 0;
+        flex-shrink: 0;
+    }
+    .switch-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    .switch-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #cbd5e1;
+        transition: .25s ease;
+        border-radius: 24px;
+    }
+    .switch-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .25s ease;
+        border-radius: 50%;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .switch-toggle input:checked + .switch-slider {
+        background-color: #5b52f9;
+    }
+    .switch-toggle input:checked + .switch-slider:before {
+        transform: translateX(20px);
+    }
+    .switch-toggle input:focus-visible + .switch-slider {
+        outline: 2px solid #5b52f9;
+        outline-offset: 2px;
+    }
+    .toggle-label-group {
+        display: flex;
+        flex-direction: column;
+    }
+    .toggle-title {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1e293b;
+        margin: 0;
+        cursor: pointer;
+    }
+    .toggle-help-text {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+        line-height: 1.35;
+    }
+
+    /* Filter Count Dot on Advanced Filters Button */
+    .filter-count-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #5b52f9;
+        border-radius: 50%;
+        display: inline-block;
+        margin-left: 6px;
+        vertical-align: middle;
+        box-shadow: 0 0 0 2px #ffffff;
+    }
+
+    /* Toast with Undo */
+    .toast-portfolio-changed {
+        background: linear-gradient(to right, #10b981, #059669) !important;
+        background-color: #10b981 !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+    }
+    .toast-portfolio-error {
+        background: #ef4444 !important;
+        background-color: #ef4444 !important;
+        color: #ffffff !important;
+        border-radius: 6px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+        padding: 10px 14px !important;
+        font-size: 13px !important;
+    }
+    .toast-with-undo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .toast-undo-action {
+        background: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 4px;
+        padding: 2px 9px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    .toast-undo-action:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+    .toast-undo-action:hover {
+        background: #483fe6;
+    }
+    .toast-undo-action:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 1px;
+    }
+
+    /* Focus States for Accessibility */
+    .action-dots-btn:focus-visible,
+    .btn-filter-action:focus-visible,
+    .btn-add-portfolio:focus-visible {
+        outline: 2px solid #5b52f9 !important;
+        outline-offset: 2px !important;
+    }
 </style>
 
 <div class="content-body portfolio-page-body">
@@ -1360,9 +1711,11 @@ include_once('sidebar.php');
                 <div class="portfolio-header-title-wrap">
                     <h1 class="portfolio-page-title">
                         Portfolio <span class="portfolio-count-badge">(<span id="portfolio-total-count"><?php 
-                            $count_query = mysqli_query($conn, "SELECT COUNT(*) as total FROM portfolio WHERE `deleted`='0'");
+                            $include_changed = isset($_GET['include_changed']) && $_GET['include_changed'] == '1' ? 1 : 0;
+                            $where_changed = $include_changed ? "" : " AND is_changed = 0";
+                            $count_query = mysqli_query($conn, "SELECT COUNT(*) as total FROM portfolio WHERE `deleted`='0'$where_changed");
                             $count_row = mysqli_fetch_assoc($count_query);
-                            echo $count_row['total'] ?? '156';
+                            echo $count_row['total'] ?? '0';
                         ?></span> found)</span>
                     </h1>
                 </div>
@@ -1382,7 +1735,7 @@ include_once('sidebar.php');
             <div class="portfolio-main-column">
                 <div id="ajax_table_print">
                     <?php
-                        $result = mysqli_query($conn,"SELECT * FROM portfolio WHERE `deleted`='0' ORDER BY timestamp DESC");
+                        $result = mysqli_query($conn,"SELECT * FROM portfolio WHERE `deleted`='0'$where_changed ORDER BY timestamp DESC");
                         include 'portfolios-table.php';
                     ?>
                 </div>
@@ -1494,13 +1847,25 @@ include_once('sidebar.php');
 </div>
 
 <!-- Floating Actions Dropdown Menu (Preserved) -->
-<div id="actionDropdownMenu" class="action-dropdown-menu" style="display: none;">
-    <a id="actionDropdownEdit" href="#" class="action-dropdown-item">
+<div id="actionDropdownMenu" class="action-dropdown-menu" style="display: none;" role="menu">
+    <a id="actionDropdownEdit" href="#" class="action-dropdown-item" role="menuitem">
         <i class="far fa-edit"></i>
         <span>Edit</span>
     </a>
+    <button type="button" id="actionDropdownMarkChanged" class="action-dropdown-item" role="menuitem" data-id="" data-company-name="">
+        <i class="fas fa-tag"></i>
+        <span>Mark as changed</span>
+    </button>
+    <button type="button" id="actionDropdownEditNote" class="action-dropdown-item" role="menuitem" data-id="" data-company-name="" data-note="" style="display: none;">
+        <i class="far fa-sticky-note"></i>
+        <span>Edit change note</span>
+    </button>
+    <button type="button" id="actionDropdownUnmarkChanged" class="action-dropdown-item text-warning" role="menuitem" data-id="" style="display: none;">
+        <i class="fas fa-undo"></i>
+        <span>Unmark as changed</span>
+    </button>
     <div class="action-dropdown-divider"></div>
-    <button type="button" id="actionDropdownDelete" class="action-dropdown-item text-danger" data-id="">
+    <button type="button" id="actionDropdownDelete" class="action-dropdown-item text-danger" role="menuitem" data-id="">
         <i class="far fa-trash-alt"></i>
         <span>Delete</span>
     </button>
@@ -1769,17 +2134,36 @@ include_once('footer.php');
 
             if (activeActionBtn && activeActionBtn[0] === $btn[0] && $('#actionDropdownMenu').is(':visible')) {
                 $('#actionDropdownMenu').hide();
-                $('.action-dots-btn').removeClass('active');
+                $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
                 activeActionBtn = null;
                 return;
             }
 
-            $('.action-dots-btn').removeClass('active');
-            $btn.addClass('active');
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
+            $btn.addClass('active').attr('aria-expanded', 'true');
             activeActionBtn = $btn;
+
+            var $tr = $btn.closest('tr');
+            var isChanged = ($btn.attr('data-is-changed') === '1' || $tr.attr('data-is-changed') === '1');
+            var changedNote = $btn.attr('data-changed-note') || $tr.attr('data-changed-note') || '';
+            var companyName = $btn.attr('data-company-name') || $tr.attr('data-company-name') || $tr.find('.company-name-text').text() || $tr.find('.company_name').text() || '';
 
             $('#actionDropdownEdit').attr('href', 'edit-portfolio.php?id=' + id);
             $('#actionDropdownDelete').attr('data-id', id);
+
+            $('#actionDropdownMarkChanged').attr('data-id', id).attr('data-company-name', companyName);
+            $('#actionDropdownEditNote').attr('data-id', id).attr('data-company-name', companyName).attr('data-note', changedNote);
+            $('#actionDropdownUnmarkChanged').attr('data-id', id).attr('data-company-name', companyName);
+
+            if (isChanged) {
+                $('#actionDropdownMarkChanged').hide();
+                $('#actionDropdownEditNote').show();
+                $('#actionDropdownUnmarkChanged').show();
+            } else {
+                $('#actionDropdownMarkChanged').show();
+                $('#actionDropdownEditNote').hide();
+                $('#actionDropdownUnmarkChanged').hide();
+            }
 
             var $menu = $('#actionDropdownMenu');
             $menu.show();
@@ -1811,7 +2195,7 @@ include_once('footer.php');
         $(document).on('click', function(e) {
             if (!$(e.target).closest('#actionDropdownMenu, .action-dots-btn').length) {
                 $('#actionDropdownMenu').hide();
-                $('.action-dots-btn').removeClass('active');
+                $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
                 activeActionBtn = null;
             }
         });
@@ -1819,7 +2203,7 @@ include_once('footer.php');
         $(window).on('scroll resize', function() {
             if ($('#actionDropdownMenu').is(':visible')) {
                 $('#actionDropdownMenu').hide();
-                $('.action-dots-btn').removeClass('active');
+                $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
                 activeActionBtn = null;
             }
         });
@@ -1827,22 +2211,52 @@ include_once('footer.php');
         $(document).on('scroll', '.portfolio-table-scroll', function() {
             if ($('#actionDropdownMenu').is(':visible')) {
                 $('#actionDropdownMenu').hide();
-                $('.action-dots-btn').removeClass('active');
+                $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
                 activeActionBtn = null;
             }
         });
 
         $(document).on('click', '#actionDropdownEdit', function() {
             $('#actionDropdownMenu').hide();
-            $('.action-dots-btn').removeClass('active');
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
             activeActionBtn = null;
+        });
+
+        $(document).on('click', '#actionDropdownMarkChanged', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            var companyName = $(this).attr('data-company-name') || '';
+            $('#actionDropdownMenu').hide();
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
+            activeActionBtn = null;
+            openInlineNotePanel(id, companyName, '');
+        });
+
+        $(document).on('click', '#actionDropdownEditNote', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            var companyName = $(this).attr('data-company-name') || '';
+            var existingNote = $(this).attr('data-note') || '';
+            $('#actionDropdownMenu').hide();
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
+            activeActionBtn = null;
+            openInlineNotePanel(id, companyName, existingNote);
+        });
+
+        $(document).on('click', '#actionDropdownUnmarkChanged', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            $('#actionDropdownMenu').hide();
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
+            activeActionBtn = null;
+            unmarkPortfolioChanged(id);
         });
 
         $(document).on('click', '#actionDropdownDelete', function(e) {
             e.preventDefault();
             var _id = $(this).attr('data-id');
             $('#actionDropdownMenu').hide();
-            $('.action-dots-btn').removeClass('active');
+            $('.action-dots-btn').removeClass('active').attr('aria-expanded', 'false');
             activeActionBtn = null;
 
             $('#confirmDelete')
@@ -1850,6 +2264,40 @@ include_once('footer.php');
                 .attr('data-type', 'single');
             $('#deleteModalBody').text('Are you sure you want to delete this portfolio?');
             $('#deleteConfirmationModal').modal('show');
+        });
+
+        // Accessibility: Keyboard support for .action-dots-btn
+        $(document).on('keydown', '.action-dots-btn', function(e) {
+            if (e.which === 13 || e.which === 32) { // Enter or Space
+                e.preventDefault();
+                $(this).trigger('click');
+                setTimeout(function() {
+                    $('#actionDropdownMenu').find('.action-dropdown-item:visible:first').focus();
+                }, 50);
+            }
+        });
+
+        // Accessibility: Keyboard navigation inside #actionDropdownMenu
+        $(document).on('keydown', '#actionDropdownMenu', function(e) {
+            var $visibleItems = $('#actionDropdownMenu .action-dropdown-item:visible');
+            var index = $visibleItems.index(document.activeElement);
+
+            if (e.which === 40) { // Down arrow
+                e.preventDefault();
+                var nextIndex = (index + 1) % $visibleItems.length;
+                $visibleItems.eq(nextIndex).focus();
+            } else if (e.which === 38) { // Up arrow
+                e.preventDefault();
+                var prevIndex = (index - 1 + $visibleItems.length) % $visibleItems.length;
+                $visibleItems.eq(prevIndex).focus();
+            } else if (e.which === 27) { // Escape
+                e.preventDefault();
+                $('#actionDropdownMenu').hide();
+                if (activeActionBtn) {
+                    activeActionBtn.attr('aria-expanded', 'false').focus();
+                    activeActionBtn = null;
+                }
+            }
         });
 
         $(document).on('click', '.delete-btn', function() {
@@ -2096,54 +2544,268 @@ include_once('footer.php');
             $(this).blur();
         });
 
-        // Initialize DataTable
-        var table = $('#portfolio-table').DataTable({
-            "autoWidth": false,
-            "aaSorting": [],
-            "paging": false,
-            "info": false,
-            dom: '<"portfolio-table-toolbar"f><"portfolio-table-scroll"t>',
-            language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search portfolios..."
-            },
-            columnDefs: [
-                { targets: [0, 7], orderable: false },
-                { targets: 0, width: "30px" },
-                { targets: 1, width: "16%" },
-                { targets: 2, width: "17%" },
-                { targets: 3, width: "9%" },
-                { targets: 4, width: "12%" },
-                { targets: 5, width: "15%" },
-                { targets: 6, width: "11%" },
-                { targets: 7, width: "132px" },
-                { 
-                    targets: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
-                    visible: false
-                }
-            ],
-            buttons: [
-                {
-                    extend: 'excel',
-                    text: 'Export Portfolio',
-                    filename: 'Framework_Portfolio',
-                    title: 'Framework Data Export',
-                    exportOptions: {
-                        columns: ':hidden'
+        // Initialize DataTable Helper
+        function initPortfolioDataTable() {
+            var dt = $('#portfolio-table').DataTable({
+                "autoWidth": false,
+                "aaSorting": [],
+                "paging": false,
+                "info": false,
+                dom: '<"portfolio-table-toolbar"f><"portfolio-table-scroll"t>',
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search portfolios..."
+                },
+                columnDefs: [
+                    { targets: [0, 7], orderable: false },
+                    { targets: 0, width: "30px" },
+                    { targets: 1, width: "16%" },
+                    { targets: 2, width: "17%" },
+                    { targets: 3, width: "9%" },
+                    { targets: 4, width: "12%" },
+                    { targets: 5, width: "15%" },
+                    { targets: 6, width: "11%" },
+                    { targets: 7, width: "132px" },
+                    { 
+                        targets: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
+                        visible: false
                     }
-                }
-            ]
-        });
+                ],
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Export Portfolio',
+                        filename: 'Framework_Portfolio',
+                        title: 'Framework Data Export',
+                        exportOptions: {
+                            columns: ':hidden'
+                        }
+                    }
+                ]
+            });
 
+            dt.on('draw', function () {
+                $('#portfolio-table').css('width', '100%');
+                insertMultiDeleteButton();
+                updateSelectedRowStyles();
+                var filteredCount = dt.rows({ search: 'applied' }).count();
+                $('#portfolio-total-count').text(filteredCount);
+            });
+
+            return dt;
+        }
+
+        var table = initPortfolioDataTable();
         insertMultiDeleteButton();
 
-        table.on('draw', function () {
-            $('#portfolio-table').css('width', '100%');
-            insertMultiDeleteButton();
-            updateSelectedRowStyles();
-            var filteredCount = table.rows({ search: 'applied' }).count();
-            $('#portfolio-total-count').text(filteredCount);
-        });
+        // Helper Toasts & UI Functions
+        function showToastSuccess(text) {
+            if (typeof Toastify === 'function') {
+                Toastify({
+                    text: text,
+                    duration: 3000,
+                    close: true,
+                    gravity: 'top-right',
+                    style: {
+                        background: "linear-gradient(to right, #10b981, #059669)",
+                    },
+                    backgroundColor: '#10b981',
+                    className: 'toast-portfolio-changed',
+                    ariaLive: 'polite'
+                }).showToast();
+            }
+        }
+
+        function showToastError(text) {
+            if (typeof Toastify === 'function') {
+                Toastify({
+                    text: text,
+                    duration: 4000,
+                    close: true,
+                    gravity: 'top-right',
+                    backgroundColor: '#ef4444',
+                    className: 'toast-portfolio-error',
+                    ariaLive: 'assertive'
+                }).showToast();
+            } else {
+                alert(text);
+            }
+        }
+
+        function showToastWithUndo(id) {
+            if (typeof Toastify === 'function') {
+                var toastInstance = Toastify({
+                    text: '<div class="toast-with-undo" role="status"><span>Marked as changed and hidden from results</span> <button type="button" class="toast-undo-action" data-id="' + id + '">Undo</button></div>',
+                    duration: 5000,
+                    close: true,
+                    gravity: 'top-right',
+                    escapeMarkup: false,
+                    style: {
+                        background: "linear-gradient(to right, #10b981, #059669)",
+                    },
+                    backgroundColor: '#10b981',
+                    className: 'toast-portfolio-changed',
+                    ariaLive: 'polite'
+                });
+                toastInstance.showToast();
+            }
+        }
+
+        function updateInfoBar(count, isIncludeChangedOn) {
+            var $bar = $('#changed-portfolios-infobar');
+            $bar.attr('data-total-changed', count);
+
+            if (count <= 0) {
+                $bar.hide();
+                return;
+            }
+
+            var plural = (count === 1) ? '' : 's';
+            if (isIncludeChangedOn) {
+                $('#infobar-text').html('Showing <strong id="infobar-changed-count">' + count + '</strong> changed website' + plural + '.');
+                $('#btn-toggle-changed-infobar').text('Hide them again').attr('data-action', 'hide');
+            } else {
+                $('#infobar-text').html('<strong id="infobar-changed-count">' + count + '</strong> changed website' + plural + ' are hidden from these results.');
+                $('#btn-toggle-changed-infobar').text('Show changed websites').attr('data-action', 'show');
+            }
+            $bar.show();
+        }
+
+        function updateAdvFilterDot() {
+            var isChecked = $('#toggle-include-changed').is(':checked');
+            var hasType = ($('#filter-type').val() || []).length > 0;
+            var hasCountry = ($('#filter-country').val() || []).length > 0;
+            var hasIndustries = ($('#filter-industries').val() || []).length > 0;
+            var hasProgLang = ($('#filter-prog_lang').val() || []).length > 0;
+            var hasFramework = ($('#filter-framework-portfolioedit').val() || []).length > 0;
+
+            if (isChecked || hasType || hasCountry || hasIndustries || hasProgLang || hasFramework) {
+                $('#advFilterDot').show();
+            } else {
+                $('#advFilterDot').hide();
+            }
+        }
+
+        function openInlineNotePanel(id, companyName, existingNote) {
+            closeInlineNotePanel();
+
+            var $tr = $('#portfolio-table tbody tr[data-id="' + id + '"]');
+            if ($tr.length === 0) return;
+
+            var panelHtml =
+                '<div class="portfolio-inline-note-panel" data-id="' + id + '">' +
+                    '<div class="inline-note-header">' +
+                        '<label for="inline-note-textarea-' + id + '" class="inline-note-label">' +
+                            'Note for <strong>' + escapeHtml(companyName) + '</strong>' +
+                        '</label>' +
+                        '<button type="button" class="inline-note-close-btn" aria-label="Close" title="Close (Esc)">&times;</button>' +
+                    '</div>' +
+                    '<div class="inline-note-body">' +
+                        '<textarea id="inline-note-textarea-' + id + '" class="form-control inline-note-textarea" rows="2" maxlength="50" placeholder="What changed on this website? (max 50 characters)">' + escapeHtml(existingNote || '') + '</textarea>' +
+                        '<div class="d-flex justify-content-between align-items-center mt-1">' +
+                            '<div class="inline-note-error" style="display: none;">Add a short note so you remember what changed.</div>' +
+                            '<div class="inline-note-char-counter text-muted small ml-auto"><span class="note-chars-used">' + (existingNote ? existingNote.length : 0) + '</span>/50</div>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="inline-note-footer">' +
+                        '<button type="button" class="btn btn-save-changed" data-id="' + id + '">' +
+                            '<i class="fas fa-check"></i> ' +
+                            '<span>Save as changed</span>' +
+                        '</button>' +
+                        '<button type="button" class="btn btn-cancel-changed">Cancel</button>' +
+                    '</div>' +
+                '</div>';
+
+            var dtRow = (table && table.row) ? table.row($tr) : null;
+            if (dtRow && dtRow.child) {
+                dtRow.child(panelHtml, 'inline-note-child-row').show();
+                $tr.addClass('note-panel-open');
+            } else {
+                $tr.after('<tr class="inline-note-child-row manual-child"><td colspan="8">' + panelHtml + '</td></tr>');
+            }
+
+            setTimeout(function() {
+                $('#inline-note-textarea-' + id).focus();
+            }, 50);
+        }
+
+        function closeInlineNotePanel() {
+            if (table && table.rows) {
+                table.rows().every(function() {
+                    if (this.child && this.child.isShown && this.child.isShown()) {
+                        this.child.hide();
+                    }
+                });
+            }
+            $('.inline-note-child-row').remove();
+            $('#portfolio-table tbody tr').removeClass('note-panel-open');
+        }
+
+        function reloadPortfolioTable(overrideIncludeChanged, callback) {
+            if (typeof overrideIncludeChanged === 'function') {
+                callback = overrideIncludeChanged;
+                overrideIncludeChanged = undefined;
+            }
+            var status = $('#portfolio_status').length ? $('#portfolio_status').val() : '0';
+            var isIncludeChangedOn;
+            if (typeof overrideIncludeChanged !== 'undefined') {
+                isIncludeChangedOn = overrideIncludeChanged ? 1 : 0;
+            } else {
+                isIncludeChangedOn = $('#toggle-include-changed').is(':checked') ? 1 : 0;
+            }
+            var currentKeyword = $('#global-portfolio-search').val();
+            var wasAdvFiltersOpen = $('#advanced-filters-panel').is(':visible');
+
+            $.ajax({
+                url: 'ajax_functions.php',
+                method: 'GET',
+                dataType: 'html',
+                data: {
+                    action: 'get_portfolios',
+                    value: status,
+                    include_changed: isIncludeChangedOn
+                },
+                success: function(response) {
+                    $('#ajax_table_print').html(response);
+
+                    table = initPortfolioDataTable();
+
+                    var customDropdown =
+                        '<select id="portfolio_status" class="custom-status-select">' +
+                        '<option value="0"' + (status === '0' ? ' selected' : '') + '>Published</option>' +
+                        '<option value="1"' + (status === '1' ? ' selected' : '') + '>Deleted</option>' +
+                        '</select>';
+                    $('#portfolio-table_wrapper .dataTables_filter').append(customDropdown);
+
+                    insertMultiDeleteButton();
+                    initSelect2Filters();
+                    populateFilterOptions(table);
+
+                    if (wasAdvFiltersOpen) {
+                        $('#advanced-filters-panel').show();
+                        $('#btn-toggle-advanced-filters').addClass('active');
+                    }
+                    updateAdvFilterDot();
+
+                    if (currentKeyword && currentKeyword.trim() !== '') {
+                        $('#global-portfolio-search').val(currentKeyword);
+                        table.search(currentKeyword.trim()).draw();
+                        $('#portfolio-table').unmark();
+                        $('#portfolio-table').mark(currentKeyword.trim(), {});
+                    }
+
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error reloading portfolios:', xhr);
+                    if (typeof callback === 'function') {
+                        callback(xhr);
+                    }
+                }
+            });
+        }
 
         // Function to populate filter options from table columns
         function populateFilterOptions(targetTable) {
@@ -2249,14 +2911,20 @@ include_once('footer.php');
         // =========================================================
         var searchHistoryList = [];
         var isSearchHistoryLoaded = false;
-        var $searchDropdown = $('#search-history-dropdown');
-        var $historyContainer = $('#history-items-container');
+        function getSearchDropdown() {
+            return $('#search-history-dropdown');
+        }
+
+        function getHistoryContainer() {
+            return $('#history-items-container');
+        }
 
         function renderSearchHistory(items) {
             searchHistoryList = items || [];
-            $historyContainer.empty();
+            var $container = getHistoryContainer();
+            $container.empty();
             if (!searchHistoryList || searchHistoryList.length === 0) {
-                $historyContainer.html('<div class="history-empty-state">No recent searches yet</div>');
+                $container.html('<div class="history-empty-state">No recent searches yet</div>');
                 return;
             }
             searchHistoryList.forEach(function(item) {
@@ -2269,7 +2937,7 @@ include_once('footer.php');
                     '</div>'
                 );
                 $entry.data('searchTerm', item.search_term);
-                $historyContainer.append($entry);
+                $container.append($entry);
             });
         }
 
@@ -2294,17 +2962,19 @@ include_once('footer.php');
         }
 
         function showSearchHistoryDropdown() {
+            var $dropdown = getSearchDropdown();
             if (!isSearchHistoryLoaded) {
                 fetchSearchHistory(function() {
-                    $searchDropdown.stop(true, true).fadeIn(150);
+                    getSearchDropdown().stop(true, true).fadeIn(150);
                 });
             } else {
-                $searchDropdown.stop(true, true).fadeIn(150);
+                renderSearchHistory(searchHistoryList);
+                $dropdown.stop(true, true).fadeIn(150);
             }
         }
 
         function hideSearchHistoryDropdown() {
-            $searchDropdown.stop(true, true).fadeOut(150);
+            getSearchDropdown().stop(true, true).fadeOut(150);
         }
 
         var searchHistoryDebounceTimer = null;
@@ -2492,8 +3162,20 @@ include_once('footer.php');
             $('#filter-prog_lang').val(null);
             $('#filter-framework-portfolioedit').val(null);
             $('#filter-type, #filter-country, #filter-industries, #filter-prog_lang, #filter-framework-portfolioedit').trigger('change.select2');
-            table.search('').columns().search('').draw();
-            $('#portfolio-table').unmark();
+
+            var wasChangedOn = $('#toggle-include-changed').is(':checked');
+            if (wasChangedOn) {
+                $('#toggle-include-changed').prop('checked', false);
+                var url = new URL(window.location.href);
+                url.searchParams.delete('include_changed');
+                window.history.replaceState({}, '', url.toString());
+                updateAdvFilterDot();
+                reloadPortfolioTable();
+            } else {
+                updateAdvFilterDot();
+                table.search('').columns().search('').draw();
+                $('#portfolio-table').unmark();
+            }
         });
 
         // Append custom status dropdown
@@ -2507,71 +3189,284 @@ include_once('footer.php');
 
         // Status change handler
         $(document).on('change', '#portfolio_status', function() {
-            var selectedValue = $(this).val();
+            reloadPortfolioTable();
+        });
+
+        // Toggle Switch: Included changed websites
+        $(document).on('change', '#toggle-include-changed', function() {
+            var isChecked = $(this).is(':checked');
+
+            var url = new URL(window.location.href);
+            if (isChecked) {
+                url.searchParams.set('include_changed', '1');
+            } else {
+                url.searchParams.delete('include_changed');
+            }
+            window.history.replaceState({}, '', url.toString());
+
+            updateAdvFilterDot();
+            reloadPortfolioTable(isChecked);
+        });
+
+        // Info bar action button
+        $(document).on('click', '#btn-toggle-changed-infobar', function(e) {
+            e.preventDefault();
+            var action = $(this).attr('data-action');
+            var shouldShow = (action === 'show');
+
+            $('#toggle-include-changed').prop('checked', shouldShow);
+
+            var url = new URL(window.location.href);
+            if (shouldShow) {
+                url.searchParams.set('include_changed', '1');
+            } else {
+                url.searchParams.delete('include_changed');
+            }
+            window.history.replaceState({}, '', url.toString());
+
+            updateAdvFilterDot();
+            reloadPortfolioTable(shouldShow);
+        });
+
+        // Live character counter for inline note textarea
+        $(document).on('input', '.inline-note-textarea', function() {
+            var len = $(this).val().length;
+            var $panel = $(this).closest('.portfolio-inline-note-panel');
+            $panel.find('.note-chars-used').text(len);
+            if (len > 0) {
+                $panel.find('.inline-note-error').hide();
+            }
+        });
+
+        // Save as changed button inside inline note panel
+        $(document).on('click', '.btn-save-changed', function(e) {
+            e.preventDefault();
+            var $btn = $(this);
+            var id = $btn.attr('data-id');
+            var $panel = $btn.closest('.portfolio-inline-note-panel');
+            var $textarea = $panel.find('.inline-note-textarea');
+            var note = $textarea.val().trim();
+
+            if (note === '') {
+                $panel.find('.inline-note-error').text('Add a short note so you remember what changed.').show();
+                $textarea.focus();
+                return;
+            }
+            if (note.length > 50) {
+                $panel.find('.inline-note-error').text('Note cannot exceed 50 characters.').show();
+                $textarea.focus();
+                return;
+            }
+            $panel.find('.inline-note-error').hide();
+
+            // Double clicks on Save must not submit twice
+            if ($btn.prop('disabled')) return;
+            $btn.prop('disabled', true).addClass('loading');
+            var $btnSpan = $btn.find('span');
+            var origText = $btnSpan.text();
+            $btnSpan.text('Saving...');
+
             $.ajax({
                 url: 'ajax_functions.php',
-                method: 'GET',
+                type: 'POST',
                 data: {
-                    action: 'get_portfolios',
-                    value: selectedValue
+                    action: 'mark_changed',
+                    id: id,
+                    note: note
                 },
-                success: function(response) {
-                    $('#ajax_table_print').html(response);
-                    var newTable = $('#portfolio-table').DataTable({
-                        "autoWidth": false,
-                        "paging": false,
-                        "info": false,
-                        "aaSorting": [],
-                        dom: '<"portfolio-table-toolbar"f><"portfolio-table-scroll"t>',
-                        language: {
-                            search: "_INPUT_",
-                            searchPlaceholder: "Search portfolios..."
-                        },
-                        columnDefs: [
-                            { targets: [0, 7], orderable: false },
-                            { targets: 0, width: "30px" },
-                            { targets: 1, width: "16%" },
-                            { targets: 2, width: "17%" },
-                            { targets: 3, width: "9%" },
-                            { targets: 4, width: "12%" },
-                            { targets: 5, width: "15%" },
-                            { targets: 6, width: "11%" },
-                            { targets: 7, width: "132px" },
-                            { 
-                                targets: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36],
-                                visible: false
-                            }
-                        ]
-                    });
-                    newTable.on('draw', function() {
-                        $('#portfolio-table').css('width', '100%');
-                        insertMultiDeleteButton();
-                        updateSelectedRowStyles();
-                        var filteredCount = newTable.rows({ search: 'applied' }).count();
-                        $('#portfolio-total-count').text(filteredCount);
-                    });
-                    var customDropdown =
-                        '<select id="portfolio_status" class="custom-status-select">' +
-                        '<option value="0">Published</option>' +
-                        '<option value="1">Deleted</option>' +
-                        '</select>';
-                    var $dropdown = $(customDropdown);
-                    $dropdown.find('option').each(function() {
-                        if ($(this).val() === selectedValue) {
-                            $(this).prop('selected', true);
-                        }
-                    });
-                    $('#portfolio-table_wrapper .dataTables_filter').append($dropdown);
-                    insertMultiDeleteButton();
-                    initSelect2Filters();
-                    populateFilterOptions(newTable);
-                    table = newTable;
+                dataType: 'json',
+                success: function(res) {
+                    if (res && res.success) {
+                        handleMarkChangedSuccess(id, note, res);
+                    } else {
+                        $btn.prop('disabled', false).removeClass('loading');
+                        $btnSpan.text(origText);
+                        var msg = (res && res.message) ? res.message : 'Error marking as changed.';
+                        showToastError(msg);
+                        // Keep the panel open with the typed note
+                    }
                 },
-                error: function(error) {
-                    console.error('Error:', error);
+                error: function() {
+                    $btn.prop('disabled', false).removeClass('loading');
+                    $btnSpan.text(origText);
+                    showToastError('Network or server error. Please try again.');
+                    // Keep the panel open with the typed note
                 }
             });
         });
+
+        // Handle Mark Changed Success
+        function handleMarkChangedSuccess(id, note, res) {
+            closeInlineNotePanel();
+
+            var isIncludeChangedOn = $('#toggle-include-changed').is(':checked');
+            var $tr = $('#portfolio-table tbody tr[data-id="' + id + '"]');
+
+            if (!isIncludeChangedOn) {
+                // Filter is OFF: row disappears from list, found count goes down by 1
+                var currentTotalChanged = parseInt($('#changed-portfolios-infobar').attr('data-total-changed') || '0', 10);
+                currentTotalChanged++;
+                updateInfoBar(currentTotalChanged, false);
+
+                $tr.fadeOut(200, function() {
+                    if (table && table.row) {
+                        table.row($tr).remove().draw(false);
+
+                        // Pagination: if hiding a row leaves a page empty, load the previous page
+                        if (table.page) {
+                            var pageInfo = table.page.info();
+                            if (pageInfo && pageInfo.pages > 1 && table.rows({ page: 'current' }).count() === 0 && pageInfo.page > 0) {
+                                table.page('previous').draw('page');
+                            }
+                        }
+                    } else {
+                        $tr.remove();
+                    }
+
+                    var countEl = $('#portfolio-total-count');
+                    var curCount = parseInt(countEl.text(), 10) || 0;
+                    if (curCount > 0) {
+                        countEl.text(curCount - 1);
+                    }
+                });
+
+                showToastWithUndo(id);
+            } else {
+                // Filter is ON: row stays and updates in place with badge and note
+                $tr.addClass('row-changed');
+                $tr.attr('data-is-changed', '1');
+                $tr.attr('data-changed-note', note);
+
+                var $dotsBtn = $tr.find('.action-dots-btn');
+                $dotsBtn.attr('data-is-changed', '1');
+                $dotsBtn.attr('data-changed-note', note);
+
+                var $companyTd = $tr.find('td.company_name');
+                var companyName = $tr.attr('data-company-name') || $companyTd.find('.company-name-text').text() || $companyTd.text().trim();
+
+                $companyTd.html(
+                    '<div class="company-name-wrapper">' +
+                        '<span class="company-name-text">' + escapeHtml(companyName) + '</span>' +
+                        '<span class="portfolio-badge badge-changed">Changed</span>' +
+                    '</div>' +
+                    '<div class="changed-note-text" title="' + escapeHtml(note) + '">' +
+                        escapeHtml(note) +
+                    '</div>'
+                );
+
+                var currentTotalChanged = parseInt($('#changed-portfolios-infobar').attr('data-total-changed') || '0', 10);
+                if ($tr.attr('data-was-changed') !== '1') {
+                    currentTotalChanged++;
+                    updateInfoBar(currentTotalChanged, true);
+                    $tr.attr('data-was-changed', '1');
+                }
+
+                showToastSuccess('Change note saved');
+            }
+        }
+
+        // Unmark portfolio changed
+        function unmarkPortfolioChanged(id) {
+            $.ajax({
+                url: 'ajax_functions.php',
+                type: 'POST',
+                data: {
+                    action: 'unmark_changed',
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res && res.success) {
+                        var isIncludeChangedOn = $('#toggle-include-changed').is(':checked');
+                        if (isIncludeChangedOn) {
+                            var $tr = $('#portfolio-table tbody tr[data-id="' + id + '"]');
+                            $tr.removeClass('row-changed');
+                            $tr.attr('data-is-changed', '0');
+                            $tr.attr('data-changed-note', '');
+                            $tr.attr('data-was-changed', '0');
+
+                            var $dotsBtn = $tr.find('.action-dots-btn');
+                            $dotsBtn.attr('data-is-changed', '0');
+                            $dotsBtn.attr('data-changed-note', '');
+
+                            var $companyTd = $tr.find('td.company_name');
+                            var companyName = $tr.attr('data-company-name') || $companyTd.find('.company-name-text').text() || $companyTd.text().trim();
+
+                            $companyTd.html(
+                                '<div class="company-name-wrapper">' +
+                                    '<span class="company-name-text">' + escapeHtml(companyName) + '</span>' +
+                                '</div>'
+                            );
+
+                            var currentTotalChanged = parseInt($('#changed-portfolios-infobar').attr('data-total-changed') || '0', 10);
+                            if (currentTotalChanged > 0) currentTotalChanged--;
+                            updateInfoBar(currentTotalChanged, true);
+
+                            showToastSuccess('Unmarked as changed');
+                        } else {
+                            reloadPortfolioTable(function() {
+                                showToastSuccess('Unmarked as changed');
+                            });
+                        }
+                    } else {
+                        var msg = (res && res.message) ? res.message : 'Error unmarking as changed.';
+                        showToastError(msg);
+                    }
+                },
+                error: function() {
+                    showToastError('Network or server error. Please try again.');
+                }
+            });
+        }
+
+        // Undo action handler
+        $(document).on('click', '.toast-undo-action', function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            $(this).closest('.toastify').remove();
+
+            $.ajax({
+                url: 'ajax_functions.php',
+                type: 'POST',
+                data: {
+                    action: 'unmark_changed',
+                    id: id
+                },
+                dataType: 'json',
+                success: function(res) {
+                    if (res && res.success) {
+                        reloadPortfolioTable(function() {
+                            showToastSuccess('Restored to results');
+                        });
+                    } else {
+                        var msg = (res && res.message) ? res.message : 'Failed to undo.';
+                        showToastError(msg);
+                    }
+                },
+                error: function() {
+                    showToastError('Network error while undoing.');
+                }
+            });
+        });
+
+        // Cancel and Close buttons for inline note panel
+        $(document).on('click', '.btn-cancel-changed, .inline-note-close-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeInlineNotePanel();
+        });
+
+        // Close on Escape key
+        $(document).on('keydown', function(e) {
+            if (e.which === 27) { // Escape
+                if ($('.portfolio-inline-note-panel').length > 0) {
+                    closeInlineNotePanel();
+                }
+            }
+        });
+
+        // Initialize dot state on initial load
+        updateAdvFilterDot();
     });
 </script>
 

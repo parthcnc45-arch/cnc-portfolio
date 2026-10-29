@@ -66,9 +66,141 @@ header('Content-Type: application/json');
     }
 
     if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'get_portfolios') {
-        $status = $_REQUEST['value'];
-        $result = mysqli_query($conn,"SELECT * FROM portfolio WHERE `deleted`='$status' ORDER BY timestamp DESC");
+        header('Content-Type: text/html; charset=UTF-8');
+        $status = isset($_REQUEST['value']) ? intval($_REQUEST['value']) : 0;
+        $include_changed = isset($_REQUEST['include_changed']) && $_REQUEST['include_changed'] == '1' ? 1 : 0;
+        $changed_filter = $include_changed ? "" : " AND is_changed = 0";
+        $result = mysqli_query($conn,"SELECT * FROM portfolio WHERE `deleted`='$status'$changed_filter ORDER BY timestamp DESC");
         include 'portfolios-table.php';
+        exit;
+    }
+
+    // Mark portfolio as changed
+    if (isset($_POST['action']) && $_POST['action'] === 'mark_changed') {
+        $userId = getCurrentAuthUserId($conn);
+        if (!$userId) {
+            http_response_code(401);
+            echo json_encode(["success" => false, "message" => "Unauthorized. Please log in."]);
+            exit;
+        }
+
+        $id = isset($_POST['id']) ? intval($_POST['id']) : (isset($_POST['portfolio_id']) ? intval($_POST['portfolio_id']) : 0);
+        if ($id <= 0) {
+            echo json_encode(["success" => false, "message" => "Invalid portfolio ID."]);
+            exit;
+        }
+
+        // Validate existence
+        $checkStmt = mysqli_prepare($conn, "SELECT id, company_name FROM portfolio WHERE id = ? LIMIT 1");
+        if (!$checkStmt) {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Database error."]);
+            exit;
+        }
+        mysqli_stmt_bind_param($checkStmt, "i", $id);
+        mysqli_stmt_execute($checkStmt);
+        $checkRes = mysqli_stmt_get_result($checkStmt);
+        $portfolioRow = mysqli_fetch_assoc($checkRes);
+        mysqli_stmt_close($checkStmt);
+
+        if (!$portfolioRow) {
+            echo json_encode(["success" => false, "message" => "Portfolio record not found."]);
+            exit;
+        }
+
+        // Validate note
+        $note = isset($_POST['note']) ? trim($_POST['note']) : '';
+        if ($note === '') {
+            echo json_encode(["success" => false, "message" => "Add a short note so you remember what changed."]);
+            exit;
+        }
+        if (mb_strlen($note) > 50) {
+            echo json_encode(["success" => false, "message" => "Note cannot exceed 50 characters."]);
+            exit;
+        }
+
+        // Update record using prepared statement
+        $updateStmt = mysqli_prepare($conn, "UPDATE portfolio SET is_changed = 1, changed_note = ?, changed_at = NOW(), changed_by = ? WHERE id = ?");
+        if (!$updateStmt) {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Failed to prepare update."]);
+            exit;
+        }
+        mysqli_stmt_bind_param($updateStmt, "sii", $note, $userId, $id);
+        $executed = mysqli_stmt_execute($updateStmt);
+        mysqli_stmt_close($updateStmt);
+
+        if ($executed) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Marked as changed successfully.",
+                "id" => $id,
+                "company_name" => $portfolioRow['company_name'],
+                "note" => $note
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Failed to update record: " . mysqli_error($conn)]);
+        }
+        exit;
+    }
+
+    // Unmark portfolio as changed
+    if (isset($_POST['action']) && $_POST['action'] === 'unmark_changed') {
+        $userId = getCurrentAuthUserId($conn);
+        if (!$userId) {
+            http_response_code(401);
+            echo json_encode(["success" => false, "message" => "Unauthorized. Please log in."]);
+            exit;
+        }
+
+        $id = isset($_POST['id']) ? intval($_POST['id']) : (isset($_POST['portfolio_id']) ? intval($_POST['portfolio_id']) : 0);
+        if ($id <= 0) {
+            echo json_encode(["success" => false, "message" => "Invalid portfolio ID."]);
+            exit;
+        }
+
+        // Validate existence
+        $checkStmt = mysqli_prepare($conn, "SELECT id, company_name FROM portfolio WHERE id = ? LIMIT 1");
+        if (!$checkStmt) {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Database error."]);
+            exit;
+        }
+        mysqli_stmt_bind_param($checkStmt, "i", $id);
+        mysqli_stmt_execute($checkStmt);
+        $checkRes = mysqli_stmt_get_result($checkStmt);
+        $portfolioRow = mysqli_fetch_assoc($checkRes);
+        mysqli_stmt_close($checkStmt);
+
+        if (!$portfolioRow) {
+            echo json_encode(["success" => false, "message" => "Portfolio record not found."]);
+            exit;
+        }
+
+        // Reset is_changed, clear note and changed_at
+        $updateStmt = mysqli_prepare($conn, "UPDATE portfolio SET is_changed = 0, changed_note = NULL, changed_at = NULL, changed_by = NULL WHERE id = ?");
+        if (!$updateStmt) {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Failed to prepare update."]);
+            exit;
+        }
+        mysqli_stmt_bind_param($updateStmt, "i", $id);
+        $executed = mysqli_stmt_execute($updateStmt);
+        mysqli_stmt_close($updateStmt);
+
+        if ($executed) {
+            echo json_encode([
+                "success" => true,
+                "message" => "Unmarked as changed successfully.",
+                "id" => $id,
+                "company_name" => $portfolioRow['company_name']
+            ]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["success" => false, "message" => "Failed to update record: " . mysqli_error($conn)]);
+        }
+        exit;
     }
 
     if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'get_clients') {

@@ -1,15 +1,24 @@
 <?php
 require_once 'country_flags_helper.php';
 
-function call_all_rows_and_append_in_select_option($conn, $table_name, $col_name)
-{
-    $sql = "SELECT id,$col_name FROM $table_name";
-    $result = mysqli_query($conn, $sql);
-    $options = "";
-    while ($row = mysqli_fetch_assoc($result)) {
-        $options .= "<option value='" . $row[$col_name] . "'>" . htmlspecialchars($row[$col_name]) . "</option>";
+$include_changed = isset($include_changed) ? (int)$include_changed : (isset($_REQUEST['include_changed']) && $_REQUEST['include_changed'] == '1' ? 1 : 0);
+$status_val = isset($status) ? (int)$status : (isset($_REQUEST['value']) ? (int)$_REQUEST['value'] : 0);
+
+$changed_count_query = mysqli_query($conn, "SELECT COUNT(*) as total FROM portfolio WHERE `deleted`='$status_val' AND is_changed = 1");
+$changed_count_row = mysqli_fetch_assoc($changed_count_query);
+$total_changed = (int)($changed_count_row['total'] ?? 0);
+
+if (!function_exists('call_all_rows_and_append_in_select_option')) {
+    function call_all_rows_and_append_in_select_option($conn, $table_name, $col_name)
+    {
+        $sql = "SELECT id,$col_name FROM $table_name";
+        $result = mysqli_query($conn, $sql);
+        $options = "";
+        while ($row = mysqli_fetch_assoc($result)) {
+            $options .= "<option value='" . $row[$col_name] . "'>" . htmlspecialchars($row[$col_name]) . "</option>";
+        }
+        return $options;
     }
-    return $options;
 }
 
 if (!function_exists('render_tech_badges')) {
@@ -115,6 +124,7 @@ if (!function_exists('render_industry_badges')) {
             <button type="button" id="btn-toggle-advanced-filters" class="btn-filter-action btn-advanced-toggle">
                 <i class="fas fa-filter"></i>
                 <span>Advanced Filters</span>
+                <span class="filter-count-dot" id="advFilterDot" style="<?php echo !empty($include_changed) ? 'display: inline-block;' : 'display: none;'; ?>"></span>
             </button>
             <button type="button" id="btn-clear-filters" class="btn-filter-action btn-clear-filters">
                 <i class="fas fa-times"></i>
@@ -170,10 +180,44 @@ if (!function_exists('render_industry_badges')) {
                 </div>
             </div>
         </div>
+
+        <div class="advanced-filters-divider"></div>
+        <div class="advanced-filters-toggle-row">
+            <div class="toggle-switch-wrapper">
+                <label class="switch-toggle" for="toggle-include-changed">
+                    <input type="checkbox" id="toggle-include-changed" name="include_changed" value="1" <?php echo !empty($include_changed) ? 'checked' : ''; ?>>
+                    <span class="switch-slider"></span>
+                </label>
+                <div class="toggle-label-group">
+                    <label for="toggle-include-changed" class="toggle-title">Included changed websites</label>
+                    <span class="toggle-help-text">Websites marked as changed are hidden from results by default. Turn this on to see them with their notes.</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <input type="file" id="importFile" accept=".xlsx" style="display: none;" />
+
+<div id="changed-portfolios-infobar" class="changed-portfolios-infobar" style="<?php echo ($total_changed > 0) ? '' : 'display: none;'; ?>" data-total-changed="<?php echo $total_changed; ?>">
+    <div class="infobar-content">
+        <i class="fas fa-info-circle infobar-icon"></i>
+        <span class="infobar-text" id="infobar-text">
+            <?php if (!empty($include_changed)): ?>
+                Showing <strong id="infobar-changed-count"><?php echo $total_changed; ?></strong> changed website<?php echo ($total_changed === 1) ? '' : 's'; ?>.
+            <?php else: ?>
+                <strong id="infobar-changed-count"><?php echo $total_changed; ?></strong> changed website<?php echo ($total_changed === 1) ? '' : 's'; ?> are hidden from these results.
+            <?php endif; ?>
+        </span>
+    </div>
+    <div class="infobar-action">
+        <?php if (!empty($include_changed)): ?>
+            <button type="button" id="btn-toggle-changed-infobar" class="btn-infobar-toggle" data-action="hide">Hide them again</button>
+        <?php else: ?>
+            <button type="button" id="btn-toggle-changed-infobar" class="btn-infobar-toggle" data-action="show">Show changed websites</button>
+        <?php endif; ?>
+    </div>
+</div>
 
 <div class="portfolio-table-card">
     <div class="table-scroll-hint">
@@ -242,9 +286,26 @@ if (!function_exists('render_industry_badges')) {
                         $timestamp = strtotime($row['timestamp']);
                         $dateformat = date("d/m/Y h:i A", $timestamp);
                 ?>
-                        <tr>
+                        <tr data-id="<?php echo $row['id']; ?>"
+                            data-is-changed="<?php echo (int)($row['is_changed'] ?? 0); ?>"
+                            data-was-changed="<?php echo (int)($row['is_changed'] ?? 0); ?>"
+                            data-changed-note="<?php echo htmlspecialchars($row['changed_note'] ?? '', ENT_QUOTES); ?>"
+                            data-company-name="<?php echo htmlspecialchars($row['company_name'] ?? '', ENT_QUOTES); ?>"
+                            class="<?php echo (!empty($row['is_changed'])) ? 'row-changed' : ''; ?>">
                             <td class="col-checkbox"><input type='checkbox' class='rowCheckbox' value='<?php echo $row["id"]; ?>'></td>
-                            <td class="company_name" title="<?php echo htmlspecialchars($row['company_name'] ?? ''); ?>"><?php echo htmlspecialchars($row['company_name'] ?? ''); ?></td>
+                            <td class="company_name" title="<?php echo htmlspecialchars($row['company_name'] ?? ''); ?>">
+                                <div class="company-name-wrapper">
+                                    <span class="company-name-text"><?php echo htmlspecialchars($row['company_name'] ?? ''); ?></span>
+                                    <?php if (!empty($row['is_changed'])): ?>
+                                        <span class="portfolio-badge badge-changed">Changed</span>
+                                    <?php endif; ?>
+                                </div>
+                                <?php if (!empty($row['is_changed']) && !empty($row['changed_note'])): ?>
+                                    <div class="changed-note-text" title="<?php echo htmlspecialchars($row['changed_note']); ?>">
+                                        <?php echo htmlspecialchars($row['changed_note']); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </td>
                             <td class="col-website">
                                 <?php if (!empty($row['website_url'])): ?>
                                     <div class="website-url-wrapper">
@@ -304,7 +365,15 @@ if (!function_exists('render_industry_badges')) {
                                             <span>View</span>
                                         </a>
                                     <?php endif; ?>
-                                    <button type="button" class="action-dots-btn" data-id="<?php echo $row['id']; ?>" title="More Actions">
+                                    <button type="button" class="action-dots-btn" 
+                                        data-id="<?php echo $row['id']; ?>" 
+                                        data-is-changed="<?php echo (int)($row['is_changed'] ?? 0); ?>"
+                                        data-changed-note="<?php echo htmlspecialchars($row['changed_note'] ?? '', ENT_QUOTES); ?>"
+                                        data-company-name="<?php echo htmlspecialchars($row['company_name'] ?? '', ENT_QUOTES); ?>"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                        aria-label="More actions for <?php echo htmlspecialchars($row['company_name'] ?? '', ENT_QUOTES); ?>"
+                                        title="More Actions">
                                         <i class="fas fa-ellipsis-v"></i>
                                     </button>
                                 </div>
