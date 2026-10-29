@@ -1,6 +1,26 @@
 <?php
 include_once('db.php');
 
+// Restore a remembered login when the regular PHP session has expired.
+if (!isset($_SESSION['username']) && !empty($_COOKIE['cnc_portfolio_remember']) && isset($conn) && $conn) {
+    $rememberHash = hash('sha256', (string)$_COOKIE['cnc_portfolio_remember']);
+    $rememberStmt = mysqli_prepare($conn, 'SELECT id, username, email FROM users WHERE remember_token = ? AND remember_expires_at > NOW() LIMIT 1');
+    if ($rememberStmt) {
+        mysqli_stmt_bind_param($rememberStmt, 's', $rememberHash);
+        mysqli_stmt_execute($rememberStmt);
+        $rememberResult = mysqli_stmt_get_result($rememberStmt);
+        $rememberUser = $rememberResult ? mysqli_fetch_assoc($rememberResult) : null;
+        mysqli_stmt_close($rememberStmt);
+        if ($rememberUser) {
+            session_regenerate_id(true);
+            $_SESSION['username'] = (string)($rememberUser['email'] ?: $rememberUser['username']);
+            $_SESSION['user_id'] = (int)$rememberUser['id'];
+        } else {
+            setcookie('cnc_portfolio_remember', '', ['expires' => time() - 3600, 'path' => '/', 'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'httponly' => true, 'samesite' => 'Lax']);
+        }
+    }
+}
+
 if (isset($_SESSION['username'])) {
     header("Location: portfolios.php");
     exit();
@@ -64,6 +84,13 @@ unset($_SESSION['login_error']);
                             <label for="otp">6-digit OTP</label>
                             <input type="text" class="form-control" id="otp" name="otp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="Enter email OTP" autocomplete="one-time-code" required>
                         </div>
+                        <div class="form-group mb-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="remember-me" name="remember_me" value="1">
+                                <label class="custom-control-label" for="remember-me">Remember me for 2 months</label>
+                            </div>
+                            <small class="form-text text-muted">Only select this on a device you trust.</small>
+                        </div>
                         <button type="submit" class="btn btn-login btn-block" id="verify-otp-btn"><i class="fas fa-lock-open mr-1"></i> Verify and Login</button>
                         <button type="button" class="btn btn-link btn-block" id="resend-otp-btn">Resend OTP</button>
                         <button type="button" class="btn btn-link btn-block" id="change-email-btn">Use a different email</button>
@@ -106,7 +133,10 @@ unset($_SESSION['login_error']);
             }
         }
         const payload=new URLSearchParams({action:action,email:emailInput.value.trim(),csrf_token:document.querySelector('#email-form [name="csrf_token"]').value});
-        if(action==='verify_otp')payload.set('otp',otpInput.value.trim());
+        if(action==='verify_otp'){
+            payload.set('otp',otpInput.value.trim());
+            payload.set('remember_me',document.getElementById('remember-me').checked?'1':'0');
+        }
         try{
             const response=await fetch('otp-auth.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','X-Requested-With':'XMLHttpRequest'},body:payload.toString(),credentials:'same-origin'});
             const data=await response.json();
