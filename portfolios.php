@@ -1700,17 +1700,19 @@ include_once('sidebar.php');
 
     /* Loading state while the portfolio table is refreshed by AJAX */
     #ajax_table_print { position: relative; min-height: 120px; }
-    #ajax_table_print.portfolio-ajax-loading::after {
+    #ajax_table_print .portfolio-table-card { position: relative; }
+    #ajax_table_print.portfolio-ajax-loading .portfolio-table-card::after {
         content: "Loading portfolio data...";
         position: absolute; inset: 0; z-index: 100;
-        display: flex; align-items: flex-start; justify-content: center;
-        padding-top: 110px; box-sizing: border-box;
+        display: flex; align-items: center; justify-content: center;
+        padding-top: 55px; box-sizing: border-box;
         color: #4f46e5; font-size: 14px; font-weight: 600;
-        background: rgba(255,255,255,.78); cursor: progress;
+        background: rgba(255,255,255,.82); cursor: progress;
+        backdrop-filter: blur(1px);
     }
-    #ajax_table_print.portfolio-ajax-loading::before {
-        content: ""; position: absolute; top: 70px; left: calc(50% - 15px);
-        width: 28px; height: 28px; border: 3px solid #e0e7ff;
+    #ajax_table_print.portfolio-ajax-loading .portfolio-table-card::before {
+        content: ""; position: absolute; top: calc(50% - 24px); left: calc(50% - 15px);
+        width: 30px; height: 30px; border: 3px solid #e0e7ff;
         border-top-color: #5b52f9; border-radius: 50%;
         animation: portfolioAjaxSpin .75s linear infinite; z-index: 101;
     }
