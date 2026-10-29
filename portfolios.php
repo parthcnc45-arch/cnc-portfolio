@@ -2312,7 +2312,10 @@ include_once('footer.php');
 
         function saveSearchHistory(term) {
             var trimmed = (term || '').trim();
-            if (trimmed === '') return;
+
+            // Only store search terms containing at least 3 characters.
+            // This also protects explicit Search/Enter actions from saving 1-2 character terms.
+            if (trimmed.length < 3) return;
 
             // Avoid a second save when the debounce and Search/Enter happen together.
             var normalizedTerm = trimmed.toLocaleLowerCase();
@@ -2343,11 +2346,16 @@ include_once('footer.php');
             });
         }
 
-        // Save the latest meaningful keyword only after the user pauses typing.
+        // Save only keywords of 3+ characters after the user pauses typing.
         function debounceSaveSearchHistory(term) {
             clearTimeout(searchHistoryDebounceTimer);
+            searchHistoryDebounceTimer = null;
+
+            var trimmed = (term || '').trim();
+            if (trimmed.length < 3) return;
+
             searchHistoryDebounceTimer = setTimeout(function() {
-                saveSearchHistory(term);
+                saveSearchHistory(trimmed);
             }, 5000);
         }
 
