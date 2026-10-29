@@ -145,7 +145,7 @@ unset($_SESSION['login_error']);
                 emailForm.style.display='none';otpForm.style.display='block';otpInput.focus();
                 showMessage(data.message,'success');startCooldown(data.resend_after||60);
             }else if(action==='verify_otp'){
-                showMessage('Login successful. Redirecting…','success');window.location.href=data.redirect||'portfolios.php';
+                showMessage('Login successful. Redirecting…','success');window.location.href=data.redirect||'index.php';
             }
             return data;
         }catch(error){showMessage(error.message||'Network error. Please try again.','error');return null;}
