@@ -30,8 +30,11 @@ unset($_SESSION['login_error']);
         .login-card-body{padding:24px 28px 30px}.form-group label{font-size:13.5px;font-weight:600;color:#334155;margin-bottom:6px}
         .form-control{height:44px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:14px}
         .form-control:focus{border-color:#5b52f9;box-shadow:0 0 0 3px rgba(91,82,249,.12)}
-        .btn-login{background:#5b52f9;border-color:#5b52f9;color:#fff!important;font-size:14.5px;font-weight:600;height:44px;border-radius:8px;box-shadow:0 2px 8px rgba(91,82,249,.25)}
-        .btn-login:hover{background:#483fe6;border-color:#483fe6}.login-message{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:18px;display:none}
+        .btn-login{background:#5b52f9;border-color:#5b52f9;color:#fff!important;font-size:14.5px;font-weight:600;height:44px;border-radius:8px;box-shadow:0 2px 8px rgba(91,82,249,.25);transition:background .15s ease,opacity .15s ease}
+        .btn-login:hover{background:#483fe6;border-color:#483fe6}
+        .btn-login:disabled{background:#8b83fb;border-color:#8b83fb;opacity:1;cursor:wait;box-shadow:none}
+        .btn-login .otp-spinner{margin-right:8px}
+        .login-message{border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:18px;display:none}
         .login-message.error{display:block;background:#fef2f2;border:1px solid #fee2e2;color:#b91c1c}.login-message.success{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
         .small-note{font-size:12.5px;color:#64748b;line-height:1.5}
     </style>
@@ -87,8 +90,21 @@ unset($_SESSION['login_error']);
     }
     function clearMessage(){message.textContent='';message.className='login-message';}
     async function request(action,button){
+        if(button&&button.disabled)return null;
         clearMessage();
-        if(button)button.disabled=true;
+        const originalButtonContent=button?button.innerHTML:'';
+        if(button){
+            button.disabled=true;
+            button.setAttribute('aria-busy','true');
+            if(action==='send_otp'){
+                button.innerHTML='<i class="fas fa-circle-notch fa-spin otp-spinner" aria-hidden="true"></i> Sending OTP…';
+                showMessage('Sending your verification code by email. Please wait…','success');
+            }else if(action==='verify_otp'){
+                button.innerHTML='<i class="fas fa-circle-notch fa-spin otp-spinner" aria-hidden="true"></i> Verifying…';
+            }else if(button===resendBtn){
+                button.innerHTML='<i class="fas fa-circle-notch fa-spin otp-spinner" aria-hidden="true"></i> Sending…';
+            }
+        }
         const payload=new URLSearchParams({action:action,email:emailInput.value.trim(),csrf_token:document.querySelector('#email-form [name="csrf_token"]').value});
         if(action==='verify_otp')payload.set('otp',otpInput.value.trim());
         try{
@@ -103,7 +119,13 @@ unset($_SESSION['login_error']);
             }
             return data;
         }catch(error){showMessage(error.message||'Network error. Please try again.','error');return null;}
-        finally{if(button)button.disabled=false;}
+        finally{
+            if(button){
+                button.disabled=false;
+                button.removeAttribute('aria-busy');
+                button.innerHTML=originalButtonContent;
+            }
+        }
     }
     function startCooldown(seconds){
         resendUntil=Date.now()+seconds*1000;resendBtn.disabled=true;
