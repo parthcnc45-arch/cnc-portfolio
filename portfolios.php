@@ -2356,7 +2356,7 @@ include_once('footer.php');
 
             searchHistoryDebounceTimer = setTimeout(function() {
                 saveSearchHistory(trimmed);
-            }, 5000);
+            }, 2000);
         }
 
         // Flush any pending history save when the user explicitly searches.
