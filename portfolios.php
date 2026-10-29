@@ -1697,6 +1697,26 @@ include_once('sidebar.php');
     /* Focus States for Accessibility */
     .action-dots-btn:focus-visible,
     .btn-filter-action:focus-visible,
+
+    /* Loading state while the portfolio table is refreshed by AJAX */
+    #ajax_table_print { position: relative; min-height: 120px; }
+    #ajax_table_print.portfolio-ajax-loading::after {
+        content: "Loading portfolio data...";
+        position: absolute; inset: 0; z-index: 100;
+        display: flex; align-items: flex-start; justify-content: center;
+        padding-top: 110px; box-sizing: border-box;
+        color: #4f46e5; font-size: 14px; font-weight: 600;
+        background: rgba(255,255,255,.78); cursor: progress;
+    }
+    #ajax_table_print.portfolio-ajax-loading::before {
+        content: ""; position: absolute; top: 70px; left: calc(50% - 15px);
+        width: 28px; height: 28px; border: 3px solid #e0e7ff;
+        border-top-color: #5b52f9; border-radius: 50%;
+        animation: portfolioAjaxSpin .75s linear infinite; z-index: 101;
+    }
+    @keyframes portfolioAjaxSpin { to { transform: rotate(360deg); } }
+    #toggle-include-changed:disabled { cursor: wait; opacity: .65; }
+    #btn-toggle-changed-infobar.is-loading { opacity: .75; cursor: wait !important; pointer-events: none; }
     .btn-add-portfolio:focus-visible {
         outline: 2px solid #5b52f9 !important;
         outline-offset: 2px !important;
@@ -2741,11 +2761,57 @@ include_once('footer.php');
             $('#portfolio-table tbody tr').removeClass('note-panel-open');
         }
 
+        var portfolioReloadInProgress = false;
+
+        function setPortfolioReloadLoading(isLoading) {
+            var $toggle = $('#toggle-include-changed');
+            var $toggleTitle = $('label.toggle-title[for="toggle-include-changed"]');
+            var $infoButton = $('#btn-toggle-changed-infobar');
+
+            if (isLoading) {
+                $('#ajax_table_print').addClass('portfolio-ajax-loading').attr('aria-busy', 'true');
+                $toggle.prop('disabled', true);
+                if (!$toggleTitle.data('original-text')) {
+                    $toggleTitle.data('original-text', $toggleTitle.text());
+                }
+                $toggleTitle.text('Loading changed websites...');
+                $infoButton.each(function() {
+                    var $button = $(this);
+                    if (!$button.data('original-html')) {
+                        $button.data('original-html', $button.html());
+                    }
+                    $button.addClass('is-loading').prop('disabled', true)
+                        .html('<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Loading...');
+                });
+            } else {
+                $('#ajax_table_print').removeClass('portfolio-ajax-loading').removeAttr('aria-busy');
+                $toggle.prop('disabled', false);
+                if ($toggleTitle.data('original-text')) {
+                    $toggleTitle.text($toggleTitle.data('original-text'));
+                }
+                $infoButton.each(function() {
+                    var $button = $(this);
+                    if ($button.data('original-html')) {
+                        $button.html($button.data('original-html'));
+                    }
+                    $button.removeClass('is-loading').prop('disabled', false);
+                });
+            }
+        }
+
         function reloadPortfolioTable(overrideIncludeChanged, callback) {
             if (typeof overrideIncludeChanged === 'function') {
                 callback = overrideIncludeChanged;
                 overrideIncludeChanged = undefined;
             }
+            // Prevent duplicate AJAX table reloads and stale response conflicts.
+            if (portfolioReloadInProgress) {
+                if (typeof callback === 'function') callback({ busy: true });
+                return;
+            }
+            portfolioReloadInProgress = true;
+            setPortfolioReloadLoading(true);
+
             var status = $('#portfolio_status').length ? $('#portfolio_status').val() : '0';
             var isIncludeChangedOn;
             if (typeof overrideIncludeChanged !== 'undefined') {
@@ -2800,9 +2866,14 @@ include_once('footer.php');
                 },
                 error: function(xhr) {
                     console.error('Error reloading portfolios:', xhr);
+                    showToastError('Could not refresh portfolios. Please try again.');
                     if (typeof callback === 'function') {
                         callback(xhr);
                     }
+                },
+                complete: function() {
+                    portfolioReloadInProgress = false;
+                    setPortfolioReloadLoading(false);
                 }
             });
         }
