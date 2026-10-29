@@ -122,19 +122,14 @@ if (!isset($conn) || !$conn || mysqli_connect_errno()) {
 
 $action = (string)($_POST['action'] ?? '');
 $email = strtolower(trim((string)($_POST['email'] ?? '')));
-$allowedEmails = [
-    'mayur@codeandcore.com',
-    'himanshu@codeandcore.com',
-    'hello@codeandcore.com',
-    'nikhar@codeandcore.com',
-    'nagender@codeandcore.com',
-];
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL) || !in_array($email, $allowedEmails, true)) {
-    otpJsonResponse(false, 'This email is not enabled for CodeandCore OTP login.', [], 422);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    otpJsonResponse(false, 'Please enter a valid email address.', [], 422);
 }
 
-$userStmt = mysqli_prepare($conn, 'SELECT id, username FROM users WHERE LOWER(username) = ? LIMIT 1');
+// The users table is the source of truth for OTP-enabled accounts.
+// No hardcoded email allowlist: an email must already exist in users.email.
+$userStmt = mysqli_prepare($conn, 'SELECT id, username FROM users WHERE LOWER(email) = ? LIMIT 1');
 if (!$userStmt) {
     otpJsonResponse(false, 'Could not verify the account. Please contact the administrator.', [], 500);
 }
@@ -144,7 +139,7 @@ $userResult = mysqli_stmt_get_result($userStmt);
 $user = $userResult ? mysqli_fetch_assoc($userResult) : null;
 mysqli_stmt_close($userStmt);
 if (!$user) {
-    otpJsonResponse(false, 'This account is not provisioned yet. Run the OTP account migration first.', [], 404);
+    otpJsonResponse(false, 'Email not found. Please use an email registered in the users table.', [], 404);
 }
 $userId = (int)$user['id'];
 
