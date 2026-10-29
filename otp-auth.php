@@ -287,9 +287,47 @@ if ($action === 'verify_otp') {
     $_SESSION['user_id'] = $userId;
     unset($_SESSION['otp_csrf_token']);
 
-    // Clear legacy remember-me cookies so they cannot be reused by older code.
-    setcookie('remember_user', '', time() - 3600, '/');
-    setcookie('remember_username', '', time() - 3600, '/');
+    // Optionally keep this browser signed in for two months.
+    $rememberMe = (string)($_POST['remember_me'] ?? '0') === '1';
+    $cookieOptions = [
+        'path' => '/',
+        'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ];
+    if ($rememberMe) {
+        $rememberToken = bin2hex(random_bytes(32));
+        $rememberTokenHash = hash('sha256', $rememberToken);
+        $rememberExpiresTimestamp = strtotime('+2 months');
+        $rememberExpiresAt = date('Y-m-d H:i:s', $rememberExpiresTimestamp);
+        $rememberStmt = mysqli_prepare($conn, 'UPDATE users SET remember_token = ?, remember_expires_at = ? WHERE id = ?');
+        if ($rememberStmt) {
+            mysqli_stmt_bind_param($rememberStmt, 'ssi', $rememberTokenHash, $rememberExpiresAt, $userId);
+            $rememberSaved = mysqli_stmt_execute($rememberStmt);
+            mysqli_stmt_close($rememberStmt);
+            if ($rememberSaved) {
+                $cookieOptions['expires'] = $rememberExpiresTimestamp;
+                setcookie('cnc_portfolio_remember', $rememberToken, $cookieOptions);
+            } else {
+                error_log('Could not save remember-me token for user ID ' . $userId);
+                setcookie('cnc_portfolio_remember', '', $cookieOptions + ['expires' => time() - 3600]);
+            }
+        } else {
+            error_log('Could not prepare remember-me token update for user ID ' . $userId);
+        }
+    } else {
+        $clearRememberStmt = mysqli_prepare($conn, 'UPDATE users SET remember_token = NULL, remember_expires_at = NULL WHERE id = ?');
+        if ($clearRememberStmt) {
+            mysqli_stmt_bind_param($clearRememberStmt, 'i', $userId);
+            mysqli_stmt_execute($clearRememberStmt);
+            mysqli_stmt_close($clearRememberStmt);
+        }
+        setcookie('cnc_portfolio_remember', '', $cookieOptions + ['expires' => time() - 3600]);
+    }
+
+    // Remove legacy remember-me cookies from older login implementations.
+    setcookie('remember_user', '', $cookieOptions + ['expires' => time() - 3600]);
+    setcookie('remember_username', '', $cookieOptions + ['expires' => time() - 3600]);
 
     // Keep the existing login-log integration, but identify the authentication method accurately.
     if (function_exists('getUserIP') && function_exists('getLocationByIP') && function_exists('parseUserAgent')) {
