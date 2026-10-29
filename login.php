@@ -87,7 +87,7 @@ unset($_SESSION['login_error']);
                         <div class="form-group mb-3">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="remember-me" name="remember_me" value="1">
-                                <label class="custom-control-label" for="remember-me">Remember me for 2 months</label>
+                                <label class="custom-control-label" for="remember-me">Remember me</label>
                             </div>
                             <small class="form-text text-muted">Only select this on a device you trust.</small>
                         </div>
