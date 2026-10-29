@@ -13,6 +13,6 @@ return [
     'username' => 'YOUR_GMAIL_ADDRESS@gmail.com',
     'password' => 'YOUR_GMAIL_APP_PASSWORD',
     'from_email' => 'YOUR_GMAIL_ADDRESS@gmail.com',
-    'from_name' => 'CodeandCore Login',
+    'from_name' => 'CodeandCore Portfolio',
     'timeout' => 15,
 ];
