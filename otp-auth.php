@@ -81,10 +81,46 @@ function sendOtpEmail($recipient, $otp) {
         smtpCommand($socket, 'RCPT TO:<' . $recipient . '>', [250, 251]);
         smtpCommand($socket, 'DATA', [354]);
 
-        $subject = 'Your CodeandCore login OTP';
-        $body = "Your CodeandCore login OTP is: {$otp}\r\n\r\n"
-            . "This code expires in 10 minutes. Never share this code with anyone.\r\n"
-            . "If you did not request this code, you can ignore this email.";
+        $subject = 'Your CodeandCore login code';
+        $plainBody = "CODEANDCORE | SECURE SIGN-IN\r\n\r\n"
+            . "Use the verification code below to sign in to your CodeandCore account.\r\n\r\n"
+            . "Your verification code: {$otp}\r\n\r\n"
+            . "This code expires in 10 minutes. For your security, never share this code with anyone.\r\n\r\n"
+            . "If you did not request this code, you can safely ignore this email. No changes have been made to your account.\r\n\r\n"
+            . "— CodeandCore Security Team";
+
+        $safeOtp = htmlspecialchars($otp, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $htmlBody = '<!doctype html><html lang="en"><head><meta charset="UTF-8">'
+            . '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+            . '<title>Your CodeandCore login code</title></head>'
+            . '<body style="margin:0;padding:0;background:#f4f5fb;font-family:Arial,Helvetica,sans-serif;color:#182033;">'
+            . '<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Your secure CodeandCore sign-in code. Expires in 10 minutes.</div>'
+            . '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f4f5fb;padding:32px 12px;">'
+            . '<tr><td align="center">'
+            . '<table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e7e9f2;border-radius:16px;overflow:hidden;">'
+            . '<tr><td style="background:#6547f5;padding:26px 32px;text-align:left;">'
+            . '<div style="font-size:12px;font-weight:700;letter-spacing:2px;color:#e8e4ff;">CODEANDCORE</div>'
+            . '<div style="font-size:23px;line-height:1.35;font-weight:700;color:#ffffff;margin-top:8px;">Secure sign-in</div>'
+            . '</td></tr>'
+            . '<tr><td style="padding:32px;">'
+            . '<p style="font-size:16px;line-height:1.6;margin:0 0 12px;">Hello,</p>'
+            . '<p style="font-size:15px;line-height:1.7;color:#4b5568;margin:0 0 24px;">We received a request to sign in to your CodeandCore account. Enter this one-time verification code in the login page to continue.</p>'
+            . '<div style="border:1px solid #e6e2ff;background:#f8f7ff;border-radius:12px;padding:22px 16px;text-align:center;">'
+            . '<div style="font-size:11px;font-weight:700;letter-spacing:1.6px;color:#6b62a8;text-transform:uppercase;">Your verification code</div>'
+            . '<div style="font-family:Consolas,Monaco,monospace;font-size:34px;line-height:1.5;font-weight:700;letter-spacing:8px;color:#5637e8;padding-left:8px;">' . $safeOtp . '</div>'
+            . '<div style="font-size:12px;color:#6b7280;margin-top:4px;">Expires in 10 minutes</div>'
+            . '</div>'
+            . '<p style="font-size:14px;line-height:1.7;color:#374151;margin:24px 0 8px;"><strong>Keep this code private.</strong> CodeandCore will never ask you to share your verification code with another person.</p>'
+            . '<p style="font-size:13px;line-height:1.7;color:#6b7280;margin:0;">If you did not request this code, you can ignore this email. Your account will remain unchanged.</p>'
+            . '</td></tr>'
+            . '<tr><td style="background:#fafaff;border-top:1px solid #ececf4;padding:20px 32px;">'
+            . '<p style="font-size:12px;line-height:1.6;color:#777b8c;margin:0;">Sent automatically by the CodeandCore web app. Please do not reply to this email.</p>'
+            . '<p style="font-size:12px;font-weight:700;color:#6547f5;margin:8px 0 0;">CodeandCore Security Team</p>'
+            . '</td></tr></table>'
+            . '<p style="font-size:11px;line-height:1.6;color:#9296a5;text-align:center;margin:18px 0 0;">This is a transactional security email for a requested login.</p>'
+            . '</td></tr></table></body></html>';
+
+        $boundary = '=_CodeandCore_OTP_' . bin2hex(random_bytes(12));
         $fromName = '=?UTF-8?B?' . base64_encode((string)$config['from_name']) . '?=';
         $headers = [
             'From: ' . $fromName . ' <' . $config['from_email'] . '>',
@@ -92,9 +128,17 @@ function sendOtpEmail($recipient, $otp) {
             'Subject: ' . $subject,
             'Date: ' . date(DATE_RFC2822),
             'MIME-Version: 1.0',
-            'Content-Type: text/plain; charset=UTF-8',
-            'Content-Transfer-Encoding: 8bit',
+            'Content-Type: multipart/alternative; boundary="' . $boundary . '"',
         ];
+        $body = '--' . $boundary . "\r\n"
+            . "Content-Type: text/plain; charset=UTF-8\r\n"
+            . "Content-Transfer-Encoding: 8bit\r\n\r\n"
+            . $plainBody . "\r\n\r\n"
+            . '--' . $boundary . "\r\n"
+            . "Content-Type: text/html; charset=UTF-8\r\n"
+            . "Content-Transfer-Encoding: 8bit\r\n\r\n"
+            . $htmlBody . "\r\n\r\n"
+            . '--' . $boundary . "--\r\n";
         $message = implode("\r\n", $headers) . "\r\n\r\n" . $body;
         $message = preg_replace('/\r?\n\./', "\r\n..", $message);
         if (fwrite($socket, $message . "\r\n.\r\n") === false) {
